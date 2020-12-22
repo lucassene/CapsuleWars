@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Actors/Scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/textures/dark-grid.png" type="Texture" id=2]
+[ext_resource path="res://assets/textures/organe-grid.png" type="Texture" id=3]
+[ext_resource path="res://assets/textures/purple-grid.png" type="Texture" id=4]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_world_triplanar = true
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.5, 0.5, 0.5 )
+uv1_triplanar = true
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_world_triplanar = true
+albedo_texture = ExtResource( 4 )
+uv1_scale = Vector3( 0.5, 0.5, 0.5 )
+uv1_triplanar = true
+
+[sub_resource type="SpatialMaterial" id=3]
+flags_world_triplanar = true
+albedo_texture = ExtResource( 3 )
+uv1_scale = Vector3( 0.5, 0.5, 0.5 )
+uv1_triplanar = true
+
+[node name="Map01" type="Node"]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.26274, 0 )
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+layers = 2
+use_collision = true
+collision_layer = 2
+
+[node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
+cast_shadow = 0
+width = 52.0
+depth = 44.0
+material = SubResource( 1 )
+
+[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 5, 0 )
+height = 12.0
+depth = 44.0
+material = SubResource( 2 )
+
+[node name="CSGBox4" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 5, 0 )
+height = 12.0
+depth = 44.0
+material = SubResource( 2 )
+
+[node name="CSGBox3" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 5, -23 )
+height = 12.0
+depth = 52.0
+material = SubResource( 2 )
+
+[node name="CSGBox5" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 5, 23 )
+height = 12.0
+depth = 52.0
+material = SubResource( 2 )
+
+[node name="CSGPolygon" type="CSGPolygon" parent="CSGCombiner"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -9 )
+polygon = PoolVector2Array( -6, 0, -6, 8, 7, 0, 3, 0 )
+depth = 5.0
+material = SubResource( 3 )
