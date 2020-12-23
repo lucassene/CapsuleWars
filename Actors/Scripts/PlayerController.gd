@@ -39,11 +39,17 @@ func check_input_pressed(event,input,method = null,param = null):
 		return true
 	return false
 
+func check_input_released(event,input,method = null,param = null):
+	if event.is_action_released(input):
+		if method: call_deferred(method,param)
+		return true
+	return false
+
 func handle_mouse_movement(event):
 	if event is InputEventMouseMotion:
 		actor.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 		actor.head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
-		actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-89),deg2rad(89))
+		actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-58),deg2rad(80))
 
 func calculate_movement(delta):
 	var direction = Vector3.ZERO
@@ -76,6 +82,15 @@ func jump(_param):
 	if actor.is_on_floor() or actor.get_floor_contact():
 		state_machine.set_state("Jumping")
 		gravity_vector = Vector3.UP * JUMP_IMPULSE
+
+func fire(_param):
+	var target = actor.get_aimcast_collider()
+	if target and target.is_in_group("Enemy"):
+		print("enemy hit")
+		target.add_damage(10)
+
+func aim(param):
+	actor.ads(param)
 
 func actor_in_air(delta):
 	gravity_vector += Vector3.DOWN * GRAVITY * delta

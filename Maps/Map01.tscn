@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Actors/Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/textures/dark-grid.png" type="Texture" id=2]
 [ext_resource path="res://assets/textures/organe-grid.png" type="Texture" id=3]
 [ext_resource path="res://assets/textures/purple-grid.png" type="Texture" id=4]
+[ext_resource path="res://Actors/Scenes/Enemy.tscn" type="PackedScene" id=5]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_world_triplanar = true
@@ -28,7 +29,9 @@ uv1_triplanar = true
 [node name="Player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.26274, 0 )
 
-[node name="CSGCombiner" type="CSGCombiner" parent="."]
+[node name="CSGCombiner" type="CSGCombiner" parent="." groups=[
+"World",
+]]
 layers = 2
 use_collision = true
 collision_layer = 2
@@ -68,3 +71,6 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -
 polygon = PoolVector2Array( -6, 0, -6, 8, 7, 0, 3, 0 )
 depth = 5.0
 material = SubResource( 3 )
+
+[node name="Enemy" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 14 )

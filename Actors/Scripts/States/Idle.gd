@@ -1,6 +1,6 @@
 extends State
 
-export var H_ACCELERATION = 6
+export var H_ACCELERATION = 7
 
 var player_controller
 
@@ -11,6 +11,9 @@ func enter(actor,_delta = 0.0):
 	
 func handle_input(event):
 	if player_controller.check_input_pressed(event,"jump","jump"): return
+	if player_controller.check_input_pressed(event,"fire","fire"): return
+	if player_controller.check_input_pressed(event,"aim","aim",true): return
+	if player_controller.check_input_released(event,"aim","aim",false): return
 
 func update(_actor,_delta):
 	player_controller.actor_on_floor()

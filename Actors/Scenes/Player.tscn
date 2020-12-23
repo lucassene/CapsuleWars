@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Actors/Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Actors/Scripts/PlayerController.gd" type="Script" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://Actors/Scripts/States/Running.gd" type="Script" id=5]
 [ext_resource path="res://Actors/Scripts/States/Jumping.gd" type="Script" id=6]
 [ext_resource path="res://Actors/Scripts/States/Falling.gd" type="Script" id=7]
+[ext_resource path="res://assets/textures/crosshair.png" type="Texture" id=8]
+[ext_resource path="res://Actors/Scenes/Weapon.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CapsuleMesh" id=1]
 mid_height = 2.5
@@ -39,6 +41,37 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40657, 0 )
 
 [node name="Camera" type="Camera" parent="Head"]
 current = true
+
+[node name="Hand" type="Spatial" parent="Head/Camera"]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -0.5, -1.6 )
+
+[node name="Weapon" parent="Head/Camera/Hand" instance=ExtResource( 9 )]
+
+[node name="AimCast" type="RayCast" parent="Head/Camera"]
+enabled = true
+cast_to = Vector3( 0, 0, -200 )
+collision_mask = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="Head/Camera"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Head/Camera/CenterContainer"]
+margin_left = 640.0
+margin_top = 360.0
+margin_right = 640.0
+margin_bottom = 360.0
+mouse_filter = 2
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.20498, 0 )
