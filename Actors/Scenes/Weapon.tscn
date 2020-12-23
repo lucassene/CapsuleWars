@@ -6,15 +6,18 @@
 size = Vector3( 1, 1, 1 )
 
 [node name="Weapon" type="Spatial"]
-transform = Transform( 1, -3.72529e-09, 0, -3.72529e-09, 1, 5.82077e-11, 0, 0, 1, 0, 0, 0 )
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 0 )
 script = ExtResource( 1 )
-DEFAULT_POSITION = Vector3( -0.287, -0.252, 0.547 )
-ADS_POSITION = Vector3( -0.677, 0.083, 0 )
+ADS_POSITION = Vector3( -0.423, 0.29, 0.428 )
 
-[node name="Pistol" type="MeshInstance" parent="."]
+[node name="Model" type="MeshInstance" parent="."]
 transform = Transform( 1, 9.31323e-10, -9.31323e-10, 0, 0.3, 0, 0, -2.91038e-11, 0.3, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="PistolMuzzle" type="Spatial" parent="Pistol"]
+[node name="Muzzle" type="Spatial" parent="Model"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 1.42109e-14, 0, 1, 0.585944, 0, 1.19209e-07 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="animation_started" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_started"]

@@ -7,7 +7,13 @@ var player_controller
 func enter(actor,_delta = 0.0):
 	player_controller = actor.get_player_controller()
 	player_controller.set_current_acceleration(AIR_ACCELERATION)
+	actor.play_camera_anim(false)
 	print("Jumping")
+
+func handle_input(event):
+	if player_controller.check_input_pressed(event,"fire","fire"): return
+	if player_controller.check_input_pressed(event,"aim","aim",true): return
+	if player_controller.check_input_released(event,"aim","aim",false): return
 
 func update(actor,delta):
 	var movement = Vector3.ZERO

@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Actors/Scenes/Weapon.tscn" type="PackedScene" id=1]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 1.5, 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.694118, 0.392157, 0.211765, 1 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "firing"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Model:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.06, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -0.2, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Model:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.06, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -5.55842e-09, 0, 0 ), Vector3( 0, 0, 3 ), Vector3( 0, 0, 0 ) ]
+}
+
+[node name="AssaultRifle" instance=ExtResource( 1 )]
+AUTO = true
+RATE_OF_FIRE = 1.0
+MAGAZINE = 30
+ADS_SPEED = 10
+ADS_FOV = 40
+SWAY = 20
+ADS_SWAY = 60
+SPRINT_ANGLE = 50
+X_RECOIL = 0.2
+Y_RECOIL = 0.75
+
+[node name="Model" parent="." index="0"]
+transform = Transform( 1, 0, 0, 0, 0.3, 2.91038e-11, 0, -2.91038e-11, 0.3, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="AnimationPlayer" parent="." index="1"]
+anims/firing = SubResource( 3 )

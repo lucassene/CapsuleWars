@@ -84,13 +84,32 @@ func jump(_param):
 		gravity_vector = Vector3.UP * JUMP_IMPULSE
 
 func fire(_param):
-	var target = actor.get_aimcast_collider()
-	if target and target.is_in_group("Enemy"):
-		print("enemy hit")
-		target.add_damage(10)
+	actor.get_aimcast_collider()
+
+func stop_firing(_param):
+	actor.stop_firing()
 
 func aim(param):
+	if param and actor.get_is_moving(): state_machine.set_state("Running")
 	actor.ads(param)
+
+func sprint(param):
+	if param:
+		state_machine.set_state("Sprinting")
+	else:
+		state_machine.set_state("Idle")
+
+func reload(_param):
+	actor.reload_weapon()
+
+func equip_slot_1(_param):
+	actor.equip_slot(0)
+
+func equip_slot_2(_param):
+	actor.equip_slot(1)
+
+func swap_equip(_param):
+	actor.swap_equip()
 
 func actor_in_air(delta):
 	gravity_vector += Vector3.DOWN * GRAVITY * delta

@@ -25,12 +25,12 @@ func initialize(first_state):
 	states[current_state].enter(actor)
 
 func set_state(new_state):
-	if current_state:
+	if current_state and current_state != new_state:
 		next_state = new_state
 		previous_state = current_state
 		exit_state(current_state)
-	current_state = new_state
-	enter_state(current_state)
+		current_state = new_state
+		enter_state(current_state)
 	
 func enter_state(state):
 	states[state].enter(actor)
