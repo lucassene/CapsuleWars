@@ -11,6 +11,7 @@ albedo_color = Color( 0.341176, 0.266667, 0.266667, 1 )
 [sub_resource type="Animation" id=3]
 resource_name = "firing"
 length = 0.1
+step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath("Model:translation")
 tracks/0/interp = 1
@@ -33,18 +34,20 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.04, 0.1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -5.55842e-09, 0, 0 ), Vector3( 0, 0, 12 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( -5.55842e-09, 0, 0 ), Vector3( 0, 0, 25 ), Vector3( 0, 0, 0 ) ]
 }
 
 [node name="Pistol" instance=ExtResource( 1 )]
 RATE_OF_FIRE = 0.5
 MAGAZINE = 8
-DAMAGE = 12
-X_RECOIL = 0.5
-Y_RECOIL = 1.0
+DAMAGE = 20
+MIN_X_RECOIL = 4.0
+MAX_X_RECOIL = 6.0
+MIN_Y_RECOIL = 0.25
+MAX_Y_RECOIL = 0.75
 
 [node name="Model" parent="." index="0"]
-transform = Transform( 1, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 0.3, 2.91038e-11, 0, -2.91038e-11, 0.3, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 

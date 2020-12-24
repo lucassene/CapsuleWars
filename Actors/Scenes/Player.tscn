@@ -20,7 +20,7 @@ height = 2.5
 
 [sub_resource type="CylinderShape" id=3]
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 resource_name = "ads-headbob"
 length = 0.3
 loop = true
@@ -37,8 +37,7 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.01, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "headbob"
+[sub_resource type="Animation" id=5]
 length = 0.3
 loop = true
 tracks/0/type = "value"
@@ -105,8 +104,8 @@ __meta__ = {
 }
 
 [node name="CameraAnimPlayer" type="AnimationPlayer" parent="Head/Camera"]
-anims/ads-headbob = SubResource( 5 )
-anims/headbob = SubResource( 4 )
+anims/ads-headbob = SubResource( 6 )
+anims/headbob = SubResource( 5 )
 
 [node name="Hand" type="Spatial" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.415, -0.57, -1.213 )

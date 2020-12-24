@@ -4,7 +4,7 @@ onready var anim_player = $AnimationPlayer
 
 export var AUTO = false
 export var RATE_OF_FIRE = 1.0
-export var MAGAZINE = 10
+export var MAGAZINE = 10 setget ,get_magazine
 export var DAMAGE = 5 setget ,get_damage
 
 export var ADS_POSITION = Vector3.ZERO setget ,get_ads_position
@@ -13,12 +13,21 @@ export var ADS_FOV = 50 setget ,get_ads_fov
 export var SWAY = 40
 export var ADS_SWAY = 100
 export var SPRINT_ANGLE = 45 setget ,get_sprint_angle
-export var X_RECOIL = 0.1
-export var Y_RECOIL = 0.5
+export var MIN_X_RECOIL = 1.0
+export var MAX_X_RECOIL = 2.0
+export var MIN_Y_RECOIL = 1.0
+export var MAX_Y_RECOIL = 1.0
+export var Y_MULTI = 1
 
 var is_ads = false
-var current_magazine
+var current_ammo setget ,get_current_ammo
 var can_fire = true setget ,get_can_fire
+
+func get_magazine():
+	return MAGAZINE
+
+func get_current_ammo():
+	return current_ammo
 
 func get_default_position():
 	return Vector3.ZERO
@@ -47,7 +56,7 @@ func get_can_fire():
 func _ready():
 	anim_player.playback_speed *= RATE_OF_FIRE
 	transform.origin = Vector3.ZERO
-	current_magazine = MAGAZINE
+	current_ammo = MAGAZINE
 
 func _process(delta):
 	if is_ads:
@@ -64,7 +73,7 @@ func update():
 func fire(value,target = null):
 	if value:
 		anim_player.play("firing")
-		current_magazine -= 1
+		current_ammo -= 1
 		can_fire = false
 		if target and target.is_in_group("Enemy"):
 			target.add_damage(DAMAGE)
@@ -72,17 +81,16 @@ func fire(value,target = null):
 		if AUTO: anim_player.stop()
 
 func reload():
-	if current_magazine < MAGAZINE:
-		current_magazine = MAGAZINE
+	if current_ammo < MAGAZINE:
+		current_ammo = MAGAZINE
 	can_fire = true
 
 func _on_AnimationPlayer_animation_finished(_anim_name):
-	if current_magazine > 0:
+	if current_ammo > 0:
 		if AUTO:
 			anim_player.play("firing")
 			Global.player.get_aimcast_collider()
 		can_fire = true
-	#Global.player.camera_reset()
 
 func _on_AnimationPlayer_animation_started(_anim_name):
-	Global.player.shake_camera(X_RECOIL,Y_RECOIL)
+	Global.player.shake_camera(MAX_X_RECOIL,MIN_X_RECOIL,MAX_Y_RECOIL,MIN_Y_RECOIL,Y_MULTI)

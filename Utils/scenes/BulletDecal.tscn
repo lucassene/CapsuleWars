@@ -20,7 +20,7 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 10.0
 one_shot = true
 autostart = true
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

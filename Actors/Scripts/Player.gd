@@ -12,8 +12,15 @@ onready var camera_anim_player = $Head/Camera/CameraAnimPlayer
 onready var hand = $Head/Hand
 onready var hand_loc = $Head/HandLoc
 
+onready var ammo_counter = get_node("../CanvasLayer/HUD/HBoxContainer/AmmoCounter")
+
 export var DEFAULT_FOV = 70
 export(PoolStringArray) var weapons = []
+
+signal on_weapon_equipped(clip_size)
+signal on_weapon_changed(current_ammo,clip_size)
+signal on_shot_fired()
+signal on_reload()
 
 var is_ads = false setget ,get_is_ads
 var is_moving = false setget set_is_moving,get_is_moving
@@ -39,10 +46,13 @@ func get_is_ads():
 	return is_ads
 
 func _ready():
+	randomize()
+	connect_hud_signals()
 	Global.player = self
 	hand.set_as_toplevel(true)
 	hand.initialize(weapons)
 	current_weapon = hand.get_current_weapon()
+	emit_signal("on_weapon_equipped",current_weapon.get_magazine())
 	player_controller._initialize(state_machine)
 	state_machine.initialize("Idle")
 
@@ -82,6 +92,7 @@ func ads(value):
 func get_aimcast_collider():
 	var target = null
 	if current_weapon.get_can_fire():
+		emit_signal("on_shot_fired")
 		if aim_cast.is_colliding():
 			target = aim_cast.get_collider()
 			place_decal(target)
@@ -114,6 +125,7 @@ func weapon_sway(delta):
 
 func reload_weapon():
 	current_weapon.reload()
+	emit_signal("on_reload")
 
 func equip_slot(index):
 	current_weapon = hand.equip_weapon(index)
@@ -122,19 +134,19 @@ func swap_equip():
 	var new_weapon = hand.swap_weapon()
 	if new_weapon:
 		current_weapon = new_weapon
+		emit_signal("on_weapon_changed",current_weapon.get_current_ammo(),current_weapon.get_magazine())
 
 func stop_firing():
 	current_weapon.fire(false)
-	shake_reset()
 
-func shake_camera(x_recoil,y_recoil):
-	var vector = get_shake_vector(aim_cast,x_recoil,y_recoil)
-	#camera.translation = lerp(camera.translation,vector,0.5)
-	aim_cast.translation = lerp(aim_cast.translation,vector,0.5)
+func shake_camera(min_x,max_x,min_y,max_y,y_multi):
+	var x_value = rand_range(min_x,max_x)
+	var y_value = rand_range(min_y,max_y) * y_multi
+	head.rotation_degrees.x = lerp(head.rotation_degrees.x,head.rotation_degrees.x + x_value,0.25)
+	rotation_degrees.y = lerp(rotation_degrees.y,rotation_degrees.y + y_value,0.25)
 
-func shake_reset():
-	aim_cast.translation = lerp(aim_cast.translation,Vector3.ZERO,1)
-	#camera.translation = lerp(camera.translation,Vector3.ZERO,1)
-
-func get_shake_vector(node,x_recoil,y_recoil):
-	return Vector3(rand_range(x_recoil,-x_recoil),rand_range(y_recoil + node.translation.y,y_recoil),0)
+func connect_hud_signals():
+	connect("on_weapon_equipped",ammo_counter,"_on_weapon_equipped")
+	connect("on_shot_fired",ammo_counter,"_on_shot_fired")
+	connect("on_reload",ammo_counter,"_on_reload")
+	connect("on_weapon_changed",ammo_counter,"_on_weapon_changed")
