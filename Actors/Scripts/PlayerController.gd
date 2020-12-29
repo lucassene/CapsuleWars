@@ -45,6 +45,12 @@ func check_input_released(event,input,method = null,param = null):
 		return true
 	return false
 
+func check_if_ads_still_pressed():
+	if Input.is_action_pressed("aim"):
+		return true
+	else:
+		return false
+
 func handle_mouse_movement(event):
 	if event is InputEventMouseMotion:
 		actor.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
@@ -80,17 +86,27 @@ func actor_on_floor():
 
 func jump(_param):
 	if actor.is_on_floor() or actor.get_floor_contact():
+		actor.jump()
 		state_machine.set_state("Jumping")
 		gravity_vector = Vector3.UP * JUMP_IMPULSE
 
-func fire(_param):
-	actor.get_aimcast_collider()
-
-func stop_firing(_param):
-	actor.stop_firing()
+func fire(param):
+	if param:
+		if is_sprinting() and actor.get_is_moving():
+			state_machine.set_state("Running")
+			yield(get_tree().create_timer(0.1),"timeout")
+		elif is_sprinting():
+			state_machine.enter_air_state()
+			current_speed = state_machine.states.Running.SPEED
+			yield(get_tree().create_timer(0.15),"timeout")
+		actor.get_aimcast_collider()
+	else:
+		actor.stop_firing()
 
 func aim(param):
-	if param and actor.get_is_moving(): state_machine.set_state("Running")
+	if param and actor.get_is_moving():
+		state_machine.set_state("Running")
+		yield(get_tree().create_timer(0.15),"timeout")
 	actor.ads(param)
 
 func sprint(param):
@@ -110,6 +126,11 @@ func equip_slot_2(_param):
 
 func swap_equip(_param):
 	actor.swap_equip()
+
+func is_sprinting():
+	if current_speed == state_machine.states.Sprinting.SPEED:
+		return true
+	return false
 
 func actor_in_air(delta):
 	gravity_vector += Vector3.DOWN * GRAVITY * delta
