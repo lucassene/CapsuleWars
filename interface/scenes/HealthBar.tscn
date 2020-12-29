@@ -1,10 +1,13 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://interface/scripts/HealthBar.gd" type="Script" id=1]
 
 [node name="HealthBar" type="MarginContainer"]
 margin_right = 500.0
 margin_bottom = 20.0
 mouse_filter = 2
 size_flags_vertical = 0
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -15,8 +18,12 @@ margin_bottom = 20.0
 rect_min_size = Vector2( 500, 20 )
 color = Color( 0.568627, 0.568627, 0.568627, 1 )
 
-[node name="Bar" type="ColorRect" parent="."]
+[node name="LifeBar" type="ColorRect" parent="."]
 margin_right = 500.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 color = Color( 0.792157, 0.207843, 0.207843, 1 )
+
+[node name="Tween" type="Tween" parent="."]
+playback_speed = 0.5
+playback/speed = 0.5

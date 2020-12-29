@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Actors/Scripts/Player.gd"
+}, {
 "base": "Node",
 "class": "State",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://Utils/scripts/StateMachine.gd"
 } ]
 _global_script_class_icons={
+"Player": "",
 "State": "",
 "StateMachine": ""
 }
@@ -40,7 +46,7 @@ Global="*res://Utils/autoloads/Global.gd"
 window/size/width=1280
 window/size/height=720
 window/size/fullscreen=true
-window/stretch/mode="viewport"
+window/stretch/mode="2d"
 window/stretch/aspect="expand"
 
 [input]
@@ -103,6 +109,11 @@ slot_1={
 slot_2={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":50,"unicode":0,"echo":false,"script":null)
+ ]
+}
+dmg_test={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
  ]
 }
 
