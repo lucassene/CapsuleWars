@@ -20,7 +20,7 @@ height = 2.5
 
 [sub_resource type="CylinderShape" id=3]
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=6]
 resource_name = "ads-headbob"
 length = 0.3
 loop = true
@@ -34,7 +34,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.3 ),
 "transitions": PoolRealArray( 1, 1.46409, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, -0.32 ), Vector3( 0, 0.01, -0.32 ), Vector3( 0, 0, -0.32 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.01, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -50,13 +50,13 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.3 ),
 "transitions": PoolRealArray( 1, 1.46409, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, -0.32 ), Vector3( 0, 0.03, -0.32 ), Vector3( 0, 0, -0.32 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.03, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
 [node name="Player" type="KinematicBody"]
 collision_mask = 3
 script = ExtResource( 1 )
-weapons = PoolStringArray( "Assault Rifle", "Pistol" )
+weapons = PoolStringArray( "Pistol", "Assault Rifle" )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
@@ -75,7 +75,6 @@ shape = SubResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40657, 0 )
 
 [node name="Camera" type="Camera" parent="Head"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.32 )
 current = true
 
 [node name="AimCast" type="RayCast" parent="Head/Camera"]
@@ -105,18 +104,15 @@ __meta__ = {
 }
 
 [node name="CameraAnimPlayer" type="AnimationPlayer" parent="Head/Camera"]
-anims/ads-headbob = SubResource( 4 )
+anims/ads-headbob = SubResource( 6 )
 anims/headbob = SubResource( 5 )
 
 [node name="Hand" type="Spatial" parent="Head"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.301, -1.737 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.415, -0.57, -1.213 )
 script = ExtResource( 11 )
-__meta__ = {
-"_editor_description_": ""
-}
 
 [node name="HandLoc" type="Spatial" parent="Head"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.301, -1.737 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.415, -0.57, -1.216 )
 
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.20498, 0 )
@@ -144,9 +140,3 @@ script = ExtResource( 7 )
 
 [node name="Sprinting" type="Node" parent="StateMachine"]
 script = ExtResource( 10 )
-
-[node name="PrimaryHolster" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.569, 1.017, 0.934 )
-
-[node name="SecondaryHolster" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.139, -0.567, -0.254 )

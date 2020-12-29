@@ -27,16 +27,12 @@ uv1_triplanar = true
 
 [node name="Map01" type="Node"]
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.704634, -0.343433, 0.620923, 0, 0.875068, 0.484, -0.709571, -0.341043, 0.616603, 24.669, 13.56, 20.399 )
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource( 6 )]
-player_path = NodePath("../../Player")
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.26274, 0 )
 
 [node name="CSGCombiner" type="CSGCombiner" parent="." groups=[
 "World",
@@ -83,8 +79,3 @@ material = SubResource( 3 )
 
 [node name="Enemy" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 14 )
-[connection signal="on_damage_suffered" from="Player" to="CanvasLayer/HUD" method="_on_Player_on_damage_suffered"]
-[connection signal="on_reload" from="Player" to="CanvasLayer/HUD" method="_on_Player_on_reload"]
-[connection signal="on_shot_fired" from="Player" to="CanvasLayer/HUD" method="_on_Player_on_shot_fired"]
-[connection signal="on_weapon_changed" from="Player" to="CanvasLayer/HUD" method="_on_Player_on_weapon_changed"]
-[connection signal="on_weapon_equipped" from="Player" to="CanvasLayer/HUD" method="_on_Player_on_weapon_equipped"]

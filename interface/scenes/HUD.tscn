@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://interface/scenes/HealthBar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://interface/scenes/AmmoCounter.tscn" type="PackedScene" id=2]
-[ext_resource path="res://interface/scripts/HUD.gd" type="Script" id=3]
 
 [node name="HUD" type="MarginContainer"]
 anchor_top = 1.0
@@ -14,7 +13,6 @@ custom_constants/margin_right = 20
 custom_constants/margin_top = 20
 custom_constants/margin_left = 20
 custom_constants/margin_bottom = 20
-script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
