@@ -13,6 +13,7 @@ func set_max_health(health):
 	current = max_health
 
 func on_damage_suffered(current_health):
+	print("reduzindo vida do player")
 	current = current_health
 	var new_health = (WIDTH * current) / max_health
 	tween.interpolate_property(life_bar,"rect_size",life_bar.rect_size,Vector2(new_health,life_bar.rect_size.y),0.1,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)

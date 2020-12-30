@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Actors/Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Actors/Scripts/PlayerController.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Actors/Scripts/States/Dead.gd" type="Script" id=9]
 [ext_resource path="res://Actors/Scripts/States/Sprinting.gd" type="Script" id=10]
 [ext_resource path="res://Utils/scripts/EquipManagement.gd" type="Script" id=11]
+[ext_resource path="res://Actors/Scripts/States/Menu.gd" type="Script" id=12]
 
 [sub_resource type="CapsuleMesh" id=1]
 mid_height = 2.5
@@ -54,7 +55,9 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, -0.32 ), Vector3( 0, 0.03, -0.32 ), Vector3( 0, 0, -0.32 ) ]
 }
 
-[node name="Player" type="KinematicBody"]
+[node name="Player" type="KinematicBody" groups=[
+"Player",
+]]
 collision_mask = 3
 script = ExtResource( 1 )
 weapons = PoolStringArray( "Assault Rifle", "Pistol" )
@@ -147,6 +150,9 @@ script = ExtResource( 10 )
 
 [node name="Dead" type="Node" parent="StateMachine"]
 script = ExtResource( 9 )
+
+[node name="Menu" type="Node" parent="StateMachine"]
+script = ExtResource( 12 )
 
 [node name="PrimaryHolster" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.569, 1.017, 0.934 )

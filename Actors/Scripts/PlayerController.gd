@@ -28,10 +28,11 @@ func get_movement():
 
 func _initialize(fsm):
 	state_machine = fsm
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func handle_input(event):
-	handle_mouse_movement(event)
+	if state_machine.get_current_state() != "Menu":
+		handle_mouse_movement(event)
 
 func check_input_pressed(event,input,method = null,param = null):
 	if event.is_action_pressed(input):
@@ -127,6 +128,16 @@ func equip_slot_2(_param):
 
 func swap_equip(_param):
 	actor.swap_equip()
+
+func show_menu(_param):
+	state_machine.set_state("Menu")
+	actor.show_menu(true)
+
+func exit_menu():
+	set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+func set_mouse_mode(mode):
+	Input.set_mouse_mode(mode)
 
 func reset_speed():
 	current_speed = state_machine.states.Running.SPEED

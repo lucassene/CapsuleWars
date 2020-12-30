@@ -109,8 +109,12 @@ func fire(value,target = null):
 			anim_player.play("firing")
 		else:
 			anim_player.play("out_of_ammo")
-		if target and target.is_in_group("Enemy"):
-			target.add_damage(DAMAGE)
+		if target:
+			if target.is_in_group("Player"):
+				player.hurt_enemy(int(target.name),DAMAGE)
+				return
+			if target.is_in_group("Enemy"):
+				target.add_damage(DAMAGE)
 	else:
 		if AUTO: 
 			anim_player.play("idle")

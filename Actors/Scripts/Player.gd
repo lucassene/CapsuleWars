@@ -29,6 +29,7 @@ signal on_reload()
 signal on_damage_suffered(current_health)
 signal on_player_death(actor)
 signal on_player_spawned()
+signal on_menu_pressed(value)
 
 var is_ads = false setget ,get_is_ads
 var is_moving = false setget set_is_moving,get_is_moving
@@ -78,7 +79,7 @@ func _ready():
 	state_machine.initialize("Idle")
 
 func _unhandled_input(event):
-	if is_network_master() and state_machine.get_current_state() != "Dead":
+	if is_network_master() and state_machine.get_current_state() != "Dead" and state_machine.get_current_state() != "Menu":
 		state_machine.handle_input(event)
 		player_controller.handle_input(event)
 
@@ -91,7 +92,6 @@ func _process(delta):
 			camera.fov = lerp(camera.fov,DEFAULT_FOV,current_weapon.get_ads_speed() * delta)
 		if Input.is_action_just_pressed("dmg_test"):
 			add_damage(10)
-			print(name)
 
 func _physics_process(delta):
 	if is_network_master():
@@ -193,7 +193,11 @@ func stow_weapon(weapon):
 		secondary_holster.add_child(weapon)
 	weapon.transform.origin = Vector3.ZERO
 
-func add_damage(damage):
+func hurt_enemy(id,damage):
+	rpc_id(id,"add_damage",damage)
+
+remote func add_damage(damage):
+	print("sofri dano!")
 	current_health -= damage
 	var random = rand_range(0,3)
 	if !audio_player.playing:
@@ -234,6 +238,13 @@ func play_footsteps():
 		else:
 			footstep_player.set_stream(Mixer.footsteps_3)
 	footstep_player.play()
+
+func show_menu(value):
+	if value: 
+		emit_signal("on_menu_pressed",value)
+	else:
+		player_controller.exit_menu()
+		state_machine.set_state("Idle")
 
 func _on_weapon_out_of_ads():
 	is_ads = false

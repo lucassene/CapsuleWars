@@ -59,6 +59,7 @@ func connect_player_signals(player):
 	player.connect("on_damage_suffered",main_hud,"_on_player_damage_suffered")
 	player.connect("on_player_death",main_hud,"_on_player_death")
 	player.connect("on_player_spawned",main_hud,"_on_player_spawned")
+	player.connect("on_menu_pressed",main_hud,"_on_pause_menu_pressed")
 
 func _on_game_begin():
 	lobby_hud.hide()

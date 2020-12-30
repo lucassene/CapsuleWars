@@ -1,11 +1,12 @@
-extends MarginContainer
+extends Control
 
-onready var health_bar = $HBoxContainer/HealthBar
-onready var ammo_counter = $HBoxContainer/AmmoCounter
-onready var respawn_hud = $RespawnHUD
-onready var warning_label = $WarningLabel
-onready var timer = $Timer
-onready var tween = $HBoxContainer/HealthBar/Tween
+onready var health_bar = $Container/HBoxContainer/HealthBar
+onready var ammo_counter = $Container/HBoxContainer/AmmoCounter
+onready var respawn_hud = $Container/RespawnHUD
+onready var warning_label = $Container/WarningLabel
+onready var timer = $Container/Timer
+onready var tween = $Container/Timer/Tween
+onready var pause_menu = $PauseMenu
 
 signal _on_player_can_spawn(actor)
 
@@ -13,6 +14,7 @@ func _ready():
 	Network.connect("on_peer_disconnected",self,"_on_player_disconnected")
 
 func _on_player_damage_suffered(current_health):
+	print("player sofreu dano")
 	health_bar.on_damage_suffered(current_health)
 
 func _on_player_reload():
@@ -43,6 +45,12 @@ func _on_player_disconnected(player):
 	warning_label.visible = true
 	timer.start()
 
+func _on_pause_menu_pressed(value):
+	if value:
+		pause_menu.show()
+	else:
+		pause_menu.hide()
+
 func _on_spawn_time_reached(actor):
 	health_bar.visible = true
 	ammo_counter.visible = true
@@ -54,3 +62,6 @@ func _on_Timer_timeout():
 
 func _on_Tween_tween_completed(_object, _key):
 	warning_label.visible = false
+
+func _on_pause_menu_exited():
+	Global.player.show_menu(false)

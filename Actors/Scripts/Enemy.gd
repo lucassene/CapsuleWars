@@ -1,5 +1,7 @@
 extends KinematicBody
 
+onready var timer = $Timer
+
 var health = 100
 var current_health = 100
 
@@ -9,4 +11,11 @@ func add_damage(damage):
 
 func _process(_delta):
 	if current_health <= 0:
-		queue_free()
+		set_collision_layer_bit(0,false)
+		current_health = health
+		timer.start()
+		visible = false
+
+func _on_Timer_timeout():
+	set_collision_layer_bit(0,true)
+	visible = true
