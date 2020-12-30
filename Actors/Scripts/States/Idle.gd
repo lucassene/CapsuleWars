@@ -7,6 +7,7 @@ var player_controller
 func enter(actor,_delta = 0.0):
 	player_controller = actor.get_player_controller()
 	player_controller.set_current_acceleration(H_ACCELERATION)
+	player_controller.reset_speed()
 	actor.set_is_moving(false)
 	actor.play_camera_anim(false)
 	print("Idle")
@@ -21,6 +22,7 @@ func handle_input(event):
 	if player_controller.check_input_pressed(event,"slot_1","equip_slot_1"): return
 	if player_controller.check_input_pressed(event,"slot_2","equip_slot_2"): return
 	if player_controller.check_input_pressed(event,"swap","swap_equip"): return
+	if player_controller.check_input_released(event,"sprint","sprint",false): return
 
 func update(_actor,_delta):
 	player_controller.actor_on_floor()

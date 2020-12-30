@@ -17,6 +17,7 @@ func handle_input(event):
 	if player_controller.check_input_pressed(event,"aim","aim",true): return
 	if player_controller.check_input_released(event,"aim","aim",false): return
 	if player_controller.check_input_pressed(event,"reload","reload"): return
+	if player_controller.check_input_released(event,"sprint","sprint",false): return
 
 func update(actor,delta):
 	var movement = Vector3.ZERO

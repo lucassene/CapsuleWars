@@ -114,6 +114,7 @@ func sprint(param):
 		state_machine.set_state("Sprinting")
 	else:
 		state_machine.set_state("Idle")
+		reset_speed()
 
 func reload(_param):
 	actor.reload_weapon()
@@ -126,6 +127,9 @@ func equip_slot_2(_param):
 
 func swap_equip(_param):
 	actor.swap_equip()
+
+func reset_speed():
+	current_speed = state_machine.states.Running.SPEED
 
 func is_sprinting():
 	if current_speed == state_machine.states.Sprinting.SPEED:

@@ -38,14 +38,19 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Network="*res://Utils/autoloads/Network.gd"
 Armory="*res://Utils/autoloads/Armory.gd"
 Global="*res://Utils/autoloads/Global.gd"
+Mixer="*res://Utils/autoloads/Mixer.gd"
+
+[debug]
+
+gdscript/warnings/return_value_discarded=false
 
 [display]
 
 window/size/width=1280
 window/size/height=720
-window/size/fullscreen=true
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
 

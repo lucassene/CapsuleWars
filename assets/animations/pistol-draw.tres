@@ -1,4 +1,6 @@
-[gd_resource type="Animation" format=2]
+[gd_resource type="Animation" load_steps=2 format=2]
+
+[ext_resource path="res://assets/audio/pistol-swap.wav" type="AudioStream" id=1]
 
 [resource]
 resource_name = "draw"
@@ -41,4 +43,18 @@ tracks/2/keys = {
 "args": [  ],
 "method": "on_draw_complete"
 } ]
+}
+tracks/3/type = "audio"
+tracks/3/path = NodePath("AudioPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 1 )
+} ],
+"times": PoolRealArray( 0 )
 }

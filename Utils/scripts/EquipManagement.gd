@@ -4,18 +4,20 @@ var weapons = []
 var current_weapon
 var can_swap = true
 
-func initialize(items):
+var player
+ 
+func initialize(actor,items):
+	player = actor
 	for each in items:
 		var weapon = Armory.weapons[each].instance()
 		weapon.connect("on_stowed",self,"_on_weapon_stowed")
 		weapon.connect("on_draw_completed",self,"_on_weapon_draw_completed")
-		Global.player.stow_weapon(weapon)
+		weapon.set_owner(player)
+		player.stow_weapon(weapon)
 		weapons.append(weapon)
 	current_weapon = weapons[0]
 	parent_weapon(current_weapon)
 	current_weapon.draw_weapon()
-	#Global.player.stow_weapon(weapons[1])
-	#set_current_weapon(0)
 
 func set_current_weapon(index):
 	if current_weapon:
@@ -45,7 +47,7 @@ func parent_weapon(to_parent):
 	add_child(to_parent)
 
 func _on_weapon_stowed(stowed_weapon):
-	Global.player.stow_weapon(stowed_weapon)
+	player.stow_weapon(stowed_weapon)
 	parent_weapon(current_weapon)
 	current_weapon.draw_weapon()
 

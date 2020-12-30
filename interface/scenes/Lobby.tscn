@@ -1,0 +1,150 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://interface/scripts/Lobby.gd" type="Script" id=1]
+
+[node name="Lobby" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0.54902 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0666667, 0.0627451, 0.0627451, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Main" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 50
+custom_constants/margin_top = 50
+custom_constants/margin_left = 50
+custom_constants/margin_bottom = 50
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="HBoxContainer" parent="Main"]
+margin_left = 50.0
+margin_top = 50.0
+margin_right = 1230.0
+margin_bottom = 670.0
+
+[node name="SideBar" type="VBoxContainer" parent="Main/Container"]
+margin_right = 200.0
+margin_bottom = 620.0
+rect_min_size = Vector2( 200, 0 )
+custom_constants/separation = 20
+
+[node name="IDName" type="HBoxContainer" parent="Main/Container/SideBar"]
+margin_right = 200.0
+margin_bottom = 24.0
+
+[node name="IDLabel" type="Label" parent="Main/Container/SideBar/IDName"]
+margin_top = 5.0
+margin_right = 19.0
+margin_bottom = 19.0
+text = "ID:"
+
+[node name="IDText" type="LineEdit" parent="Main/Container/SideBar/IDName"]
+margin_left = 23.0
+margin_right = 200.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+placeholder_text = "Your ID name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HostButton" type="Button" parent="Main/Container/SideBar"]
+margin_top = 44.0
+margin_right = 200.0
+margin_bottom = 74.0
+rect_min_size = Vector2( 0, 30 )
+text = "Host"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HostIP" type="HBoxContainer" parent="Main/Container/SideBar"]
+margin_top = 94.0
+margin_right = 200.0
+margin_bottom = 118.0
+
+[node name="IPLabel" type="Label" parent="Main/Container/SideBar/HostIP"]
+margin_top = 5.0
+margin_right = 17.0
+margin_bottom = 19.0
+text = "IP:"
+
+[node name="HostIPText" type="LineEdit" parent="Main/Container/SideBar/HostIP"]
+margin_left = 21.0
+margin_right = 200.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+placeholder_text = "Host IP Address"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InvalidIPLabel" type="Label" parent="Main/Container/SideBar"]
+visible = false
+modulate = Color( 0.909804, 0.333333, 0.333333, 1 )
+margin_top = 162.0
+margin_right = 137.0
+margin_bottom = 176.0
+text = "Invalid IP"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JoinButton" type="Button" parent="Main/Container/SideBar"]
+margin_top = 138.0
+margin_right = 200.0
+margin_bottom = 168.0
+rect_min_size = Vector2( 0, 30 )
+text = "Join"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BeginButton" type="Button" parent="Main/Container/SideBar"]
+margin_top = 188.0
+margin_right = 200.0
+margin_bottom = 238.0
+rect_min_size = Vector2( 0, 50 )
+disabled = true
+text = "Begin"
+
+[node name="MainFrame" type="ScrollContainer" parent="Main/Container"]
+margin_left = 204.0
+margin_right = 1180.0
+margin_bottom = 620.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LogContainer" type="MarginContainer" parent="Main/Container/MainFrame"]
+margin_right = 976.0
+margin_bottom = 620.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 20
+custom_constants/margin_top = 0
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="LogLabel" type="RichTextLabel" parent="Main/Container/MainFrame/LogContainer"]
+margin_left = 20.0
+margin_right = 956.0
+margin_bottom = 600.0
+bbcode_enabled = true
+[connection signal="pressed" from="Main/Container/SideBar/HostButton" to="." method="_on_HostButton_pressed"]
+[connection signal="pressed" from="Main/Container/SideBar/JoinButton" to="." method="_on_JoinButton_pressed"]
+[connection signal="pressed" from="Main/Container/SideBar/BeginButton" to="." method="_on_BeginButton_pressed"]

@@ -18,7 +18,7 @@ mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
-alignment = 1
+alignment = 2
 
 [node name="current" type="Label" parent="VBoxContainer"]
 margin_right = 41.0
