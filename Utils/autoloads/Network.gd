@@ -13,11 +13,13 @@ var connected_players = {}
 
 signal on_new_peer(id)
 signal on_peer_disconnected(info)
+signal on_server_disconnected()
 
 func _ready():
 	get_tree().connect("network_peer_connected",self,"_on_player_connected")
 	get_tree().connect("network_peer_disconnected", self, "_on_player_disconnected")
 	get_tree().connect("connection_failed",self,"_on_connection_failed")
+	get_tree().connect("server_disconnected",self,"_on_server_disconnected")
 
 func create_server(nickname):
 	var peer = NetworkedMultiplayerENet.new()
@@ -70,4 +72,8 @@ func _on_player_disconnected(id):
 	connected_players.erase(id)
 
 func _on_connection_failed():
+	connected_players.clear()
+
+func _on_server_disconnected():
+	emit_signal("on_server_disconnected")
 	connected_players.clear()

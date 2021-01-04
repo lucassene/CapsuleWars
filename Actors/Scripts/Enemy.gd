@@ -7,7 +7,10 @@ var current_health = 100
 
 func add_damage(damage):
 	current_health -= damage
-	print(current_health)
+	if current_health <= 0:
+		return true
+	else:
+		return false
 
 func _process(_delta):
 	if current_health <= 0:

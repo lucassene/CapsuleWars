@@ -8,6 +8,7 @@ var spawn_points = []
 
 func _ready():
 	Network.connect("on_peer_disconnected",self,"_on_player_disconnected")
+	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
 	randomize()
 	for each in spawn_manager.get_children():
 		spawn_points.append(each)
@@ -18,14 +19,20 @@ func create_players_intances():
 	for id in Network.connected_players:
 		var player_spawn = {
 			id = -1,
-			position = Vector3.ZERO
+			name = "",
+			position = Vector3.ZERO,
+			rotation = Vector3.ZERO
 		}
 		new_player = Global.player_scene.instance()
 		new_player.set_name(str(id))
 		new_player.set_network_master(id)
 		add_child(new_player)
+		new_player.set_hud_name(Network.connected_players[id].name)
+		var spawn = spawn_player(new_player)
 		player_spawn.id = id
-		player_spawn.position = spawn_player(new_player)
+		player_spawn.position = spawn.transform.origin
+		player_spawn.rotation = spawn.rotation
+		player_spawn.name = Network.connected_players[id].name
 		player_spawns.append(player_spawn)
 	rpc("receive_player_spawns",player_spawns)
 
@@ -38,8 +45,9 @@ func spawn_player(actor):
 			spawn = null
 	spawn.set_can_spawn(false)
 	actor.transform.origin = spawn.transform.origin
+	actor.rotation = spawn.rotation
 	actor.set_dead_state(false)
-	return spawn.transform.origin
+	return spawn
 
 remote func receive_player_spawns(player_spawns):
 	for item in player_spawns:
@@ -47,7 +55,9 @@ remote func receive_player_spawns(player_spawns):
 		new_player.set_name(str(item.id))
 		new_player.set_network_master(item.id)
 		new_player.transform.origin = item.position
+		new_player.rotation = item.rotation
 		add_child(new_player)
+		new_player.set_hud_name(item.name)
 		new_player.set_dead_state(false)
 	lobby_hud.hide()
 
@@ -56,12 +66,14 @@ func connect_player_signals(player):
 	player.connect("on_weapon_changed",main_hud,"_on_player_weapon_changed")
 	player.connect("on_shot_fired",main_hud,"_on_player_shot_fired")
 	player.connect("on_reload",main_hud,"_on_player_reload")
-	player.connect("on_damage_suffered",main_hud,"_on_player_damage_suffered")
+	player.connect("on_health_changed",main_hud,"_on_player_health_changed")
 	player.connect("on_player_death",main_hud,"_on_player_death")
 	player.connect("on_player_spawned",main_hud,"_on_player_spawned")
 	player.connect("on_menu_pressed",main_hud,"_on_pause_menu_pressed")
+	player.connect("on_score_changed",main_hud,"_on_score_changed")
 
 func _on_game_begin():
+	get_tree().set_refuse_new_network_connections(true)
 	lobby_hud.hide()
 	create_players_intances()
 	pass
@@ -69,6 +81,12 @@ func _on_game_begin():
 func _on_player_disconnected(player):
 	var player_scene = get_node("/root/Game/" + str(player.id))
 	player_scene.queue_free()
+
+func _on_server_disconnected():
+	for child in get_children():
+		if child.is_in_group("Player"):
+			child.queue_free()
+	lobby_hud.show()
 
 func _on_player_can_spawn(actor):
 	spawn_player(actor)

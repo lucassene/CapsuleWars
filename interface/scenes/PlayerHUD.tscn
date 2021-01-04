@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.721569, 0.0588235, 0.0588235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.937255, 0.623529, 0.623529, 1 )
+border_blend = true
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.819608, 0.74902, 0.74902, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.752941, 0.658824, 0.658824, 1 )
+
+[node name="Container" type="VBoxContainer"]
+margin_right = 150.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 150, 35 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameLabel" type="Label" parent="."]
+margin_top = 1.0
+margin_right = 150.0
+margin_bottom = 15.0
+text = "<ID Name>"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+margin_top = 19.0
+margin_right = 150.0
+margin_bottom = 34.0
+rect_min_size = Vector2( 150, 15 )
+size_flags_horizontal = 3
+custom_styles/fg = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
+value = 100.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://interface/scenes/HealthBar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://interface/scenes/AmmoCounter.tscn" type="PackedScene" id=2]
 [ext_resource path="res://interface/scripts/HUD.gd" type="Script" id=3]
 [ext_resource path="res://interface/scenes/RespawnHUD.tscn" type="PackedScene" id=4]
 [ext_resource path="res://interface/scenes/PauseMenu.tscn" type="PackedScene" id=5]
+[ext_resource path="res://interface/scenes/Scoreboard.tscn" type="PackedScene" id=6]
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
@@ -47,7 +48,7 @@ margin_top = 20.0
 margin_right = 1260.0
 margin_bottom = 700.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Container"]
+[node name="InfoContainer" type="HBoxContainer" parent="Container"]
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 1260.0
@@ -59,11 +60,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HealthBar" parent="Container/HBoxContainer" instance=ExtResource( 1 )]
+[node name="HealthBar" parent="Container/InfoContainer" instance=ExtResource( 1 )]
 margin_left = 399.0
 margin_right = 899.0
 
-[node name="AmmoCounter" parent="Container/HBoxContainer" instance=ExtResource( 2 )]
+[node name="AmmoCounter" parent="Container/InfoContainer" instance=ExtResource( 2 )]
 margin_left = 1199.0
 margin_right = 1240.0
 margin_bottom = 680.0
@@ -76,7 +77,16 @@ one_shot = true
 
 [node name="PauseMenu" parent="." instance=ExtResource( 5 )]
 visible = false
-[connection signal="on_spawn_time_reached" from="Container/RespawnHUD" to="Container" method="_on_spawn_time_reached"]
+
+[node name="Scoreboard" parent="." instance=ExtResource( 6 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1260.0
+margin_bottom = 700.0
+[connection signal="on_spawn_time_reached" from="Container/RespawnHUD" to="." method="_on_spawn_time_reached"]
 [connection signal="timeout" from="Container/Timer" to="Container" method="_on_Timer_timeout"]
 [connection signal="tween_completed" from="Container/Timer/Tween" to="Container" method="_on_Tween_tween_completed"]
 [connection signal="on_pause_menu_exited" from="PauseMenu" to="." method="_on_pause_menu_exited"]

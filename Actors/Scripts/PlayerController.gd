@@ -100,7 +100,7 @@ func fire(param):
 			state_machine.enter_air_state()
 			current_speed = state_machine.states.Running.SPEED
 			yield(get_tree().create_timer(0.15),"timeout")
-		actor.get_aimcast_collider()
+		actor.fire()
 	else:
 		actor.stop_firing()
 

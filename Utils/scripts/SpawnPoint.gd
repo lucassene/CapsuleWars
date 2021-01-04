@@ -10,6 +10,9 @@ func set_can_spawn(value):
 func get_can_spawn():
 	return can_spawn
 
+func get_spawn_rotation():
+	return rotation
+
 func _on_Area_body_entered(_body):
 	can_spawn = false
 

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://interface/scenes/PlayerHUD.tscn" type="PackedScene" id=1]
+[ext_resource path="res://interface/scripts/PlayerHUD.gd" type="Script" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[node name="PlayerHUD" type="Sprite3D"]
+cast_shadow = 0
+billboard = 1
+texture = ExtResource( 3 )
+script = ExtResource( 2 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 150, 35 )
+transparent_bg = true
+hdr = false
+disable_3d = true
+usage = 0
+render_target_v_flip = true
+
+[node name="FloatingHUD" parent="Viewport" instance=ExtResource( 1 )]

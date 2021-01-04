@@ -1,0 +1,153 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://interface/scripts/PlayerScore.gd" type="Script" id=1]
+
+[node name="PlayerScores" type="MarginContainer"]
+margin_right = 524.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 525, 0 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0.54902 )
+margin_right = 575.0
+margin_bottom = 40.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0.0666667, 0.0627451, 0.0627451, 0.796078 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Container" type="HBoxContainer" parent="."]
+margin_right = 575.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 15
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator7" type="VSeparator" parent="Container"]
+margin_right = 4.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerName" type="Label" parent="Container"]
+margin_left = 19.0
+margin_top = 13.0
+margin_right = 119.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 100, 0 )
+size_flags_horizontal = 0
+text = "<Name>"
+
+[node name="VSeparator" type="VSeparator" parent="Container"]
+margin_left = 134.0
+margin_right = 138.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerScore" type="Label" parent="Container"]
+margin_left = 153.0
+margin_top = 13.0
+margin_right = 203.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 50, 0 )
+size_flags_horizontal = 0
+text = "0"
+align = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Container"]
+margin_left = 218.0
+margin_right = 222.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerDamage" type="Label" parent="Container"]
+margin_left = 237.0
+margin_top = 13.0
+margin_right = 304.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 67, 0 )
+size_flags_horizontal = 0
+text = "0"
+align = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Container"]
+margin_left = 319.0
+margin_right = 323.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerKills" type="Label" parent="Container"]
+margin_left = 338.0
+margin_top = 13.0
+margin_right = 388.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 50, 0 )
+size_flags_horizontal = 0
+text = "0"
+align = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Container"]
+margin_left = 403.0
+margin_right = 407.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerDeaths" type="Label" parent="Container"]
+margin_left = 422.0
+margin_top = 13.0
+margin_right = 472.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 50, 0 )
+size_flags_horizontal = 0
+text = "0"
+align = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Container"]
+margin_left = 487.0
+margin_right = 491.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerKD" type="Label" parent="Container"]
+margin_left = 506.0
+margin_top = 13.0
+margin_right = 556.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 50, 0 )
+size_flags_horizontal = 0
+text = "0.0"
+align = 1
+
+[node name="VSeparator6" type="VSeparator" parent="Container"]
+margin_left = 571.0
+margin_right = 575.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

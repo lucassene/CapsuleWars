@@ -15,6 +15,7 @@ signal on_game_begin()
 func _ready():
 	Network.connect("on_new_peer",self,"_on_player_connected")
 	Network.connect("on_peer_disconnected",self,"_on_player_disconnected")
+	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
 	get_tree().connect("connection_failed",self,"_on_connection_failed")
 
 remote func receive_log_text(text):
@@ -61,3 +62,9 @@ func _on_player_disconnected(player):
 func _on_connection_failed():
 	append_log("Cannot connect to the server.")
 	buttons_disabled(false)
+	begin_button.disabled = true
+
+func _on_server_disconnected():
+	log_text.bbcode_text = "Connection to the server lost." + LINE_BREAK
+	buttons_disabled(false)
+	begin_button.disabled = true

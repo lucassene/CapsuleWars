@@ -19,7 +19,6 @@ margin_top = 203.0
 margin_right = 671.0
 margin_bottom = 217.0
 text = "Respawning in:"
-align = 1
 
 [node name="CountdownLabel" type="Label" parent="."]
 margin_left = 675.0
@@ -27,4 +26,3 @@ margin_top = 203.0
 margin_right = 703.0
 margin_bottom = 217.0
 text = "0.00"
-align = 1

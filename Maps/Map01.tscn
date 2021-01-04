@@ -93,16 +93,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 14 )
 [node name="SpawnPoints" type="Node" parent="."]
 
 [node name="SP1" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 3, 16 )
+transform = Transform( 0.767747, 0, -0.640753, 0, 1, 0, 0.640753, 0, 0.767747, -19.8937, 3.75, 17.7717 )
 
 [node name="SP2" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 3, -16 )
+transform = Transform( -0.940981, 0, 0.338459, 0, 1, 0, -0.338459, 0, -0.940981, 22.0134, 3.75, -16.4134 )
 
 [node name="SP3" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 3, 17 )
+transform = Transform( -0.574748, 0, -0.81833, 0, 1, 0, 0.81833, 0, -0.574748, -19.4255, 3.75, -15.3177 )
 
 [node name="SP4" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 3, -15 )
+transform = Transform( 0.52703, 0, 0.849847, 0, 1, 0, -0.849847, 0, 0.52703, 22.3144, 3.75, 15.8142 )
 
 [node name="DeathArea" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -14, 0 )
@@ -112,5 +112,6 @@ collision_layer = 0
 [node name="CollisionShape" type="CollisionShape" parent="DeathArea"]
 shape = SubResource( 4 )
 [connection signal="_on_player_can_spawn" from="CanvasLayer/MainHUD" to="." method="_on_player_can_spawn"]
+[connection signal="on_game_begin" from="CanvasLayer/Lobby" to="CanvasLayer/MainHUD" method="_on_game_begin"]
 [connection signal="on_game_begin" from="CanvasLayer/Lobby" to="." method="_on_game_begin"]
 [connection signal="body_entered" from="DeathArea" to="." method="_on_DeathArea_body_entered"]

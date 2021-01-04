@@ -4,7 +4,7 @@ onready var countdown_label = $CountdownLabel
 
 export var SPAWN_TIME = 3.0
 
-var timer = 0
+var timer = 0.0
 var actor
 
 signal on_spawn_time_reached(actor)
