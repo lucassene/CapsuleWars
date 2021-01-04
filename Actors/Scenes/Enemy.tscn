@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Actors/Scripts/Enemy.gd" type="Script" id=1]
 
@@ -6,8 +6,11 @@
 mid_height = 2.5
 radial_segments = 32
 
-[sub_resource type="CapsuleShape" id=2]
-height = 2.5
+[sub_resource type="CylinderShape" id=4]
+height = 3.75
+
+[sub_resource type="SphereShape" id=3]
+radius = 0.943974
 
 [node name="Enemy" type="KinematicBody" groups=[
 "Enemy",
@@ -21,10 +24,14 @@ mesh = SubResource( 1 )
 material/0 = null
 
 [node name="Body" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
-shape = SubResource( 2 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.37, 0 )
+shape = SubResource( 4 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
+
+[node name="Head" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50806, 0 )
+shape = SubResource( 3 )
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

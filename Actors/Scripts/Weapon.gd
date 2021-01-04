@@ -3,6 +3,8 @@ extends Spatial
 onready var anim_player = $AnimationPlayer
 onready var shoot_player = $Model/Muzzle/ShootPlayer
 onready var audio_player = $AudioPlayer
+onready var front_muzzle_sprite = $Model/Muzzle/MuzzleFront
+onready var side_muzzle_sprite = $Model/Muzzle/MuzzleSide
 
 enum type {
 	PRIMARY,
@@ -13,7 +15,12 @@ export(type) var TYPE = type.PRIMARY setget ,get_type
 export var AUTO = false
 export var RATE_OF_FIRE = 1.0
 export var MAGAZINE = 10 setget ,get_magazine
-export var DAMAGE = 5 setget ,get_damage
+export var DAMAGE = 5
+export var HEADSHOT_DAMAGE_MULTI = 1.5
+export var MAX_RANGE = 100
+export var ADS_RANGE_MULTI = 1.2
+export var FALLOFF_RANGE = 50
+export var FALLOFF_DAMAGE_MULTI = 0.75
 
 export var ADS_POSITION = Vector3.ZERO setget ,get_ads_position
 export var DEFAULT_POSITION = Vector3.ZERO
@@ -70,9 +77,6 @@ func get_sway():
 func get_sprint_angle():
 	return SPRINT_ANGLE
 
-func get_damage():
-	return DAMAGE
-
 func get_can_fire():
 	return can_fire
 
@@ -81,6 +85,22 @@ func get_can_swap():
 
 func get_can_ads():
 	return can_ads
+
+func get_range():
+	if is_ads:
+		return MAX_RANGE * ADS_RANGE_MULTI
+	else:
+		return MAX_RANGE
+
+func get_damage(distance,is_headshot):
+	var dmg = DAMAGE
+	if is_headshot:
+		dmg *= HEADSHOT_DAMAGE_MULTI
+	if is_ads and distance > (FALLOFF_RANGE * ADS_RANGE_MULTI):
+		return dmg * FALLOFF_DAMAGE_MULTI
+	elif distance > FALLOFF_RANGE:
+		return dmg * FALLOFF_DAMAGE_MULTI
+	return dmg
 
 func _ready():
 	set_process(false)
@@ -101,16 +121,15 @@ func ads(value):
 	is_ads = value
 
 func fire(value):
-	if value and can_fire:
+	if value and can_fire and !is_stowed:
 		current_ammo -= 1
 		anim_player.playback_speed = 1.0 * RATE_OF_FIRE
 		if current_ammo > 0:
 			anim_player.play("firing")
 		else:
 			anim_player.play("out_of_ammo")
-	else:
-		if AUTO: 
-			anim_player.play("idle")
+	elif AUTO and !is_stowed: 
+		anim_player.play("idle")
 
 remotesync func reload():
 	if current_ammo < MAGAZINE:
@@ -149,19 +168,25 @@ func _on_AnimationPlayer_animation_started(anim_name):
 	anim_player.playback_speed = 1.0
 	match anim_name:
 		"reload":
+			can_ads = false
 			can_swap = false
 			can_fire = false
 			return
 		"idle":
+			can_ads = true
 			can_swap = true
 			can_fire = true
 			return
 		"draw":
+			is_ads = false
+			can_ads = false
 			can_swap = false
 			can_fire = false
 			return
 		"stow":
+			is_ads = false
 			is_stowed = true
+			can_ads = false
 			can_swap = false
 			can_fire = false
 			return
@@ -190,10 +215,12 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 				can_swap = true
 			return
 		"out_of_ammo":
+			can_ads = true
 			can_swap = true
 			can_fire = false
 			return
 		"reload":
+			can_ads = true
 			can_swap = true
 			can_fire = true
 			return
@@ -202,6 +229,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			return
 		"draw":
 			is_stowed = false
+			can_ads = true
 			can_fire = true
 			can_swap = true
 			return

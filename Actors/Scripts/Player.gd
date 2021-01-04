@@ -7,7 +7,7 @@ onready var head: Spatial = $Head
 onready var player_controller = $PlayerController
 onready var state_machine = $StateMachine
 onready var ground_check = $GroundCheck
-onready var aim_cast = $Head/Camera/AimCast
+onready var aim_cast: RayCast = $Head/Camera/AimCast
 onready var camera = $Head/Camera
 onready var camera_anim_player = $Head/Camera/CameraAnimPlayer
 onready var audio_player = $AudioPlayer
@@ -95,7 +95,7 @@ func _ready():
 	emit_signal("on_player_spawned")
 	hand.set_as_toplevel(true)
 	hand.initialize(self,weapons)
-	current_weapon = hand.get_current_weapon()
+	equip_weapon(hand.get_current_weapon())
 	emit_signal("on_weapon_equipped",current_weapon.get_magazine())
 	player_controller._initialize(state_machine)
 	state_machine.initialize("Idle")
@@ -170,6 +170,7 @@ func ads(value):
 		if is_moving:
 			play_camera_anim(true)
 		current_weapon.ads(value)
+		aim_cast.cast_to.z = current_weapon.get_range() * -1
 
 func check_for_player():
 	if aim_cast.is_colliding():
@@ -194,47 +195,64 @@ func fire():
 	if is_network_master():
 		var target = null
 		if current_weapon.get_can_fire():
+			var distance = 0.0
 			is_firing = true
 			emit_signal("on_shot_fired")
 			set_is_firing(true)
 			if last_player_spotted:
 				target = last_player_spotted
+				distance = transform.origin.distance_to(last_player_spotted.transform.origin)
 			elif aim_cast.is_colliding():
 				target = aim_cast.get_collider()
+				distance = transform.origin.distance_to(aim_cast.get_collision_point())
 			if target:
-				if target.is_in_group("Player"):
-					target.rpc("add_damage",current_weapon.get_damage())
-				else:
-					hit_target(target,current_weapon.get_damage())
+				var is_headshot = check_if_is_headshot(aim_cast.get_collider_shape())
+				hit_target(target,distance,is_headshot)
 
 func stop_firing():
 	set_is_firing(false)
 
-func hit_target(target,damage):
+func check_if_is_headshot(shape_id):
+	if shape_id == 1:
+		print("Headshot!")
+		return true
+	else:
+		return false
+
+func hit_target(target,distance,is_headshot):
+	var damage = current_weapon.get_damage(distance,is_headshot)
 	if target.is_in_group("World"):
 		place_decal(target)
 		return
+	if target.is_in_group("Player"):
+		rpc("update_score","damage",damage,is_headshot)
+		var is_dead = target.add_damage(damage)
+		target.rpc("add_damage",damage)
+		if is_dead:
+			rpc("update_score","kills",1,is_headshot)
+		return
 	if target.is_in_group("Enemy"):
 		var is_dead = target.add_damage(damage)
-		update_score("damage",damage)
+		rpc("update_score","damage",damage,is_headshot)
 		if is_dead:
-			update_score("kills",1)
+			rpc("update_score","kills",1,is_headshot)
 		return
 
-remotesync func add_damage(damage):
+remote func add_damage(damage):
 	current_health -= damage
 	print("player health: " + str(current_health))
 	play_hurt_sound()
 	player_hud.set_progress(current_health)
 	is_recovering = true
 	recover_timer = 0.0
-	if is_network_master(): 
-		is_recovering = false
+	if is_network_master():
 		emit_signal("on_health_changed",current_health)
 	if current_health <= 0:
 		is_recovering = false
-		update_score("deaths",1)
+		rpc("update_score","deaths",0.5)
 		rpc("set_dead_state",true)
+		return true
+	return false
 
 func play_hurt_sound():
 	var random = rand_range(0,3)
@@ -276,8 +294,8 @@ func place_decal(target):
 		else:
 			bullet.look_at(aim_cast.get_collision_point() + aim_cast.get_collision_normal(),Vector3.UP)
 
-func update_score(item,value):
-	Scores.update_score(int(name),item,value)
+remotesync func update_score(item,value,is_headshot = false):
+	Scores.update_score(int(name),item,value,is_headshot)
 	emit_signal("on_score_changed",int(name),item)
 
 func play_camera_anim(value):
@@ -292,13 +310,17 @@ func reload_weapon():
 remotesync func weapon_reload():
 	current_weapon.reload()
 
+func equip_weapon(weapon):
+	current_weapon = hand.get_current_weapon()
+	aim_cast.cast_to.z = weapon.get_range() * -1
+
 func equip_slot(index):
-	current_weapon = hand.equip_weapon(index)
+	equip_weapon(hand.equip_weapon(index))
 
 func swap_equip():
 	var new_weapon = hand.swap_weapon()
 	if new_weapon:
-		current_weapon = new_weapon
+		equip_weapon(new_weapon)
 		emit_signal("on_weapon_changed",current_weapon.get_current_ammo(),current_weapon.get_magazine())
 
 func shake_camera(min_x,max_x,min_y,max_y,y_multi):
