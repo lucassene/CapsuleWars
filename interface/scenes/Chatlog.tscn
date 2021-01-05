@@ -4,6 +4,9 @@
 
 [node name="Chatlog" type="Control"]
 anchor_bottom = 1.0
+margin_right = 500.0
+margin_bottom = 6.10352e-05
+rect_min_size = Vector2( 500, 0 )
 mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
@@ -13,9 +16,10 @@ __meta__ = {
 [node name="Container" type="VBoxContainer" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -40.0
-margin_right = 213.0
-rect_min_size = Vector2( 300, 0 )
+margin_top = -104.0
+margin_right = 302.013
+grow_vertical = 0
+rect_min_size = Vector2( 500, 0 )
 mouse_filter = 2
 alignment = 2
 __meta__ = {

@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/meshes/bullet.tres" type="CapsuleMesh" id=1]
+[ext_resource path="res://Utils/scripts/BulletEmmiter.gd" type="Script" id=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.0511369, 0.0502427, 0.0951892 )
+
+[node name="Bullet" type="RigidBody"]
+input_ray_pickable = false
+collision_layer = 4
+collision_mask = 2
+script = ExtResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = ExtResource( 1 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

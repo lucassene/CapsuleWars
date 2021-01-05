@@ -1,10 +1,13 @@
 extends Spatial
 
+onready var bullet = preload("res://Utils/scenes/Bullet.tscn")
+
 onready var anim_player = $AnimationPlayer
 onready var shoot_player = $Model/Muzzle/ShootPlayer
 onready var audio_player = $AudioPlayer
 onready var front_muzzle_sprite = $Model/Muzzle/MuzzleFront
 onready var side_muzzle_sprite = $Model/Muzzle/MuzzleSide
+onready var bullet_emmiter = $BulletEmmiter
 
 enum type {
 	PRIMARY,
@@ -24,6 +27,7 @@ export var FALLOFF_DAMAGE_MULTI = 0.75
 
 export var ADS_POSITION = Vector3.ZERO setget ,get_ads_position
 export var DEFAULT_POSITION = Vector3.ZERO
+export var STOWED_POSITION = Vector3.ZERO
 export var ADS_SPEED = 20 setget ,get_ads_speed
 export var ADS_FOV = 50 setget ,get_ads_fov
 export var SWAY = 40
@@ -133,7 +137,7 @@ func fire(value):
 	elif !is_stowed: 
 		anim_player.play("idle")
 
-remotesync func reload():
+func reload():
 	if current_ammo < MAGAZINE:
 		emit_signal("on_out_of_ads")
 		anim_player.playback_speed = 1.0
@@ -147,6 +151,9 @@ func jump():
 	if anim_player.get_current_animation() == "idle":
 		anim_player.play("jump")
 
+func to_stowed_position():
+	transform.origin = STOWED_POSITION
+
 func connect_signals():
 	connect("on_out_of_ads",player,"_on_weapon_out_of_ads")
 	connect("on_reloaded",player,"_on_weapon_reloaded")
@@ -157,14 +164,20 @@ func stow_weapon():
 func draw_weapon():
 	anim_player.play("draw")
 
+func emit_bullet():
+	var shell = bullet.instance()
+	get_node("/root/Game").add_child(shell)
+	shell.transform.origin = bullet_emmiter.transform.origin
+	#shell.apply_impulse(Vector3.ZERO,Vector3(0.0,0.0,500.0))
+
 func on_stowed():
 	set_process(false)
 	emit_signal("on_stowed",self)
 
 func on_draw_complete():
-	set_process(true)
 	transform.origin = DEFAULT_POSITION
 	emit_signal("on_draw_completed")
+	set_process(true)
 
 func _on_AnimationPlayer_animation_started(anim_name):
 	anim_player.playback_speed = 1.0
@@ -202,7 +215,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 				shoot_player.set_stream(fire_sound)
 			shoot_player.play()
 			anim_player.playback_speed = 1.0 * RATE_OF_FIRE
-			player.shake_camera(MAX_X_RECOIL,MIN_X_RECOIL,MAX_Y_RECOIL,MIN_Y_RECOIL,Y_MULTI)
+			if is_network_master(): player.shake_camera(MAX_X_RECOIL,MIN_X_RECOIL,MAX_Y_RECOIL,MIN_Y_RECOIL,Y_MULTI)
 			return
 
 func _on_AnimationPlayer_animation_finished(anim_name):

@@ -79,6 +79,7 @@ HEADSHOT_DAMAGE_MULTI = 1.75
 MAX_RANGE = 50
 FALLOFF_RANGE = 30
 ADS_POSITION = Vector3( -0.385, 0.065, 0 )
+STOWED_POSITION = Vector3( 0.739, -1.673, 1.483 )
 MIN_X_RECOIL = 4.0
 MAX_X_RECOIL = 6.0
 MIN_Y_RECOIL = 0.25
@@ -86,12 +87,12 @@ MAX_Y_RECOIL = 0.75
 fire_sound = ExtResource( 12 )
 
 [node name="Model" parent="." index="0"]
-transform = Transform( 1, 0, 0, 0, 0.3, 2.91038e-11, 0, -2.91038e-11, 0.3, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 5 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="0"]
-transform = Transform( 1, -1.49012e-08, -1.30385e-08, 1.78814e-07, 1, 2.98023e-08, -1.49012e-07, 3.72529e-09, 1, -0.0947605, 0.0227989, -5.14596e-08 )
+transform = Transform( 1, -1.49012e-08, -1.30385e-08, 1.78814e-07, 1, 2.98023e-08, -1.49012e-07, 3.72529e-09, 1, -0.095, 0.023, 0 )
 mesh = SubResource( 2 )
 material/0 = ExtResource( 2 )
 
@@ -124,7 +125,7 @@ transform = Transform( 1, -3.1044e-09, 3.1044e-09, 0, 3.33333, 1.69407e-21, 2.84
 [node name="MuzzleFront" parent="Model/Muzzle" index="2"]
 transform = Transform( -5.42991e-07, 0, 1.0016, 1.63443e-17, 3.33333, 0, -3.33285, 8.71055e-17, -1.63181e-07, -0.0648676, 0.309775, 0.12539 )
 
-[node name="AnimationPlayer" parent="." index="1"]
+[node name="AnimationPlayer" parent="." index="2"]
 anims/draw = ExtResource( 10 )
 anims/firing = ExtResource( 6 )
 anims/idle = ExtResource( 9 )
@@ -133,5 +134,5 @@ anims/out_of_ammo = SubResource( 6 )
 anims/reload = ExtResource( 7 )
 anims/stow = ExtResource( 8 )
 
-[node name="AudioPlayer" parent="." index="2"]
+[node name="AudioPlayer" parent="." index="3"]
 stream = ExtResource( 13 )

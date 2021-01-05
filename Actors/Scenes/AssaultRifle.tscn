@@ -12,7 +12,7 @@
 [ext_resource path="res://assets/animations/assault-draw.tres" type="Animation" id=10]
 [ext_resource path="res://assets/animations/assault-jump.tres" type="Animation" id=11]
 [ext_resource path="res://assets/audio/assault-shot.wav" type="AudioStream" id=12]
-[ext_resource path="res://assets/audio/assault-reload-slide.wav" type="AudioStream" id=13]
+[ext_resource path="res://assets/audio/assault-swap.wav" type="AudioStream" id=13]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1.5, 0.8, 0.6 )
@@ -92,6 +92,20 @@ tracks/3/keys = {
 "update": 1,
 "values": [ false, true, false ]
 }
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "emit_bullet"
+} ]
+}
 
 [node name="AssaultRifle" instance=ExtResource( 1 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.073, -0.177, 0.437 )
@@ -104,6 +118,7 @@ FALLOFF_RANGE = 75
 FALLOFF_DAMAGE_MULTI = 0.5
 ADS_POSITION = Vector3( -0.4, 0.09, 0.638 )
 DEFAULT_POSITION = Vector3( 0.073, -0.177, 0.437 )
+STOWED_POSITION = Vector3( 0.169, -0.089, 2.671 )
 ADS_SPEED = 10
 ADS_FOV = 40
 SWAY = 30
@@ -165,7 +180,7 @@ mesh = SubResource( 8 )
 material/0 = ExtResource( 3 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="8"]
-transform = Transform( 0.999999, 2.6077e-08, 2.84217e-14, -5.21541e-08, 1, -5.32907e-15, 5.68434e-13, 4.44089e-15, 1, -0.420114, 0.294692, 0.395844 )
+transform = Transform( 0.999999, 2.6077e-08, 2.84217e-14, -5.21541e-08, 1, -5.32907e-15, 5.68434e-13, 4.44089e-15, 1, 0.351, 0.295, 0.396 )
 mesh = SubResource( 9 )
 material/0 = ExtResource( 5 )
 
@@ -180,3 +195,6 @@ anims/stow = ExtResource( 9 )
 
 [node name="AudioPlayer" parent="." index="2"]
 stream = ExtResource( 13 )
+
+[node name="BulletEmmiter" parent="." index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.097871, 0.0840562, 0.120981 )

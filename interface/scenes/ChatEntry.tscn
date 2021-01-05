@@ -2,16 +2,25 @@
 
 [ext_resource path="res://interface/scripts/ChatEntry.gd" type="Script" id=1]
 
-[node name="ChatEntry" type="Label"]
-margin_right = 40.0
-margin_bottom = 14.0
+[node name="ChatEntry" type="RichTextLabel"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -12.5
+margin_right = 500.0
+margin_bottom = 2.5
+rect_min_size = Vector2( 500, 15 )
+mouse_filter = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content_height = true
+scroll_active = false
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 2.0
 one_shot = true
 autostart = true
 

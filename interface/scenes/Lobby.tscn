@@ -68,26 +68,35 @@ modulate = Color( 0.909804, 0.333333, 0.333333, 1 )
 margin_top = 44.0
 margin_right = 200.0
 margin_bottom = 58.0
-text = "ID needed"
+text = "ID Needed"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HostButton" type="Button" parent="Main/Container/SideBar"]
+[node name="ColorPicker" type="HBoxContainer" parent="Main/Container/SideBar"]
 margin_top = 44.0
 margin_right = 200.0
-margin_bottom = 74.0
-rect_min_size = Vector2( 0, 30 )
-text = "Host"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_bottom = 64.0
+
+[node name="ColorLabel" type="Label" parent="Main/Container/SideBar/ColorPicker"]
+margin_top = 3.0
+margin_right = 37.0
+margin_bottom = 17.0
+text = "Color:"
+
+[node name="ColorOption" type="OptionButton" parent="Main/Container/SideBar/ColorPicker"]
+margin_left = 41.0
+margin_right = 200.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_constants/arrow_margin = 3
+toggle_mode = false
 
 [node name="HostIP" type="HBoxContainer" parent="Main/Container/SideBar"]
-margin_top = 94.0
+margin_top = 84.0
 margin_right = 200.0
-margin_bottom = 118.0
+margin_bottom = 108.0
 
 [node name="IPLabel" type="Label" parent="Main/Container/SideBar/HostIP"]
 margin_top = 5.0
@@ -108,9 +117,9 @@ __meta__ = {
 [node name="InvalidIPLabel" type="Label" parent="Main/Container/SideBar"]
 visible = false
 modulate = Color( 0.909804, 0.333333, 0.333333, 1 )
-margin_top = 138.0
+margin_top = 162.0
 margin_right = 200.0
-margin_bottom = 152.0
+margin_bottom = 176.0
 text = "Invalid IP"
 align = 1
 __meta__ = {
@@ -118,22 +127,98 @@ __meta__ = {
 }
 
 [node name="JoinButton" type="Button" parent="Main/Container/SideBar"]
-margin_top = 138.0
+margin_top = 128.0
 margin_right = 200.0
-margin_bottom = 168.0
+margin_bottom = 158.0
 rect_min_size = Vector2( 0, 30 )
 text = "Join"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BeginButton" type="Button" parent="Main/Container/SideBar"]
-margin_top = 188.0
+[node name="HostButton" type="Button" parent="Main/Container/SideBar"]
+margin_top = 178.0
 margin_right = 200.0
-margin_bottom = 238.0
+margin_bottom = 208.0
+rect_min_size = Vector2( 0, 30 )
+text = "Host"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BeginButton" type="Button" parent="Main/Container/SideBar"]
+margin_top = 228.0
+margin_right = 200.0
+margin_bottom = 278.0
 rect_min_size = Vector2( 0, 50 )
 disabled = true
 text = "Begin"
+
+[node name="Panel" type="Panel" parent="Main/Container/SideBar"]
+margin_top = 298.0
+margin_right = 200.0
+margin_bottom = 620.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Main/Container/SideBar/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/Container/SideBar/Panel/MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 190.0
+margin_bottom = 322.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Main/Container/SideBar/Panel/MarginContainer/VBoxContainer"]
+margin_right = 180.0
+margin_bottom = 14.0
+text = "Commands"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="Main/Container/SideBar/Panel/MarginContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 180.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="Main/Container/SideBar/Panel/MarginContainer/VBoxContainer"]
+margin_top = 26.0
+margin_right = 180.0
+margin_bottom = 312.0
+text = "Forward: W
+Backwards: S
+Left: A
+Right: D
+
+Jump: Space
+Sprint: Shift
+Reload: R
+
+Fire: Left Mouse Click
+Aim: Right Mouse Click
+
+Swap weapons: Tab
+Equip Primary: 1
+Equip Secondary: 2
+
+Scoreboard: Capslock"
 
 [node name="MainFrame" type="ScrollContainer" parent="Main/Container"]
 margin_left = 204.0
@@ -158,6 +243,7 @@ margin_right = 956.0
 margin_bottom = 600.0
 bbcode_enabled = true
 [connection signal="text_changed" from="Main/Container/SideBar/IDName/IDText" to="." method="_on_IDText_text_changed"]
-[connection signal="pressed" from="Main/Container/SideBar/HostButton" to="." method="_on_HostButton_pressed"]
+[connection signal="item_selected" from="Main/Container/SideBar/ColorPicker/ColorOption" to="." method="_on_ColorOption_item_selected"]
 [connection signal="pressed" from="Main/Container/SideBar/JoinButton" to="." method="_on_JoinButton_pressed"]
+[connection signal="pressed" from="Main/Container/SideBar/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="Main/Container/SideBar/BeginButton" to="." method="_on_BeginButton_pressed"]

@@ -7,7 +7,7 @@ onready var container = $Container
 
 func create_entry(text):
 	var new_entry = entry_scene.instance()
-	new_entry.text = text
+	new_entry.bbcode_text = text
 	container.add_child(new_entry)
 	erase_child()
 

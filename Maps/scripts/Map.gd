@@ -22,6 +22,7 @@ func create_players_intances():
 		var player_spawn = {
 			id = -1,
 			name = "",
+			color = 0,
 			position = Vector3.ZERO,
 			rotation = Vector3.ZERO
 		}
@@ -29,12 +30,14 @@ func create_players_intances():
 		new_player.set_name(str(id))
 		new_player.set_network_master(id)
 		add_child(new_player)
+		new_player.set_material(Network.connected_players[id].color)
 		new_player.set_hud_name(Network.connected_players[id].name)
 		var spawn = spawn_player(new_player)
 		player_spawn.id = id
 		player_spawn.position = spawn.transform.origin
 		player_spawn.rotation = spawn.rotation
 		player_spawn.name = Network.connected_players[id].name
+		player_spawn.color = Network.connected_players[id].color
 		player_spawns.append(player_spawn)
 	rpc("receive_player_spawns",player_spawns)
 
@@ -59,6 +62,7 @@ remote func receive_player_spawns(player_spawns):
 		new_player.transform.origin = item.position
 		new_player.rotation = item.rotation
 		add_child(new_player)
+		new_player.set_material(item.color)
 		new_player.set_hud_name(item.name)
 		new_player.set_dead_state(false)
 	lobby_hud.hide()

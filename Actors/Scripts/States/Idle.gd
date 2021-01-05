@@ -25,10 +25,12 @@ func handle_input(event):
 	if player_controller.check_input_pressed(event,"swap","swap_equip"): return
 	if player_controller.check_input_released(event,"sprint","sprint",false): return
 
-func update(actor,_delta):
+func update(actor,delta):
 	player_controller.actor_on_floor()
 	if get_x_movement() != 0 or get_z_movement() != 0: state_machine.set_state("Running")
-	if !actor.is_on_floor(): state_machine.set_state("Falling")
+	if !actor.is_on_floor(): 
+		player_controller.actor_in_air(delta)
+		state_machine.set_state("Falling")
 
 func get_x_movement():
 	return Input.get_action_strength("move_right") - Input.get_action_strength("move_left")

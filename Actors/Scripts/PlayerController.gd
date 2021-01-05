@@ -100,9 +100,9 @@ func fire(param):
 			state_machine.enter_air_state()
 			current_speed = state_machine.states.Running.SPEED
 			yield(get_tree().create_timer(0.15),"timeout")
-		actor.fire()
+		actor.rpc("fire")
 	else:
-		actor.stop_firing()
+		actor.rpc("stop_firing")
 
 func aim(param):
 	if param and actor.get_is_moving():
@@ -118,16 +118,16 @@ func sprint(param):
 		reset_speed()
 
 func reload(_param):
-	actor.reload_weapon()
+	actor.rpc("reload_weapon")
 
 func equip_slot_1(_param):
-	actor.equip_slot(0)
+	actor.rpc("equip_slot",0)
 
 func equip_slot_2(_param):
-	actor.equip_slot(1)
+	actor.rpc("equip_slot",1)
 
 func swap_equip(_param):
-	actor.swap_equip()
+	actor.rpc("swap_equip")
 
 func show_menu(_param):
 	state_machine.set_state("Menu")

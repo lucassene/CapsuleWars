@@ -18,6 +18,7 @@ onready var primary_holster = $PrimaryHolster
 onready var secondary_holster = $SecondaryHolster
 onready var crosshair = $Head/Camera/Crosshair
 onready var player_hud = $PlayerHUD
+onready var mesh = $Mesh
 
 export var HEALTH = 100 setget ,get_max_health
 export var RECOVER_DELAY = 3.0
@@ -196,13 +197,13 @@ func show_player_hud(value):
 func set_hud_name(player_name):
 	player_hud.set_name(player_name)
 
-func fire():
-	if is_network_master():
-		var target = null
-		if current_weapon.get_can_fire():
-			var distance = 0.0
-			is_firing = true
-			set_is_firing(true)
+remotesync func fire():
+	var target = null
+	if current_weapon.get_can_fire():
+		var distance = 0.0
+		is_firing = true
+		set_is_firing(true)
+		if is_network_master():
 			if last_player_spotted:
 				target = last_player_spotted
 				distance = transform.origin.distance_to(last_player_spotted.transform.origin)
@@ -213,12 +214,11 @@ func fire():
 				var is_headshot = check_if_is_headshot(aim_cast.get_collider_shape())
 				hit_target(target,distance,is_headshot)
 
-func stop_firing():
+remotesync func stop_firing():
 	set_is_firing(false)
 
 func check_if_is_headshot(shape_id):
 	if shape_id == 1:
-		print("Headshot!")
 		return true
 	else:
 		return false
@@ -310,20 +310,18 @@ func play_camera_anim(value):
 	else:
 		camera_anim_player.stop()
 
-func reload_weapon():
-	current_weapon.rpc("reload")
-
-remotesync func weapon_reload():
+remotesync func reload_weapon():
 	current_weapon.reload()
 
-func equip_weapon(weapon):
-	current_weapon = hand.get_current_weapon()
-	aim_cast.cast_to.z = weapon.get_range() * -1
+remotesync func equip_weapon(weapon):
+	if weapon:
+		current_weapon = hand.get_current_weapon()
+		aim_cast.cast_to.z = weapon.get_range() * -1
 
-func equip_slot(index):
+remotesync func equip_slot(index):
 	equip_weapon(hand.equip_weapon(index))
 
-func swap_equip():
+remotesync func swap_equip():
 	var new_weapon = hand.swap_weapon()
 	if new_weapon:
 		equip_weapon(new_weapon)
@@ -362,6 +360,9 @@ func show_menu(value):
 	else:
 		player_controller.exit_menu()
 		state_machine.set_state("Idle")
+
+func set_material(color):
+	mesh.set_material_override(load(Global.color_materials[color]))
 
 func _on_weapon_out_of_ads():
 	is_ads = false

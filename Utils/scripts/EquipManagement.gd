@@ -2,6 +2,7 @@ extends Spatial
 
 var weapons = []
 var current_weapon
+var current_index
 var can_swap = true
 
 var player
@@ -16,6 +17,7 @@ func initialize(actor,items):
 		player.stow_weapon(weapon)
 		weapons.append(weapon)
 	current_weapon = weapons[0]
+	current_index = 0
 	parent_weapon(current_weapon)
 	current_weapon.draw_weapon()
 
@@ -23,13 +25,15 @@ func set_current_weapon(index):
 	if current_weapon:
 		current_weapon.stow_weapon()
 	current_weapon = weapons[index]
+	current_index = index
 
 func get_current_weapon():
 	return current_weapon
 
 func equip_weapon(index):
-	set_current_weapon(index)
-	return current_weapon
+	if index != current_index:
+		set_current_weapon(index)
+		return current_weapon
 
 func swap_weapon():
 	if can_swap and current_weapon.get_can_swap():
@@ -44,6 +48,7 @@ func swap_weapon():
 
 func parent_weapon(to_parent):
 	to_parent.get_parent().remove_child(to_parent)
+	to_parent.to_stowed_position()
 	add_child(to_parent)
 
 func _on_weapon_stowed(stowed_weapon):

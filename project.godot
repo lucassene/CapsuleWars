@@ -138,6 +138,7 @@ score_menu={
 
 3d_physics/layer_1="actors"
 3d_physics/layer_2="world"
+3d_physics/layer_3="bullets"
 
 [rendering]
 

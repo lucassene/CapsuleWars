@@ -10,14 +10,32 @@ onready var host_button = $Main/Container/SideBar/HostButton
 onready var join_button = $Main/Container/SideBar/JoinButton
 onready var begin_button = $Main/Container/SideBar/BeginButton
 onready var log_text = $Main/Container/MainFrame/LogContainer/LogLabel
+onready var color_option = $Main/Container/SideBar/ColorPicker/ColorOption
+
+var selected_color = 0
 
 signal on_game_begin()
 
 func _ready():
+	add_color_options()
 	Network.connect("on_new_peer",self,"_on_player_connected")
 	Network.connect("on_peer_disconnected",self,"_on_player_disconnected")
 	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
 	get_tree().connect("connection_failed",self,"_on_connection_failed")
+
+func add_color_options():
+	color_option.add_item("Black",0)
+	color_option.add_item("Blue",1)
+	color_option.add_item("Gray",2)
+	color_option.add_item("Green",3)
+	color_option.add_item("Pink",4)
+	color_option.add_item("Red",5)
+	color_option.add_item("White",6)
+	color_option.add_item("Yellow",7)
+	randomize()
+	color_option.selected = randi()%7
+	Network.self_data.color = Network.colors[color_option.selected]
+	selected_color = color_option.selected
 
 func reset():
 	log_text.text = ""
@@ -82,3 +100,7 @@ func _on_server_disconnected():
 
 func _on_IDText_text_changed(_new_text):
 	invalid_name_label.hide()
+
+func _on_ColorOption_item_selected(index):
+	selected_color = index
+	Network.self_data.color = Network.colors[index]
