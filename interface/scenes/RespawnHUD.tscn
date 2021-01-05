@@ -14,15 +14,16 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="."]
-margin_left = 576.0
+margin_left = 565.0
 margin_top = 203.0
-margin_right = 671.0
+margin_right = 660.0
 margin_bottom = 217.0
 text = "Respawning in:"
 
 [node name="CountdownLabel" type="Label" parent="."]
-margin_left = 675.0
+margin_left = 664.0
 margin_top = 203.0
-margin_right = 703.0
+margin_right = 714.0
 margin_bottom = 217.0
+rect_min_size = Vector2( 50, 0 )
 text = "0.00"

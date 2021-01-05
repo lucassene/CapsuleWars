@@ -62,6 +62,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="InvalidName" type="Label" parent="Main/Container/SideBar"]
+visible = false
+modulate = Color( 0.909804, 0.333333, 0.333333, 1 )
+margin_top = 44.0
+margin_right = 200.0
+margin_bottom = 58.0
+text = "ID needed"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="HostButton" type="Button" parent="Main/Container/SideBar"]
 margin_top = 44.0
 margin_right = 200.0
@@ -96,9 +108,9 @@ __meta__ = {
 [node name="InvalidIPLabel" type="Label" parent="Main/Container/SideBar"]
 visible = false
 modulate = Color( 0.909804, 0.333333, 0.333333, 1 )
-margin_top = 162.0
-margin_right = 137.0
-margin_bottom = 176.0
+margin_top = 138.0
+margin_right = 200.0
+margin_bottom = 152.0
 text = "Invalid IP"
 align = 1
 __meta__ = {
@@ -145,6 +157,7 @@ margin_left = 20.0
 margin_right = 956.0
 margin_bottom = 600.0
 bbcode_enabled = true
+[connection signal="text_changed" from="Main/Container/SideBar/IDName/IDText" to="." method="_on_IDText_text_changed"]
 [connection signal="pressed" from="Main/Container/SideBar/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="Main/Container/SideBar/JoinButton" to="." method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="Main/Container/SideBar/BeginButton" to="." method="_on_BeginButton_pressed"]

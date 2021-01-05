@@ -9,6 +9,8 @@ var spawn_points = []
 func _ready():
 	Network.connect("on_peer_disconnected",self,"_on_player_disconnected")
 	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
+	main_hud.connect("on_exit_to_lobby",self,"_on_exit_to_lobby")
+	Scores.connect("on_kill_streak",main_hud,"_on_player_kill_streak")
 	randomize()
 	for each in spawn_manager.get_children():
 		spawn_points.append(each)
@@ -62,6 +64,8 @@ remote func receive_player_spawns(player_spawns):
 	lobby_hud.hide()
 
 func connect_player_signals(player):
+	player.connect("on_player_killed",self,"_on_player_killed")
+	player.connect("on_player_killed",main_hud,"_on_player_killed")
 	player.connect("on_weapon_equipped",main_hud,"_on_player_weapon_equipped")
 	player.connect("on_weapon_changed",main_hud,"_on_player_weapon_changed")
 	player.connect("on_shot_fired",main_hud,"_on_player_shot_fired")
@@ -82,14 +86,23 @@ func _on_player_disconnected(player):
 	var player_scene = get_node("/root/Game/" + str(player.id))
 	player_scene.queue_free()
 
-func _on_server_disconnected():
+remotesync func _on_server_disconnected():
 	for child in get_children():
 		if child.is_in_group("Player"):
 			child.queue_free()
-	lobby_hud.show()
+	get_tree().network_peer = null
+	lobby_hud.reset()
+
+func _on_player_killed(id,is_headshot,_victim_id):
+	if is_network_master():
+		var player_scene = get_node("/root/Game/" + str(id))
+		player_scene.rpc("update_score","kills",1,is_headshot)
 
 func _on_player_can_spawn(actor):
 	spawn_player(actor)
 
 func _on_DeathArea_body_entered(body):
 	body.set_dead_state(true)
+
+func _on_exit_to_lobby():
+	rpc("_on_server_disconnected")

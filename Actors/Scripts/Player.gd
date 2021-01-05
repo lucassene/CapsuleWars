@@ -27,10 +27,12 @@ export(PoolStringArray) var weapons = []
 
 signal on_weapon_equipped(clip_size)
 signal on_weapon_changed(current_ammo,clip_size)
+# warning-ignore:unused_signal
 signal on_shot_fired()
 signal on_reload()
 signal on_health_changed(current_health)
 signal on_player_death(actor)
+signal on_player_killed(id,is_headshot)
 signal on_player_spawned()
 signal on_menu_pressed(value)
 signal on_score_changed(item)
@@ -83,16 +85,19 @@ remotesync func set_is_firing(value):
 func get_is_firing():
 	return is_firing
 
+func initialize_player():
+	current_health = HEALTH
+	player_hud.set_progress(current_health)
+	emit_signal("on_player_spawned")
+
 func _ready():
 	randomize()
 	if is_network_master():
 		print("Meu unique id: " + str(get_tree().get_network_unique_id()))
 		print("Meu nome é: " + name)
-	current_health = HEALTH
-	player_hud.set_progress(current_health)
 	get_parent().connect_player_signals(self)
 	Global.player = self
-	emit_signal("on_player_spawned")
+	initialize_player()
 	hand.set_as_toplevel(true)
 	hand.initialize(self,weapons)
 	equip_weapon(hand.get_current_weapon())
@@ -114,7 +119,7 @@ func _process(delta):
 		elif !is_ads and camera.fov < DEFAULT_FOV:
 			camera.fov = lerp(camera.fov,DEFAULT_FOV,current_weapon.get_ads_speed() * delta)
 		if Input.is_action_just_pressed("dmg_test"):
-			add_damage(10)
+			add_damage(int(name),10,false)
 
 func _physics_process(delta):
 	if is_network_master():
@@ -197,7 +202,6 @@ func fire():
 		if current_weapon.get_can_fire():
 			var distance = 0.0
 			is_firing = true
-			emit_signal("on_shot_fired")
 			set_is_firing(true)
 			if last_player_spotted:
 				target = last_player_spotted
@@ -226,10 +230,7 @@ func hit_target(target,distance,is_headshot):
 		return
 	if target.is_in_group("Player"):
 		rpc("update_score","damage",damage,is_headshot)
-		var is_dead = target.add_damage(damage)
-		target.rpc("add_damage",damage)
-		if is_dead:
-			rpc("update_score","kills",1,is_headshot)
+		target.rpc("add_damage",int(name),damage,is_headshot)
 		return
 	if target.is_in_group("Enemy"):
 		var is_dead = target.add_damage(damage)
@@ -238,7 +239,7 @@ func hit_target(target,distance,is_headshot):
 			rpc("update_score","kills",1,is_headshot)
 		return
 
-remote func add_damage(damage):
+remotesync func add_damage(attacker_id,damage,is_headshot):
 	current_health -= damage
 	print("player health: " + str(current_health))
 	play_hurt_sound()
@@ -249,8 +250,9 @@ remote func add_damage(damage):
 		emit_signal("on_health_changed",current_health)
 	if current_health <= 0:
 		is_recovering = false
-		rpc("update_score","deaths",0.5)
-		rpc("set_dead_state",true)
+		emit_signal("on_player_killed",attacker_id,is_headshot,int(name))
+		if is_network_master(): rpc("update_score","deaths",1)
+		rpc_id(int(name),"set_dead_state",true)
 		return true
 	return false
 
@@ -264,25 +266,29 @@ func play_hurt_sound():
 			audio_player.set_stream(Mixer.hurt_sound_2)
 			audio_player.play()
 
-mastersync func set_dead_state(value):
-	visible = !value
-	set_process(!value)
-	set_physics_process(!value)
-	crosshair.visible = !value
-	set_collision_layer_bit(0,!value)
-	set_collision_mask_bit(0,!value)
+remotesync func set_dead_state(value):
 	if !value:
-		current_health = HEALTH
-		player_hud.set_progress(current_health)
+		rpc("deactivate_player",value)
 		state_machine.set_state("Idle")
 		if is_network_master(): camera.current = !value
 	else:
+		rpc("deactivate_player",value)
+		state_machine.set_state("Dead")
 		audio_player.set_stream(Mixer.death_scream)
 		audio_player.play()
 		camera_anim_player.stop()
 		emit_signal("on_player_death",self)
 		yield(get_tree().create_timer(1.5),"timeout")
 		if is_network_master(): camera.current = !value
+
+remotesync func deactivate_player(value):
+	if value: initialize_player()
+	visible = !value
+	set_process(!value)
+	set_physics_process(!value)
+	crosshair.visible = !value
+	set_collision_layer_bit(0,!value)
+	set_collision_mask_bit(0,!value)
 
 func place_decal(target):
 	if target.is_in_group("World"):

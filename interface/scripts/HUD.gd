@@ -9,8 +9,10 @@ onready var timer = $Container/Timer
 onready var tween = $Container/Timer/Tween
 onready var pause_menu = $PauseMenu
 onready var scoreboard_menu = $Scoreboard
+onready var chat_log = $Container/Chatlog
 
 signal _on_player_can_spawn(actor)
+signal on_exit_to_lobby()
 
 var is_dead = false
 
@@ -91,3 +93,37 @@ func _on_score_changed(id,item):
 
 func _on_game_begin():
 	scoreboard_menu.initialize()
+
+func _on_exit_to_lobby():
+	pause_menu.hide()
+	info_container.hide()
+	scoreboard_menu.hide()
+	emit_signal("on_exit_to_lobby")
+
+func _on_player_killed(attacker_id,is_headshot,victim_id):
+	var attacker_name = Network.connected_players[attacker_id].name
+	var victim_name = Network.connected_players[victim_id].name
+	var text = ""
+	if is_headshot:
+		text = "%s acertou %s na lata!" % [attacker_name,victim_name]
+	else:
+		text = "%s acabou com a raça de %s." % [attacker_name,victim_name]
+	chat_log.create_entry(text)
+
+func _on_player_kill_streak(id,kills):
+	var player_name = Network.connected_players[id].name
+	var text = ""
+	match kills:
+		3:
+			text = "%s já matou três em seguida!" % player_name
+		5:
+			text = "%s está com uma sequência de cinco mortes!" % player_name
+		10:
+			text = "Ninguém vai parar %s? Já matou 10 em sequência!" % player_name
+		15:
+			text = "%s está dançando e rolando em uma sequência de 15 mortes!" % player_name
+		20:
+			text = "Ok. Alguém precisa fazer algo a respeito de %s. Foram 20 mortes em seguida!" % player_name
+	if kills > 20:
+		text = "Tem alguém aí? %s continua matando todo mundo!" % player_name
+	chat_log.create_entry(text)

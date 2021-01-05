@@ -40,10 +40,11 @@ export(AudioStream) var fire_sound
 var player
 var is_ads = false
 var is_stowed = true
+var is_draw = false
 var can_swap = true setget ,get_can_swap
 var current_ammo setget ,get_current_ammo
-var can_fire = true setget ,get_can_fire
-var can_ads = true setget ,get_can_ads
+var can_fire = false setget ,get_can_fire
+var can_ads = false setget ,get_can_ads
 
 signal on_out_of_ads()
 signal on_reloaded()
@@ -121,14 +122,15 @@ func ads(value):
 	is_ads = value
 
 func fire(value):
-	if value and can_fire and !is_stowed:
+	if value and can_fire and !is_stowed and is_draw:
+		player.emit_signal("on_shot_fired")
 		current_ammo -= 1
 		anim_player.playback_speed = 1.0 * RATE_OF_FIRE
 		if current_ammo > 0:
 			anim_player.play("firing")
 		else:
 			anim_player.play("out_of_ammo")
-	elif AUTO and !is_stowed: 
+	elif !is_stowed: 
 		anim_player.play("idle")
 
 remotesync func reload():
@@ -175,7 +177,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 		"idle":
 			can_ads = true
 			can_swap = true
-			can_fire = true
+			if current_ammo > 0: can_fire = true
 			return
 		"draw":
 			is_ads = false
@@ -186,6 +188,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 		"stow":
 			is_ads = false
 			is_stowed = true
+			is_draw = false
 			can_ads = false
 			can_swap = false
 			can_fire = false
@@ -206,13 +209,16 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	anim_player.play("idle")
 	match anim_name:
 		"firing":
+			can_swap = true
+			can_ads = true
 			if current_ammo > 0:
 				if AUTO and player.get_is_firing():
 					anim_player.play("firing")
 					player.fire()
 					return
 				can_fire = true
-				can_swap = true
+			else:
+				can_fire = false
 			return
 		"out_of_ammo":
 			can_ads = true
@@ -224,13 +230,18 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			can_swap = true
 			can_fire = true
 			return
-		"ads":
-			is_ads = true
-			return
 		"draw":
 			is_stowed = false
+			is_draw = true
 			can_ads = true
 			can_fire = true
 			can_swap = true
+			return
+		"stow":
+			is_stowed = true
+			is_draw = false
+			can_ads = false
+			can_fire = false
+			can_swap = false
 			return
 

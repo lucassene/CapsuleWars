@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://interface/scenes/HealthBar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://interface/scenes/AmmoCounter.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://interface/scenes/RespawnHUD.tscn" type="PackedScene" id=4]
 [ext_resource path="res://interface/scenes/PauseMenu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://interface/scenes/Scoreboard.tscn" type="PackedScene" id=6]
+[ext_resource path="res://interface/scenes/Chatlog.tscn" type="PackedScene" id=7]
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
@@ -75,6 +76,13 @@ one_shot = true
 
 [node name="Tween" type="Tween" parent="Container/Timer"]
 
+[node name="Chatlog" parent="Container" instance=ExtResource( 7 )]
+anchor_bottom = 0.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1260.0
+margin_bottom = 700.0
+
 [node name="PauseMenu" parent="." instance=ExtResource( 5 )]
 visible = false
 
@@ -89,4 +97,5 @@ margin_bottom = 700.0
 [connection signal="on_spawn_time_reached" from="Container/RespawnHUD" to="." method="_on_spawn_time_reached"]
 [connection signal="timeout" from="Container/Timer" to="Container" method="_on_Timer_timeout"]
 [connection signal="tween_completed" from="Container/Timer/Tween" to="Container" method="_on_Tween_tween_completed"]
+[connection signal="on_exit_to_lobby" from="PauseMenu" to="." method="_on_exit_to_lobby"]
 [connection signal="on_pause_menu_exited" from="PauseMenu" to="." method="_on_pause_menu_exited"]

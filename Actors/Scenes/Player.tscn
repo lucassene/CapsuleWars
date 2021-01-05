@@ -18,12 +18,13 @@
 mid_height = 2.5
 radial_segments = 16
 
-[sub_resource type="CapsuleShape" id=2]
-height = 2.5
+[sub_resource type="CylinderShape" id=2]
+height = 3.75
 
-[sub_resource type="CylinderShape" id=3]
+[sub_resource type="SphereShape" id=5]
+radius = 0.943974
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "ads-headbob"
 length = 0.3
 loop = true
@@ -40,7 +41,7 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, -0.32 ), Vector3( 0, 0.01, -0.32 ), Vector3( 0, 0, -0.32 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 length = 0.3
 loop = true
 tracks/0/type = "value"
@@ -69,12 +70,18 @@ mesh = SubResource( 1 )
 material/0 = null
 
 [node name="Body" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.37, 0 )
 shape = SubResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
 
-[node name="Foot" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.27025, 0 )
-shape = SubResource( 3 )
+[node name="HeadCollision" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34599, 0 )
+shape = SubResource( 5 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Head" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40657, 0 )
@@ -109,8 +116,8 @@ __meta__ = {
 }
 
 [node name="CameraAnimPlayer" type="AnimationPlayer" parent="Head/Camera"]
-anims/ads-headbob = SubResource( 4 )
-anims/headbob = SubResource( 5 )
+anims/ads-headbob = SubResource( 3 )
+anims/headbob = SubResource( 4 )
 
 [node name="Hand" type="Spatial" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.301, -1.737 )

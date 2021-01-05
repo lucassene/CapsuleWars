@@ -27,6 +27,7 @@ __meta__ = {
 margin_top = 100.0
 margin_right = 575.0
 margin_bottom = 720.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0

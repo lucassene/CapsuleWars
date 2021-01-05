@@ -15,5 +15,6 @@ func set_max_health(health):
 func on_health_changed(current_health):
 	current = current_health
 	var new_health = (WIDTH * current) / max_health
+	new_health = min(new_health,WIDTH)
 	tween.interpolate_property(life_bar,"rect_size",life_bar.rect_size,Vector2(new_health,life_bar.rect_size.y),0.1,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	tween.start()

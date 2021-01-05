@@ -22,6 +22,7 @@ var local_score = {
 }
 
 signal on_score_changed(id,item)
+signal on_kill_streak(id,kills)
 
 func update_score(id,item,value,is_headshot):
 	player_scores[id][item] += value
@@ -42,6 +43,7 @@ func update_score(id,item,value,is_headshot):
 func add_kill_score(id, score, is_headshot):
 	var bonus = 0
 	var ks = player_scores[id].kill_streak
+	emit_signal("on_kill_streak",id,ks)
 	if ks == 3:
 		bonus = THREE_STREAK_BONUS
 	elif ks == 5:

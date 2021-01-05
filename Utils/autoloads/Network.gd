@@ -14,6 +14,8 @@ var connected_players = {}
 signal on_new_peer(id)
 signal on_peer_disconnected(info)
 signal on_server_disconnected()
+signal on_server_created()
+signal on_client_created()
 
 func _ready():
 	get_tree().connect("network_peer_connected",self,"_on_player_connected")
@@ -26,12 +28,14 @@ func create_server(nickname):
 	peer.create_server(RPC_PORT,MAX_PLAYER)
 	get_tree().set_network_peer(peer)
 	save_host_info(nickname)
+	emit_signal("on_server_created")
 
 func create_client(nickname, server_ip = TESTING_IP):
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(server_ip,RPC_PORT)
 	get_tree().set_network_peer(peer)
 	save_client_info(nickname)
+	emit_signal("on_client_created")
 
 func save_host_info(nickname):
 	self_data.name = nickname
