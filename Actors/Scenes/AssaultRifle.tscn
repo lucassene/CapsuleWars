@@ -124,10 +124,10 @@ ADS_FOV = 40
 SWAY = 30
 ADS_SWAY = 75
 SPRINT_ANGLE = 50
-MIN_X_RECOIL = 0.25
-MIN_Y_RECOIL = 0.1
-MAX_Y_RECOIL = 0.75
-Y_MULTI = -1
+MIN_X_RECOIL = 0.75
+MAX_X_RECOIL = 2.25
+MIN_Y_RECOIL = 0.3
+MAX_Y_RECOIL = 1.5
 fire_sound = ExtResource( 12 )
 
 [node name="Model" parent="." index="0"]
@@ -196,5 +196,5 @@ anims/stow = ExtResource( 9 )
 [node name="AudioPlayer" parent="." index="2"]
 stream = ExtResource( 13 )
 
-[node name="BulletEmmiter" parent="." index="3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.097871, 0.0840562, 0.120981 )
+[node name="BulletEmitter" type="Spatial" parent="." index="3"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0.086491, 0.103886, 0.126867 )

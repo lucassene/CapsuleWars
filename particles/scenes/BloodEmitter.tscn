@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/meshes/blood.tres" type="CubeMesh" id=1]
+[ext_resource path="res://particles/scripts/ParticleEmitter.gd" type="Script" id=2]
+
+[sub_resource type="ParticlesMaterial" id=1]
+direction = Vector3( 1, 1, 0 )
+spread = 85.0
+initial_velocity = 1.0
+initial_velocity_random = 0.15
+
+[node name="BloodEmitter" type="Particles"]
+emitting = false
+amount = 6
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+randomness = 0.21
+visibility_aabb = AABB( -0.536773, -0.80018, -0.584371, 1.07355, 1.60036, 1.16874 )
+process_material = SubResource( 1 )
+draw_pass_1 = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

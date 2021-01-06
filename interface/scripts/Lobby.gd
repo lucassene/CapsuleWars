@@ -21,6 +21,7 @@ func _ready():
 	Network.connect("on_new_peer",self,"_on_player_connected")
 	Network.connect("on_peer_disconnected",self,"_on_player_disconnected")
 	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
+	connect("on_game_begin",Network,"_on_game_begin")
 	get_tree().connect("connection_failed",self,"_on_connection_failed")
 
 func add_color_options():

@@ -23,10 +23,10 @@ radial_segments = 16
 [sub_resource type="CylinderShape" id=2]
 height = 3.75
 
-[sub_resource type="SphereShape" id=6]
+[sub_resource type="SphereShape" id=3]
 radius = 0.902388
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=4]
 length = 0.3
 loop = true
 tracks/0/type = "value"
@@ -64,6 +64,10 @@ tracks/0/keys = {
 collision_mask = 3
 script = ExtResource( 1 )
 weapons = PoolStringArray( "Assault Rifle", "Pistol" )
+MIN_X_FLINCH = 1.0
+MAX_X_FLINCH = 3.0
+MIN_Y_FLINCH = 1.0
+MAX_Y_FLINCH = 3.0
 
 [node name="Mesh" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
@@ -79,7 +83,7 @@ __meta__ = {
 
 [node name="HeadCollision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34599, 0 )
-shape = SubResource( 6 )
+shape = SubResource( 3 )
 __meta__ = {
 "_editor_description_": ""
 }
@@ -104,10 +108,10 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="Head/Camera/Crosshair"]
-margin_left = 640.0
-margin_top = 360.0
-margin_right = 640.0
-margin_bottom = 360.0
+margin_left = 960.0
+margin_top = 540.0
+margin_right = 960.0
+margin_bottom = 540.0
 mouse_filter = 2
 texture = ExtResource( 8 )
 expand = true
@@ -117,7 +121,7 @@ __meta__ = {
 }
 
 [node name="CameraAnimPlayer" type="AnimationPlayer" parent="Head/Camera"]
-anims/ads-headbob = SubResource( 7 )
+anims/ads-headbob = SubResource( 4 )
 anims/headbob = SubResource( 5 )
 
 [node name="Hand" type="Spatial" parent="Head"]

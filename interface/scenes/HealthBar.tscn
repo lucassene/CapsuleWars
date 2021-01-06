@@ -3,9 +3,13 @@
 [ext_resource path="res://interface/scripts/HealthBar.gd" type="Script" id=1]
 
 [node name="HealthBar" type="MarginContainer"]
-margin_right = 500.0
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -250.0
+margin_right = 250.0
 margin_bottom = 20.0
 mouse_filter = 2
+size_flags_horizontal = 0
 size_flags_vertical = 0
 script = ExtResource( 1 )
 __meta__ = {

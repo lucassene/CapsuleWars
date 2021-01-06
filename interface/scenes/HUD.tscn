@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://interface/scenes/HealthBar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://interface/scenes/AmmoCounter.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://interface/scenes/PauseMenu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://interface/scenes/Scoreboard.tscn" type="PackedScene" id=6]
 [ext_resource path="res://interface/scenes/Chatlog.tscn" type="PackedScene" id=7]
+[ext_resource path="res://interface/scenes/BloodSplashes.tscn" type="PackedScene" id=8]
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
@@ -16,6 +17,8 @@ script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="BloodSplashes" parent="." instance=ExtResource( 8 )]
 
 [node name="Container" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -30,6 +33,42 @@ custom_constants/margin_bottom = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="InfoContainer" type="VBoxContainer" parent="Container"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1900.0
+margin_bottom = 1060.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HealthContainer" type="CenterContainer" parent="Container/InfoContainer"]
+margin_right = 1880.0
+margin_bottom = 20.0
+mouse_filter = 2
+size_flags_horizontal = 3
+
+[node name="HealthBar" parent="Container/InfoContainer/HealthContainer" instance=ExtResource( 1 )]
+anchor_left = 0.0
+anchor_right = 0.0
+margin_left = 690.0
+margin_right = 1190.0
+
+[node name="AmmoContainer" type="HBoxContainer" parent="Container/InfoContainer"]
+margin_top = 24.0
+margin_right = 1880.0
+margin_bottom = 1040.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
+
+[node name="AmmoCounter" parent="Container/InfoContainer/AmmoContainer" instance=ExtResource( 2 )]
+margin_left = 1839.0
+margin_right = 1880.0
+margin_bottom = 1016.0
+size_flags_vertical = 3
 
 [node name="WarningLabel" type="Label" parent="Container"]
 visible = false
@@ -46,29 +85,8 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 1260.0
-margin_bottom = 700.0
-
-[node name="InfoContainer" type="HBoxContainer" parent="Container"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1260.0
-margin_bottom = 700.0
-mouse_filter = 2
-custom_constants/separation = 300
-alignment = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HealthBar" parent="Container/InfoContainer" instance=ExtResource( 1 )]
-margin_left = 399.0
-margin_right = 899.0
-
-[node name="AmmoCounter" parent="Container/InfoContainer" instance=ExtResource( 2 )]
-margin_left = 1199.0
-margin_right = 1240.0
-margin_bottom = 680.0
+margin_right = 1900.0
+margin_bottom = 1060.0
 
 [node name="Timer" type="Timer" parent="Container"]
 wait_time = 2.0
@@ -80,8 +98,8 @@ one_shot = true
 anchor_bottom = 0.0
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 1260.0
-margin_bottom = 700.0
+margin_right = 1900.0
+margin_bottom = 1060.0
 
 [node name="PauseMenu" parent="." instance=ExtResource( 5 )]
 visible = false

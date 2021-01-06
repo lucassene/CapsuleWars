@@ -29,7 +29,8 @@ func handle_input(event):
 
 func update(actor,delta):
 	timer += delta
-	player_controller.actor_on_floor()
+	if !player_controller.actor_on_floor():
+		state_machine.set_state("Falling")
 	var velocity = actor.move(delta)
 	if velocity.length() <= 1.0:
 		state_machine.set_state("Idle")

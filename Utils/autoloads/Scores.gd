@@ -71,3 +71,6 @@ func update_kd(id):
 	else:
 		player_scores[id].kd = float(player_scores[id].kills) / float(player_scores[id].deaths)
 	emit_signal("on_score_changed",id,"kd")
+
+func clear_scores():
+	player_scores.clear()

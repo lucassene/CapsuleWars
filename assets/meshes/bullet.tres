@@ -6,5 +6,5 @@ metallic = 0.76
 
 [resource]
 material = SubResource( 1 )
-radius = 0.05
-mid_height = 0.1
+radius = 0.02
+mid_height = 0.05

@@ -3,8 +3,8 @@
 [ext_resource path="res://interface/scripts/AmmoCounter.gd" type="Script" id=1]
 
 [node name="AmmoCounter" type="MarginContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 41.0
+margin_bottom = 42.0
 mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {

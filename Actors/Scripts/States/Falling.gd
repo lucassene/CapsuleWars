@@ -2,9 +2,10 @@ extends "res://Utils/scripts/State.gd"
 
 var player_controller
 
-func enter(actor,_delta = 0.0):
+func enter(actor,delta = 0.0):
 	player_controller = actor.get_player_controller()
 	actor.play_camera_anim(false)
+	player_controller.actor_in_air(delta)
 	print("Falling")
 
 func handle_input(event):
@@ -19,7 +20,7 @@ func handle_input(event):
 func update(actor,delta):
 	if !actor.is_on_floor():
 		player_controller.actor_in_air(delta)
-	else:
+	elif actor.get_floor_contact():
 		state_machine.exit_falling_state()
 		return
 	actor.move(delta)

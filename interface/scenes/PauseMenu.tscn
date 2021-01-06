@@ -30,65 +30,58 @@ __meta__ = {
 }
 
 [node name="Margin" type="MarginContainer" parent="Container"]
-margin_right = 1280.0
-margin_bottom = 720.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/margin_right = 25
-custom_constants/margin_top = 450
+custom_constants/margin_right = 50
+custom_constants/margin_top = 50
 custom_constants/margin_left = 75
-custom_constants/margin_bottom = 25
+custom_constants/margin_bottom = 75
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Menu" type="VBoxContainer" parent="Container/Margin"]
 margin_left = 75.0
-margin_top = 450.0
+margin_top = 50.0
 margin_right = 275.0
-margin_bottom = 650.0
+margin_bottom = 1005.0
 rect_min_size = Vector2( 200, 200 )
 mouse_filter = 2
 size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_vertical = 3
 custom_constants/separation = 30
-alignment = 1
+alignment = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="Container/Margin/Menu"]
-margin_top = 43.0
+margin_top = 841.0
 margin_right = 200.0
-margin_bottom = 57.0
+margin_bottom = 855.0
 text = "Paused"
 
 [node name="BackButton" type="Button" parent="Container/Margin/Menu"]
-margin_top = 87.0
+margin_top = 885.0
 margin_right = 200.0
-margin_bottom = 107.0
+margin_bottom = 905.0
 text = "Back"
 
 [node name="LobbyButton" type="Button" parent="Container/Margin/Menu"]
 visible = false
-margin_top = 112.0
+margin_top = 535.0
 margin_right = 200.0
-margin_bottom = 132.0
+margin_bottom = 555.0
 text = "Back to Lobby"
 
 [node name="ExitButton" type="Button" parent="Container/Margin/Menu"]
-margin_top = 137.0
+margin_top = 935.0
 margin_right = 200.0
-margin_bottom = 157.0
+margin_bottom = 955.0
 text = "Exit Game"
-
-[node name="Panel" type="Panel" parent="Container"]
-visible = false
-margin_right = 1280.0
-margin_bottom = 720.0
-rect_min_size = Vector2( 200, 250 )
-mouse_filter = 2
 [connection signal="pressed" from="Container/Margin/Menu/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="pressed" from="Container/Margin/Menu/LobbyButton" to="." method="_on_LobbyButton_pressed"]
 [connection signal="pressed" from="Container/Margin/Menu/ExitButton" to="." method="_on_ExitButton_pressed"]

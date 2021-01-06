@@ -1,0 +1,11 @@
+[gd_resource type="SpatialMaterial" load_steps=2 format=2]
+
+[sub_resource type="StreamTexture" id=1]
+flags = 23
+load_path = "res://.import/dark-grid.png-3231aa6af3c10b889fe88b8caf050739.s3tc.stex"
+
+[resource]
+flags_world_triplanar = true
+albedo_texture = SubResource( 1 )
+uv1_scale = Vector3( 0.5, 0.5, 0.5 )
+uv1_triplanar = true

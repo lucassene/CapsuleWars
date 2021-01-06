@@ -44,7 +44,7 @@ func create_players_intances():
 func spawn_player(actor):
 	var spawn = null
 	while(spawn == null):
-		var random = rand_range(0,spawn_points.size()-1)
+		var random = rand_range(0,spawn_points.size())
 		spawn = spawn_points[random]
 		if !spawn.get_can_spawn():
 			spawn = null
@@ -81,20 +81,20 @@ func connect_player_signals(player):
 	player.connect("on_score_changed",main_hud,"_on_score_changed")
 
 func _on_game_begin():
-	get_tree().set_refuse_new_network_connections(true)
 	lobby_hud.hide()
 	create_players_intances()
 	pass
 
 func _on_player_disconnected(player):
 	var player_scene = get_node("/root/Game/" + str(player.id))
+	Scores.player_scores.erase(player.id)
 	player_scene.queue_free()
 
 remotesync func _on_server_disconnected():
+	Scores.clear_scores()
 	for child in get_children():
 		if child.is_in_group("Player"):
 			child.queue_free()
-	get_tree().network_peer = null
 	lobby_hud.reset()
 
 func _on_player_killed(id,is_headshot,_victim_id):
@@ -109,4 +109,6 @@ func _on_DeathArea_body_entered(body):
 	body.set_dead_state(true)
 
 func _on_exit_to_lobby():
+	Scores.clear_scores()
 	rpc("_on_server_disconnected")
+	get_tree().network_peer = null

@@ -1,8 +1,8 @@
 extends Control
 
 onready var info_container = $Container/InfoContainer
-onready var health_bar = $Container/InfoContainer/HealthBar
-onready var ammo_counter = $Container/InfoContainer/AmmoCounter
+onready var health_bar = $Container/InfoContainer/HealthContainer/HealthBar
+onready var ammo_counter = $Container/InfoContainer/AmmoContainer/AmmoCounter
 onready var respawn_hud = $Container/RespawnHUD
 onready var warning_label = $Container/WarningLabel
 onready var timer = $Container/Timer
@@ -10,6 +10,7 @@ onready var tween = $Container/Timer/Tween
 onready var pause_menu = $PauseMenu
 onready var scoreboard_menu = $Scoreboard
 onready var chat_log = $Container/Chatlog
+onready var blood_splash = $BloodSplashes
 
 signal _on_player_can_spawn(actor)
 signal on_exit_to_lobby()
@@ -19,6 +20,7 @@ var is_dead = false
 func _ready():
 	Network.connect("on_peer_disconnected",self,"_on_player_disconnected")
 	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
+	connect("on_exit_to_lobby",Network,"_on_exit_to_lobby")
 
 func _unhandled_input(event):
 	if !is_dead:
@@ -31,6 +33,7 @@ func _unhandled_input(event):
 
 func _on_player_health_changed(current_health):
 	health_bar.on_health_changed(current_health)
+	blood_splash.on_player_health_changed(current_health)
 
 func _on_player_reload():
 	ammo_counter.on_reload()
@@ -51,16 +54,22 @@ func _on_player_death(actor):
 	respawn_hud.on_player_death(actor)
 
 func _on_player_spawned():
-	var health = Global.player.get_max_health()
+	is_dead = false
+	var health = 100
+	if Global.player: health = Global.player.get_max_health()
 	health_bar.set_max_health(health)
+	blood_splash.set_max_health(health)
 	show()
 
 func _on_player_disconnected(player):
+	scoreboard_menu.remove_player_score(player.id)
 	warning_label.text = player.name + " has disconnected."
 	warning_label.visible = true
 	timer.start()
 
 func _on_server_disconnected():
+	is_dead = true
+	scoreboard_menu.clear_player_score()
 	info_container.visible = false
 
 func _on_pause_menu_pressed(value):
@@ -95,9 +104,11 @@ func _on_game_begin():
 	scoreboard_menu.initialize()
 
 func _on_exit_to_lobby():
+	is_dead = true
 	pause_menu.hide()
 	info_container.hide()
 	scoreboard_menu.hide()
+	scoreboard_menu.clear_player_score()
 	emit_signal("on_exit_to_lobby")
 
 func _on_player_killed(attacker_id,is_headshot,victim_id):

@@ -78,6 +78,9 @@ remote func send_info_to_server():
 	if not get_tree().is_network_server():
 		rpc_id(1,"receive_player_info",get_tree().get_network_unique_id(),self_data)
 
+func clear_connected_players():
+	connected_players.clear()
+
 func _on_player_connected(id):
 	rpc_id(id,"send_info_to_server")
 	if get_tree().is_network_server():
@@ -85,11 +88,21 @@ func _on_player_connected(id):
 
 func _on_player_disconnected(id):
 	emit_signal("on_peer_disconnected",connected_players[id])
-	connected_players.erase(id)
+	clear_connected_players()
 
 func _on_connection_failed():
-	connected_players.clear()
+	clear_connected_players()
 
 func _on_server_disconnected():
 	emit_signal("on_server_disconnected")
-	connected_players.clear()
+	get_tree().network_peer = null
+	clear_connected_players()
+
+func _on_game_begin():
+	if get_tree().is_network_server():
+		get_tree().set_refuse_new_network_connections(true)
+
+func _on_exit_to_lobby():
+	if get_tree().is_network_server():
+		get_tree().set_refuse_new_network_connections(false)
+	clear_connected_players()

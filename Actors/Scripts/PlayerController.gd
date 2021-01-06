@@ -45,12 +45,12 @@ func check_input_released(event,input,method = null,param = null):
 		if method: call_deferred(method,param)
 		return true
 	return false
-
-func check_if_ads_still_pressed():
-	if Input.is_action_pressed("aim"):
-		return true
-	else:
-		return false
+#
+#func check_if_ads_still_pressed():
+#	if Input.is_action_pressed("aim"):
+#		return true
+#	else:
+#		return false
 
 func handle_mouse_movement(event):
 	if event is InputEventMouseMotion:
@@ -81,9 +81,10 @@ func calculate_movement(delta):
 func actor_on_floor():
 	if actor.is_on_floor() and actor.get_floor_contact():
 		gravity_vector = -actor.get_floor_normal() * GRAVITY
+		return true
 	else:
-		state_machine.set_state("Falling")
 		gravity_vector = -actor.get_floor_normal()
+		return false
 
 func jump(_param):
 	if actor.is_on_floor() or actor.get_floor_contact():
@@ -134,7 +135,7 @@ func show_menu(_param):
 	actor.show_menu(true)
 
 func exit_menu():
-	set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func set_mouse_mode(mode):
 	Input.set_mouse_mode(mode)

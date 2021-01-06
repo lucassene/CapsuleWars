@@ -1,13 +1,13 @@
 extends Spatial
 
-onready var bullet = preload("res://Utils/scenes/Bullet.tscn")
+onready var bullet = preload("res://particles/scenes/BulletEmitter.tscn")
 
 onready var anim_player = $AnimationPlayer
 onready var shoot_player = $Model/Muzzle/ShootPlayer
 onready var audio_player = $AudioPlayer
 onready var front_muzzle_sprite = $Model/Muzzle/MuzzleFront
 onready var side_muzzle_sprite = $Model/Muzzle/MuzzleSide
-onready var bullet_emmiter = $BulletEmmiter
+onready var bullet_emitter = $BulletEmitter
 
 enum type {
 	PRIMARY,
@@ -37,7 +37,6 @@ export var MIN_X_RECOIL = 1.0
 export var MAX_X_RECOIL = 2.0
 export var MIN_Y_RECOIL = 1.0
 export var MAX_Y_RECOIL = 1.0
-export var Y_MULTI = 1
 
 export(AudioStream) var fire_sound
 
@@ -45,7 +44,9 @@ var player
 var is_ads = false
 var is_stowed = true
 var is_draw = false
+var is_reloading = false
 var can_swap = true setget ,get_can_swap
+var can_reload = false
 var current_ammo setget ,get_current_ammo
 var can_fire = false setget ,get_can_fire
 var can_ads = false setget ,get_can_ads
@@ -83,7 +84,10 @@ func get_sprint_angle():
 	return SPRINT_ANGLE
 
 func get_can_fire():
-	return can_fire
+	if can_fire and !is_stowed and is_draw:
+		return true
+	else:
+		return false
 
 func get_can_swap():
 	return can_swap
@@ -125,20 +129,18 @@ func set_owner(actor):
 func ads(value):
 	is_ads = value
 
-func fire(value):
-	if value and can_fire and !is_stowed and is_draw:
-		player.emit_signal("on_shot_fired")
+func fire():
+	if get_can_fire():
 		current_ammo -= 1
 		anim_player.playback_speed = 1.0 * RATE_OF_FIRE
 		if current_ammo > 0:
 			anim_player.play("firing")
 		else:
 			anim_player.play("out_of_ammo")
-	elif !is_stowed: 
-		anim_player.play("idle")
 
 func reload():
-	if current_ammo < MAGAZINE:
+	if current_ammo < MAGAZINE and can_reload and !is_stowed:
+		is_ads = false
 		emit_signal("on_out_of_ads")
 		anim_player.playback_speed = 1.0
 		anim_player.play("reload")
@@ -157,25 +159,32 @@ func to_stowed_position():
 func connect_signals():
 	connect("on_out_of_ads",player,"_on_weapon_out_of_ads")
 	connect("on_reloaded",player,"_on_weapon_reloaded")
+	player.connect("on_player_death",self,"_on_player_dead")
 
 func stow_weapon():
+	emit_signal("on_out_of_ads")
 	anim_player.play("stow")
 
 func draw_weapon():
+	emit_signal("on_out_of_ads")
 	anim_player.play("draw")
 
 func emit_bullet():
 	var shell = bullet.instance()
-	get_node("/root/Game").add_child(shell)
-	shell.transform.origin = bullet_emmiter.transform.origin
-	#shell.apply_impulse(Vector3.ZERO,Vector3(0.0,0.0,500.0))
+	bullet_emitter.add_child(shell)
+	#shell.transform.origin = bullet_emmiter.global_transform.origin
+	shell.emitting = true
 
 func on_stowed():
 	set_process(false)
+	is_stowed = true
+	is_draw = false
 	emit_signal("on_stowed",self)
 
 func on_draw_complete():
 	transform.origin = DEFAULT_POSITION
+	is_draw = true
+	is_stowed = false
 	emit_signal("on_draw_completed")
 	set_process(true)
 
@@ -183,6 +192,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 	anim_player.playback_speed = 1.0
 	match anim_name:
 		"reload":
+			is_reloading = true
 			can_ads = false
 			can_swap = false
 			can_fire = false
@@ -197,6 +207,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 			can_ads = false
 			can_swap = false
 			can_fire = false
+			can_reload = false
 			return
 		"stow":
 			is_ads = false
@@ -205,6 +216,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 			can_ads = false
 			can_swap = false
 			can_fire = false
+			can_reload = false
 			return
 		"firing","out_of_ammo":
 			can_swap = false
@@ -215,7 +227,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 				shoot_player.set_stream(fire_sound)
 			shoot_player.play()
 			anim_player.playback_speed = 1.0 * RATE_OF_FIRE
-			if is_network_master(): player.shake_camera(MAX_X_RECOIL,MIN_X_RECOIL,MAX_Y_RECOIL,MIN_Y_RECOIL,Y_MULTI)
+			if is_network_master(): player.shake_camera(MAX_X_RECOIL,MIN_X_RECOIL,MAX_Y_RECOIL,MIN_Y_RECOIL)
 			return
 
 func _on_AnimationPlayer_animation_finished(anim_name):
@@ -239,6 +251,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			can_fire = false
 			return
 		"reload":
+			is_reloading = false
 			can_ads = true
 			can_swap = true
 			can_fire = true
@@ -249,6 +262,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			can_ads = true
 			can_fire = true
 			can_swap = true
+			can_reload = true
 			return
 		"stow":
 			is_stowed = true
@@ -256,5 +270,14 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			can_ads = false
 			can_fire = false
 			can_swap = false
+			can_reload = true
 			return
+
+func _on_player_dead(_actor):
+	is_ads = false
+#	is_reloading = false
+#	can_ads = false
+#	can_fire = false
+#	can_swap = false
+#	can_reload = false
 
