@@ -1,29 +1,31 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://interface/scripts/RespawnHUD.gd" type="Script" id=1]
+[ext_resource path="res://interface/resources/HUDFont.tres" type="DynamicFont" id=2]
 
 [node name="RespawnHUD" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 300.0
 mouse_filter = 2
-alignment = 1
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="."]
-margin_left = 565.0
-margin_top = 203.0
-margin_right = 660.0
-margin_bottom = 217.0
+margin_top = 523.0
+margin_right = 200.0
+margin_bottom = 557.0
+size_flags_horizontal = 0
+custom_fonts/font = ExtResource( 2 )
 text = "Respawning in:"
 
 [node name="CountdownLabel" type="Label" parent="."]
-margin_left = 664.0
-margin_top = 203.0
-margin_right = 714.0
-margin_bottom = 217.0
+margin_left = 204.0
+margin_top = 523.0
+margin_right = 263.0
+margin_bottom = 557.0
 rect_min_size = Vector2( 50, 0 )
+size_flags_horizontal = 0
+custom_fonts/font = ExtResource( 2 )
 text = "0.00"

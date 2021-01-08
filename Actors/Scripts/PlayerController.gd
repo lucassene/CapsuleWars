@@ -3,7 +3,7 @@ extends Node
 onready var actor = owner
 
 export var GRAVITY = 20
-export var JUMP_IMPULSE = 10
+export var JUMP_IMPULSE = 11
 
 var state_machine
 var mouse_sensitivity = 0.05
@@ -45,31 +45,26 @@ func check_input_released(event,input,method = null,param = null):
 		if method: call_deferred(method,param)
 		return true
 	return false
-#
-#func check_if_ads_still_pressed():
-#	if Input.is_action_pressed("aim"):
-#		return true
-#	else:
-#		return false
 
 func handle_mouse_movement(event):
 	if event is InputEventMouseMotion:
 		actor.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 		actor.head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
-		actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-58),deg2rad(80))
+		actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-68),deg2rad(80))
 
 func calculate_movement(delta):
 	var direction = Vector3.ZERO
 	
-	if Input.is_action_pressed("move_forward"):
-		direction -= actor.transform.basis.z
-	elif Input.is_action_pressed("move_backward"):
-		direction += actor.transform.basis.z
-	if Input.is_action_pressed("move_left"):
-		direction -= actor.transform.basis.x
-	elif Input.is_action_pressed("move_right"):
-		direction += actor.transform.basis.x
-	
+	if state_machine.get_current_state() != "Menu":
+		if Input.is_action_pressed("move_forward"):
+			direction -= actor.transform.basis.z
+		elif Input.is_action_pressed("move_backward"):
+			direction += actor.transform.basis.z
+		if Input.is_action_pressed("move_left"):
+			direction -= actor.transform.basis.x
+		elif Input.is_action_pressed("move_right"):
+			direction += actor.transform.basis.x
+		
 	direction = direction.normalized()
 	h_velocity = h_velocity.linear_interpolate(direction * current_speed, current_acceleration * delta)
 	movement.z = h_velocity.z + gravity_vector.z
@@ -130,12 +125,15 @@ func equip_slot_2(_param):
 func swap_equip(_param):
 	actor.rpc("swap_equip")
 
-func show_menu(_param):
-	state_machine.set_state("Menu")
-	actor.show_menu(true)
+func show_menu(param):
+	if param:
+		state_machine.set_state("Menu")
+	else:
+		state_machine.set_state("Idle")
+	actor.show_menu(param)
 
 func exit_menu():
-	set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	state_machine.set_state("Idle")
 
 func set_mouse_mode(mode):
 	Input.set_mouse_mode(mode)

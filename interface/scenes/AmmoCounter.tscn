@@ -1,10 +1,13 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://interface/scripts/AmmoCounter.gd" type="Script" id=1]
+[ext_resource path="res://interface/resources/HUDFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://interface/resources/HUDBigFont.tres" type="DynamicFont" id=3]
 
 [node name="AmmoCounter" type="MarginContainer"]
 margin_right = 41.0
 margin_bottom = 42.0
+rect_scale = Vector2( 2, 2 )
 mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
@@ -12,8 +15,8 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 41.0
-margin_bottom = 42.0
+margin_right = 73.0
+margin_bottom = 116.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -21,8 +24,9 @@ custom_constants/separation = 0
 alignment = 2
 
 [node name="current" type="Label" parent="VBoxContainer"]
-margin_right = 41.0
-margin_bottom = 14.0
+margin_right = 73.0
+margin_bottom = 41.0
+custom_fonts/font = ExtResource( 3 )
 text = "10"
 align = 1
 valign = 2
@@ -31,15 +35,17 @@ __meta__ = {
 }
 
 [node name="Label3" type="Label" parent="VBoxContainer"]
-margin_top = 14.0
-margin_right = 41.0
-margin_bottom = 28.0
+margin_top = 41.0
+margin_right = 73.0
+margin_bottom = 75.0
+custom_fonts/font = ExtResource( 2 )
 text = "- - - - -"
 align = 1
 
 [node name="total" type="Label" parent="VBoxContainer"]
-margin_top = 28.0
-margin_right = 41.0
-margin_bottom = 42.0
+margin_top = 75.0
+margin_right = 73.0
+margin_bottom = 116.0
+custom_fonts/font = ExtResource( 3 )
 text = "20"
 align = 1

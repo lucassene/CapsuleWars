@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://interface/scripts/Lobby.gd" type="Script" id=1]
+[ext_resource path="res://interface/resources/HUDSmallFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://interface/resources/HUDBigFont.tres" type="DynamicFont" id=3]
 
 [node name="Lobby" type="Control"]
 anchor_right = 1.0
@@ -33,203 +35,231 @@ __meta__ = {
 [node name="Container" type="HBoxContainer" parent="Main"]
 margin_left = 50.0
 margin_top = 50.0
-margin_right = 1230.0
-margin_bottom = 670.0
+margin_right = 1870.0
+margin_bottom = 1030.0
 
 [node name="SideBar" type="VBoxContainer" parent="Main/Container"]
-margin_right = 200.0
-margin_bottom = 620.0
-rect_min_size = Vector2( 200, 0 )
-custom_constants/separation = 20
+margin_right = 300.0
+margin_bottom = 980.0
+rect_min_size = Vector2( 300, 0 )
+custom_constants/separation = 50
 
-[node name="IDName" type="HBoxContainer" parent="Main/Container/SideBar"]
-margin_right = 200.0
-margin_bottom = 24.0
+[node name="GeneralContainer" type="VBoxContainer" parent="Main/Container/SideBar"]
+margin_right = 300.0
+margin_bottom = 160.0
+custom_constants/separation = 15
 
-[node name="IDLabel" type="Label" parent="Main/Container/SideBar/IDName"]
+[node name="Label" type="Label" parent="Main/Container/SideBar/GeneralContainer"]
+margin_right = 300.0
+margin_bottom = 41.0
+custom_fonts/font = ExtResource( 3 )
+text = "General"
+
+[node name="HSeparator" type="HSeparator" parent="Main/Container/SideBar/GeneralContainer"]
+margin_top = 56.0
+margin_right = 300.0
+margin_bottom = 60.0
+
+[node name="IDName" type="HBoxContainer" parent="Main/Container/SideBar/GeneralContainer"]
+margin_top = 75.0
+margin_right = 300.0
+margin_bottom = 112.0
+
+[node name="IDLabel" type="Label" parent="Main/Container/SideBar/GeneralContainer/IDName"]
 margin_top = 5.0
-margin_right = 19.0
-margin_bottom = 19.0
+margin_right = 23.0
+margin_bottom = 32.0
+custom_fonts/font = ExtResource( 2 )
 text = "ID:"
 
-[node name="IDText" type="LineEdit" parent="Main/Container/SideBar/IDName"]
-margin_left = 23.0
-margin_right = 200.0
-margin_bottom = 24.0
+[node name="IDText" type="LineEdit" parent="Main/Container/SideBar/GeneralContainer/IDName"]
+margin_left = 27.0
+margin_right = 300.0
+margin_bottom = 37.0
 size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
 placeholder_text = "Your ID name"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InvalidName" type="Label" parent="Main/Container/SideBar"]
+[node name="InvalidName" type="Label" parent="Main/Container/SideBar/GeneralContainer"]
 visible = false
 modulate = Color( 0.909804, 0.333333, 0.333333, 1 )
-margin_top = 44.0
+margin_top = 47.0
 margin_right = 200.0
-margin_bottom = 58.0
+margin_bottom = 74.0
+custom_fonts/font = ExtResource( 2 )
 text = "ID Needed"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorPicker" type="HBoxContainer" parent="Main/Container/SideBar"]
-margin_top = 44.0
-margin_right = 200.0
-margin_bottom = 64.0
+[node name="ColorPicker" type="HBoxContainer" parent="Main/Container/SideBar/GeneralContainer"]
+margin_top = 127.0
+margin_right = 300.0
+margin_bottom = 160.0
 
-[node name="ColorLabel" type="Label" parent="Main/Container/SideBar/ColorPicker"]
+[node name="ColorLabel" type="Label" parent="Main/Container/SideBar/GeneralContainer/ColorPicker"]
 margin_top = 3.0
-margin_right = 37.0
-margin_bottom = 17.0
+margin_right = 57.0
+margin_bottom = 30.0
+custom_fonts/font = ExtResource( 2 )
 text = "Color:"
 
-[node name="ColorOption" type="OptionButton" parent="Main/Container/SideBar/ColorPicker"]
-margin_left = 41.0
-margin_right = 200.0
-margin_bottom = 20.0
+[node name="ColorOption" type="OptionButton" parent="Main/Container/SideBar/GeneralContainer/ColorPicker"]
+margin_left = 61.0
+margin_right = 300.0
+margin_bottom = 33.0
 size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
 custom_constants/arrow_margin = 3
 toggle_mode = false
 
-[node name="HostIP" type="HBoxContainer" parent="Main/Container/SideBar"]
-margin_top = 84.0
-margin_right = 200.0
-margin_bottom = 108.0
+[node name="HostJoinContainer" type="VBoxContainer" parent="Main/Container/SideBar"]
+margin_top = 210.0
+margin_right = 300.0
+margin_bottom = 504.0
+custom_constants/separation = 15
 
-[node name="IPLabel" type="Label" parent="Main/Container/SideBar/HostIP"]
+[node name="Label2" type="Label" parent="Main/Container/SideBar/HostJoinContainer"]
+margin_right = 300.0
+margin_bottom = 41.0
+custom_fonts/font = ExtResource( 3 )
+text = "Host/Join"
+
+[node name="HSeparator2" type="HSeparator" parent="Main/Container/SideBar/HostJoinContainer"]
+margin_top = 56.0
+margin_right = 300.0
+margin_bottom = 60.0
+
+[node name="HostIP" type="HBoxContainer" parent="Main/Container/SideBar/HostJoinContainer"]
+margin_top = 75.0
+margin_right = 300.0
+margin_bottom = 112.0
+
+[node name="IPLabel" type="Label" parent="Main/Container/SideBar/HostJoinContainer/HostIP"]
 margin_top = 5.0
-margin_right = 17.0
-margin_bottom = 19.0
+margin_right = 22.0
+margin_bottom = 32.0
+custom_fonts/font = ExtResource( 2 )
 text = "IP:"
 
-[node name="HostIPText" type="LineEdit" parent="Main/Container/SideBar/HostIP"]
-margin_left = 21.0
-margin_right = 200.0
-margin_bottom = 24.0
+[node name="HostIPText" type="LineEdit" parent="Main/Container/SideBar/HostJoinContainer/HostIP"]
+margin_left = 26.0
+margin_right = 300.0
+margin_bottom = 37.0
 size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
 placeholder_text = "Host IP Address"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InvalidIPLabel" type="Label" parent="Main/Container/SideBar"]
+[node name="InvalidIPLabel" type="Label" parent="Main/Container/SideBar/HostJoinContainer"]
 visible = false
 modulate = Color( 0.909804, 0.333333, 0.333333, 1 )
-margin_top = 162.0
+margin_top = 23.0
 margin_right = 200.0
-margin_bottom = 176.0
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 2 )
 text = "Invalid IP"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="JoinButton" type="Button" parent="Main/Container/SideBar"]
-margin_top = 128.0
-margin_right = 200.0
-margin_bottom = 158.0
-rect_min_size = Vector2( 0, 30 )
-text = "Join"
+[node name="HostPort" type="HBoxContainer" parent="Main/Container/SideBar/HostJoinContainer"]
+margin_top = 127.0
+margin_right = 300.0
+margin_bottom = 164.0
+
+[node name="PortLabel" type="Label" parent="Main/Container/SideBar/HostJoinContainer/HostPort"]
+margin_top = 5.0
+margin_right = 49.0
+margin_bottom = 32.0
+custom_fonts/font = ExtResource( 2 )
+text = "Port:"
+
+[node name="HostPortText" type="LineEdit" parent="Main/Container/SideBar/HostJoinContainer/HostPort"]
+margin_left = 53.0
+margin_right = 300.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+placeholder_text = "Host Port"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HostButton" type="Button" parent="Main/Container/SideBar"]
-margin_top = 178.0
+[node name="InvalidPort" type="Label" parent="Main/Container/SideBar/HostJoinContainer"]
+visible = false
+modulate = Color( 0.909804, 0.333333, 0.333333, 1 )
+margin_top = 23.0
 margin_right = 200.0
-margin_bottom = 208.0
-rect_min_size = Vector2( 0, 30 )
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 2 )
+text = "Invalid Port"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HostButton" type="Button" parent="Main/Container/SideBar/HostJoinContainer"]
+margin_top = 179.0
+margin_right = 300.0
+margin_bottom = 229.0
+rect_min_size = Vector2( 0, 50 )
+custom_fonts/font = ExtResource( 2 )
 text = "Host"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BeginButton" type="Button" parent="Main/Container/SideBar"]
-margin_top = 228.0
-margin_right = 200.0
-margin_bottom = 278.0
+[node name="JoinButton" type="Button" parent="Main/Container/SideBar/HostJoinContainer"]
+margin_top = 244.0
+margin_right = 300.0
+margin_bottom = 294.0
 rect_min_size = Vector2( 0, 50 )
+custom_fonts/font = ExtResource( 2 )
+text = "Join"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="Main/Container/SideBar"]
+margin_top = 554.0
+margin_right = 300.0
+margin_bottom = 674.0
+custom_constants/separation = 20
+
+[node name="BeginButton" type="Button" parent="Main/Container/SideBar/ButtonsContainer"]
+margin_right = 300.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+custom_fonts/font = ExtResource( 2 )
 disabled = true
 text = "Begin"
 
-[node name="Panel" type="Panel" parent="Main/Container/SideBar"]
-margin_top = 298.0
-margin_right = 200.0
-margin_bottom = 620.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="Main/Container/SideBar/Panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/margin_right = 10
-custom_constants/margin_top = 10
-custom_constants/margin_left = 10
-custom_constants/margin_bottom = 10
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Main/Container/SideBar/Panel/MarginContainer"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 190.0
-margin_bottom = 322.0
-size_flags_horizontal = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="Main/Container/SideBar/Panel/MarginContainer/VBoxContainer"]
-margin_right = 180.0
-margin_bottom = 14.0
-text = "Commands"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HSeparator" type="HSeparator" parent="Main/Container/SideBar/Panel/MarginContainer/VBoxContainer"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 22.0
-size_flags_horizontal = 3
-
-[node name="Label2" type="Label" parent="Main/Container/SideBar/Panel/MarginContainer/VBoxContainer"]
-margin_top = 26.0
-margin_right = 180.0
-margin_bottom = 312.0
-text = "Forward: W
-Backwards: S
-Left: A
-Right: D
-
-Jump: Space
-Sprint: Shift
-Reload: R
-
-Fire: Left Mouse Click
-Aim: Right Mouse Click
-
-Swap weapons: Tab
-Equip Primary: 1
-Equip Secondary: 2
-
-Scoreboard: Capslock"
+[node name="ExitButton" type="Button" parent="Main/Container/SideBar/ButtonsContainer"]
+margin_top = 70.0
+margin_right = 300.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 0, 50 )
+custom_fonts/font = ExtResource( 2 )
+text = "Exit Game"
 
 [node name="MainFrame" type="ScrollContainer" parent="Main/Container"]
-margin_left = 204.0
-margin_right = 1180.0
-margin_bottom = 620.0
+margin_left = 304.0
+margin_right = 1820.0
+margin_bottom = 980.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="LogContainer" type="MarginContainer" parent="Main/Container/MainFrame"]
-margin_right = 976.0
-margin_bottom = 620.0
+margin_right = 1516.0
+margin_bottom = 980.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 20
@@ -239,11 +269,13 @@ custom_constants/margin_bottom = 20
 
 [node name="LogLabel" type="RichTextLabel" parent="Main/Container/MainFrame/LogContainer"]
 margin_left = 20.0
-margin_right = 956.0
-margin_bottom = 600.0
+margin_right = 1496.0
+margin_bottom = 960.0
+custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
-[connection signal="text_changed" from="Main/Container/SideBar/IDName/IDText" to="." method="_on_IDText_text_changed"]
-[connection signal="item_selected" from="Main/Container/SideBar/ColorPicker/ColorOption" to="." method="_on_ColorOption_item_selected"]
-[connection signal="pressed" from="Main/Container/SideBar/JoinButton" to="." method="_on_JoinButton_pressed"]
-[connection signal="pressed" from="Main/Container/SideBar/HostButton" to="." method="_on_HostButton_pressed"]
-[connection signal="pressed" from="Main/Container/SideBar/BeginButton" to="." method="_on_BeginButton_pressed"]
+[connection signal="text_changed" from="Main/Container/SideBar/GeneralContainer/IDName/IDText" to="." method="_on_IDText_text_changed"]
+[connection signal="item_selected" from="Main/Container/SideBar/GeneralContainer/ColorPicker/ColorOption" to="." method="_on_ColorOption_item_selected"]
+[connection signal="pressed" from="Main/Container/SideBar/HostJoinContainer/HostButton" to="." method="_on_HostButton_pressed"]
+[connection signal="pressed" from="Main/Container/SideBar/HostJoinContainer/JoinButton" to="." method="_on_JoinButton_pressed"]
+[connection signal="pressed" from="Main/Container/SideBar/ButtonsContainer/BeginButton" to="." method="_on_BeginButton_pressed"]
+[connection signal="pressed" from="Main/Container/SideBar/ButtonsContainer/ExitButton" to="." method="_on_ExitButton_pressed"]

@@ -15,6 +15,7 @@ func enter(actor,_delta = 0.0):
 	print("Sprinting")
 
 func handle_input(event):
+	if player_controller.check_input_pressed(event,"escape","show_menu",true): return
 	if player_controller.check_input_pressed(event,"jump","jump"): return
 	if player_controller.check_input_pressed(event,"fire","fire",true): return
 	if player_controller.check_input_released(event,"fire","fire",false): return

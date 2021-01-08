@@ -53,6 +53,7 @@ gdscript/warnings/return_value_discarded=false
 
 window/size/width=1920
 window/size/height=1080
+window/size/fullscreen=true
 window/size/test_width=1280
 window/size/test_height=720
 window/stretch/mode="2d"
@@ -138,10 +139,9 @@ score_menu={
 
 [layer_names]
 
+3d_render/layer_1="world"
 3d_physics/layer_1="actors"
+3d_render/layer_2="weapons"
 3d_physics/layer_2="world"
+3d_render/layer_3="remote"
 3d_physics/layer_3="bullets"
-
-[rendering]
-
-environment/default_environment="res://default_env.tres"

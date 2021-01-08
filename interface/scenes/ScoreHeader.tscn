@@ -1,9 +1,11 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://interface/resources/HUDSmallFont.tres" type="DynamicFont" id=1]
 
 [node name="ScoreHeader" type="MarginContainer"]
 margin_right = 524.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 525, 0 )
+rect_min_size = Vector2( 646, 0 )
 mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -12,7 +14,7 @@ __meta__ = {
 }
 
 [node name="Container" type="HBoxContainer" parent="."]
-margin_right = 575.0
+margin_right = 746.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
 mouse_filter = 2
@@ -32,106 +34,112 @@ __meta__ = {
 
 [node name="PlayerName" type="Label" parent="Container"]
 margin_left = 19.0
-margin_top = 13.0
-margin_right = 119.0
-margin_bottom = 27.0
-rect_min_size = Vector2( 100, 0 )
+margin_top = 6.0
+margin_right = 219.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 200, 0 )
 size_flags_horizontal = 0
+custom_fonts/font = ExtResource( 1 )
 text = "Name"
 
 [node name="VSeparator" type="VSeparator" parent="Container"]
-margin_left = 134.0
-margin_right = 138.0
+margin_left = 234.0
+margin_right = 238.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PlayerScore" type="Label" parent="Container"]
-margin_left = 153.0
-margin_top = 13.0
-margin_right = 203.0
-margin_bottom = 27.0
-rect_min_size = Vector2( 50, 0 )
+margin_left = 253.0
+margin_top = 6.0
+margin_right = 313.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 60, 0 )
 size_flags_horizontal = 0
+custom_fonts/font = ExtResource( 1 )
 text = "Score"
 align = 1
 
 [node name="VSeparator2" type="VSeparator" parent="Container"]
-margin_left = 218.0
-margin_right = 222.0
+margin_left = 328.0
+margin_right = 332.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PlayerDamage" type="Label" parent="Container"]
-margin_left = 237.0
-margin_top = 13.0
-margin_right = 304.0
-margin_bottom = 27.0
-rect_min_size = Vector2( 67, 0 )
+margin_left = 347.0
+margin_top = 6.0
+margin_right = 450.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 103, 0 )
 size_flags_horizontal = 0
+custom_fonts/font = ExtResource( 1 )
 text = "Total DMG"
 align = 1
 
 [node name="VSeparator3" type="VSeparator" parent="Container"]
-margin_left = 319.0
-margin_right = 323.0
+margin_left = 465.0
+margin_right = 469.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PlayerKills" type="Label" parent="Container"]
-margin_left = 338.0
-margin_top = 13.0
-margin_right = 388.0
-margin_bottom = 27.0
+margin_left = 484.0
+margin_top = 6.0
+margin_right = 534.0
+margin_bottom = 33.0
 rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 0
+custom_fonts/font = ExtResource( 1 )
 text = "Kills"
 align = 1
 
 [node name="VSeparator4" type="VSeparator" parent="Container"]
-margin_left = 403.0
-margin_right = 407.0
+margin_left = 549.0
+margin_right = 553.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PlayerDeaths" type="Label" parent="Container"]
-margin_left = 422.0
-margin_top = 13.0
-margin_right = 472.0
-margin_bottom = 27.0
-rect_min_size = Vector2( 50, 0 )
+margin_left = 568.0
+margin_top = 6.0
+margin_right = 643.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 75, 0 )
 size_flags_horizontal = 0
+custom_fonts/font = ExtResource( 1 )
 text = "Deaths"
 align = 1
 
 [node name="VSeparator5" type="VSeparator" parent="Container"]
-margin_left = 487.0
-margin_right = 491.0
+margin_left = 658.0
+margin_right = 662.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PlayerKD" type="Label" parent="Container"]
-margin_left = 506.0
-margin_top = 13.0
-margin_right = 556.0
-margin_bottom = 27.0
+margin_left = 677.0
+margin_top = 6.0
+margin_right = 727.0
+margin_bottom = 33.0
 rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 0
+custom_fonts/font = ExtResource( 1 )
 text = "K/D"
 align = 1
 
 [node name="VSeparator6" type="VSeparator" parent="Container"]
-margin_left = 571.0
-margin_right = 575.0
+margin_left = 742.0
+margin_right = 746.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false

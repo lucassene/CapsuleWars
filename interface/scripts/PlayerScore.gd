@@ -43,6 +43,6 @@ func update_deaths():
 	deaths_label.text = str(Scores.player_scores[player_id].deaths)
 
 func update_kd():
-	kd_label.text = str(Scores.player_scores[player_id].kd)
+	kd_label.text = str(stepify(Scores.player_scores[player_id].kd,0.01))
 
 

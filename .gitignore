@@ -2,6 +2,7 @@
 assets\
 assets/textures
 assets/audio
+assets/fonts
 
 # Godot-specific ignores
 .import/

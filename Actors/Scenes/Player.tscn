@@ -17,11 +17,11 @@
 
 [sub_resource type="CapsuleMesh" id=1]
 material = ExtResource( 14 )
-mid_height = 2.5
+mid_height = 3.0
 radial_segments = 16
 
-[sub_resource type="CylinderShape" id=2]
-height = 3.75
+[sub_resource type="CapsuleShape" id=2]
+height = 2.53012
 
 [sub_resource type="SphereShape" id=3]
 radius = 0.902388
@@ -70,31 +70,34 @@ MIN_Y_FLINCH = 1.0
 MAX_Y_FLINCH = 3.0
 
 [node name="Mesh" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0.488986 )
 mesh = SubResource( 1 )
 material/0 = null
 
 [node name="Body" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.37, 0 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, -0.233377, 0.488986 )
 shape = SubResource( 2 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="HeadCollision" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34599, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58434, 0.488986 )
 shape = SubResource( 3 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="Head" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40657, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98656, 0 )
 
 [node name="Camera" type="Camera" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.32 )
+cull_mask = 1048573
+far = 200.0
 
 [node name="AimCast" type="RayCast" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.41768 )
 enabled = true
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 3
@@ -186,4 +189,7 @@ max_distance = 100.0
 [node name="PlayerHUD" parent="." instance=ExtResource( 13 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5441, 0 )
 visible = false
+
+[node name="WeaponView" type="Sprite" parent="."]
+centered = false
 [connection signal="tree_exiting" from="." to="." method="_on_Player_tree_exiting"]

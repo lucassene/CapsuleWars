@@ -1,8 +1,8 @@
 extends Node
 
-const RPC_PORT = 23571
 const MAX_PLAYER = 5
-const TESTING_IP = "127.0.0.1"
+const DEFAULT_IP = "127.0.0.1"
+const DEFAULT_PORT = 23571
 
 var self_data = {
 	id = -1,
@@ -28,6 +28,7 @@ signal on_peer_disconnected(info)
 signal on_server_disconnected()
 signal on_server_created()
 signal on_client_created()
+signal on_cant_create_server(message)
 
 func _ready():
 	get_tree().connect("network_peer_connected",self,"_on_player_connected")
@@ -35,16 +36,19 @@ func _ready():
 	get_tree().connect("connection_failed",self,"_on_connection_failed")
 	get_tree().connect("server_disconnected",self,"_on_server_disconnected")
 
-func create_server(nickname):
+func create_server(nickname,server_port):
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_server(RPC_PORT,MAX_PLAYER)
-	get_tree().set_network_peer(peer)
-	save_host_info(nickname)
-	emit_signal("on_server_created")
+	var error = peer.create_server(int(server_port),MAX_PLAYER)
+	if error != OK:
+		emit_signal("on_cant_create_server",error)
+	else:
+		get_tree().set_network_peer(peer)
+		save_host_info(nickname)
+		emit_signal("on_server_created")
 
-func create_client(nickname, server_ip = TESTING_IP):
+func create_client(nickname, server_ip,server_port):
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(server_ip,RPC_PORT)
+	peer.create_client(server_ip,int(server_port))
 	get_tree().set_network_peer(peer)
 	save_client_info(nickname)
 	emit_signal("on_client_created")

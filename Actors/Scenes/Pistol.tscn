@@ -70,14 +70,14 @@ tracks/2/keys = {
 }
 
 [node name="Pistol" instance=ExtResource( 1 )]
-transform = Transform( -4.37114e-08, 7.64274e-15, 1, 1.74846e-07, 1, 0, -1, 1.74846e-07, -4.37114e-08, 0, 0, 0 )
+transform = Transform( -5.21253e-16, -4.37114e-08, 1, -1, 1.19249e-08, 0, -1.19249e-08, -1, -4.37114e-08, 0.739043, -1.67266, 1.48322 )
 TYPE = 1
 RATE_OF_FIRE = 0.5
-MAGAZINE = 12
-DAMAGE = 20
+MAGAZINE = 8
+DAMAGE = 15
 HEADSHOT_DAMAGE_MULTI = 1.75
-MAX_RANGE = 50
-FALLOFF_RANGE = 30
+MAX_RANGE = 60
+FALLOFF_RANGE = 40
 ADS_POSITION = Vector3( -0.385, 0.065, 0 )
 STOWED_POSITION = Vector3( 0.739, -1.673, 1.483 )
 MIN_X_RECOIL = 4.0
@@ -93,26 +93,31 @@ material/0 = ExtResource( 5 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="0"]
 transform = Transform( 1, -1.49012e-08, -1.30385e-08, 1.78814e-07, 1, 2.98023e-08, -1.49012e-07, 3.72529e-09, 1, -0.095, 0.023, 0 )
+layers = 2
 mesh = SubResource( 2 )
 material/0 = ExtResource( 2 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Model" index="1"]
 transform = Transform( 1, 4.54949e-24, -5.32907e-14, 3.30872e-23, 1, -1.8735e-16, 9.66338e-13, 1.8735e-16, 1, -0.0948577, -0.275441, -0.000709381 )
+layers = 2
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="Model" index="2"]
 transform = Transform( 0.185185, 0.0626465, 7.89328e-09, -0.0875832, 1.33065, -1.43134e-08, 2.63025e-08, 3.41505e-08, 0.455787, -0.32478, -0.866897, -0.00222085 )
+layers = 2
 mesh = SubResource( 4 )
 material/0 = ExtResource( 3 )
 
 [node name="MeshInstance5" type="MeshInstance" parent="Model" index="3"]
 transform = Transform( 0.145994, 0.0493885, -1.51421e-09, -0.0731139, 1.11082, -1.1962e-08, -5.05425e-09, 2.69293e-08, 0.517625, -0.32478, -0.866897, -0.00222085 )
+layers = 2
 mesh = SubResource( 4 )
 material/0 = ExtResource( 4 )
 
 [node name="Clip" type="MeshInstance" parent="Model" index="4"]
 transform = Transform( 0.075512, 0.0266294, 1.11759e-08, -0.0546413, 0.81316, -2.09548e-09, 7.45058e-08, 1.50874e-07, 0.14717, -0.333247, -0.87116, -1.81061e-07 )
+layers = 2
 mesh = SubResource( 5 )
 material/0 = ExtResource( 2 )
 

@@ -1,4 +1,4 @@
-extends "res://Utils/scripts/State.gd"
+extends State
 
 var player_controller
 
@@ -9,6 +9,7 @@ func enter(actor,delta = 0.0):
 	print("Falling")
 
 func handle_input(event):
+	if player_controller.check_input_pressed(event,"escape","show_menu",true): return
 	if player_controller.check_input_pressed(event,"fire","fire",true): return
 	if player_controller.check_input_released(event,"fire","fire",false): return
 	if player_controller.check_input_released(event,"sprint","sprint",false): return

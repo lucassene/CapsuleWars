@@ -3,14 +3,15 @@ extends Control
 onready var info_container = $Container/InfoContainer
 onready var health_bar = $Container/InfoContainer/HealthContainer/HealthBar
 onready var ammo_counter = $Container/InfoContainer/AmmoContainer/AmmoCounter
-onready var respawn_hud = $Container/RespawnHUD
-onready var warning_label = $Container/WarningLabel
+onready var respawn_hud = $Container/RespawnContainer/RespawnHUD
+onready var warning_label = $Container/TextContainer/WarningLabel
 onready var timer = $Container/Timer
 onready var tween = $Container/Timer/Tween
 onready var pause_menu = $PauseMenu
 onready var scoreboard_menu = $Scoreboard
 onready var chat_log = $Container/Chatlog
 onready var blood_splash = $BloodSplashes
+onready var fps_label = $Container/TextContainer/FPSLabel
 
 signal _on_player_can_spawn(actor)
 signal on_exit_to_lobby()
@@ -22,6 +23,9 @@ func _ready():
 	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
 	connect("on_exit_to_lobby",Network,"_on_exit_to_lobby")
 
+func _process(_delta):
+	fps_label.text = "FPS: " + str(Engine.get_frames_per_second())
+	
 func _unhandled_input(event):
 	if !is_dead:
 		if event.is_action_pressed("score_menu"):
@@ -30,6 +34,11 @@ func _unhandled_input(event):
 		if event.is_action_released("score_menu"):
 			scoreboard_menu.hide()
 			return
+
+func get_player_max_health():
+	var health = 100
+	if Global.player: health = Global.player.get_max_health()
+	return health
 
 func _on_player_health_changed(current_health):
 	health_bar.on_health_changed(current_health)
@@ -52,13 +61,12 @@ func _on_player_death(actor):
 	info_container.visible = false
 	scoreboard_menu.show()
 	respawn_hud.on_player_death(actor)
+	blood_splash.set_max_health(get_player_max_health())
 
 func _on_player_spawned():
 	is_dead = false
-	var health = 100
-	if Global.player: health = Global.player.get_max_health()
-	health_bar.set_max_health(health)
-	blood_splash.set_max_health(health)
+	health_bar.set_max_health(get_player_max_health())
+	blood_splash.set_max_health(get_player_max_health())
 	show()
 
 func _on_player_disconnected(player):
@@ -94,8 +102,9 @@ func _on_Tween_tween_completed(_object, _key):
 	warning_label.visible = false
 
 func _on_pause_menu_exited():
-	Global.player.show_menu(false)
+	pause_menu.hide()
 	scoreboard_menu.hide()
+	Global.player.exit_menu()
 
 func _on_score_changed(id,item):
 	scoreboard_menu.update_score(id,item)
@@ -141,3 +150,4 @@ func _on_player_kill_streak(id,kills):
 	if kills > 20:
 		text = "Tem alguém aí? [color=%s]%s[/color] continua matando todo mundo!" % [color,player_name]
 	if text != "": chat_log.create_entry(text)
+

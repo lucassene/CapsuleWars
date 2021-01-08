@@ -8,6 +8,7 @@ onready var audio_player = $AudioPlayer
 onready var front_muzzle_sprite = $Model/Muzzle/MuzzleFront
 onready var side_muzzle_sprite = $Model/Muzzle/MuzzleSide
 onready var bullet_emitter = $BulletEmitter
+onready var mesh : MeshInstance = $Model
 
 enum type {
 	PRIMARY,
@@ -172,7 +173,6 @@ func draw_weapon():
 func emit_bullet():
 	var shell = bullet.instance()
 	bullet_emitter.add_child(shell)
-	#shell.transform.origin = bullet_emmiter.global_transform.origin
 	shell.emitting = true
 
 func on_stowed():
@@ -192,6 +192,8 @@ func _on_AnimationPlayer_animation_started(anim_name):
 	anim_player.playback_speed = 1.0
 	match anim_name:
 		"reload":
+			front_muzzle_sprite.hide()
+			side_muzzle_sprite.hide()
 			is_reloading = true
 			can_ads = false
 			can_swap = false
@@ -244,6 +246,8 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 				can_fire = true
 			else:
 				can_fire = false
+			front_muzzle_sprite.hide()
+			side_muzzle_sprite.hide()
 			return
 		"out_of_ammo":
 			can_ads = true
