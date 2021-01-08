@@ -8,6 +8,7 @@ var can_swap = true
 var player
  
 func initialize(actor,items):
+	print(items)
 	player = actor
 	for each in items:
 		var weapon = Armory.weapons[each].instance()

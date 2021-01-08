@@ -4,9 +4,10 @@ onready var actor = owner
 
 export var GRAVITY = 20
 export var JUMP_IMPULSE = 11
+export var MOUSE_SENSITITY = 0.05
 
 var state_machine
-var mouse_sensitivity = 0.05
+var current_sensitivity = 0.05 setget set_mouse_sensitivity
 var current_speed = 0.0 setget set_current_speed,get_current_speed
 var current_acceleration = 0.0 setget set_current_acceleration
 
@@ -25,6 +26,9 @@ func set_current_acceleration(value):
 
 func get_movement():
 	return movement
+
+func set_mouse_sensitivity(value = MOUSE_SENSITITY):
+	current_sensitivity = value
 
 func _initialize(fsm):
 	state_machine = fsm
@@ -48,8 +52,8 @@ func check_input_released(event,input,method = null,param = null):
 
 func handle_mouse_movement(event):
 	if event is InputEventMouseMotion:
-		actor.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
-		actor.head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
+		actor.rotate_y(deg2rad(-event.relative.x * current_sensitivity))
+		actor.head.rotate_x(deg2rad(-event.relative.y * current_sensitivity))
 		actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-68),deg2rad(80))
 
 func calculate_movement(delta):

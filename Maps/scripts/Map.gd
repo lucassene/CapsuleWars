@@ -34,11 +34,13 @@ func create_players_intances():
 			id = -1,
 			name = "",
 			color = 0,
+			primary = 0,
 			spawn_index = -1
 		}
 		new_player = Global.player_scene.instance()
 		new_player.set_name(str(id))
 		new_player.set_network_master(id)
+		new_player.set_weapons(Network.connected_players[id].primary)
 		players_container.add_child(new_player)
 		new_player.set_material(Network.connected_players[id].color)
 		new_player.set_hud_name(Network.connected_players[id].name)
@@ -48,6 +50,7 @@ func create_players_intances():
 		player_spawn.spawn_index = spawn_index
 		player_spawn.name = Network.connected_players[id].name
 		player_spawn.color = Network.connected_players[id].color
+		player_spawn.primary = Network.connected_players[id].primary
 		player_spawns.append(player_spawn)
 	if Network.connected_players.size() == 1:
 		start_game()
@@ -87,6 +90,7 @@ remote func receive_player_spawns(player_spawns):
 		var spawn = spawn_container.get_child(item.spawn_index)
 		new_player.set_name(str(item.id))
 		new_player.set_network_master(item.id)
+		new_player.set_weapons(item.primary)
 		players_container.add_child(new_player)
 		new_player.global_transform.origin = spawn.global_transform.origin
 		new_player.rotation = spawn.rotation
@@ -121,7 +125,7 @@ func play_music(stream):
 func fade_in(player,stream):
 	player.set_stream(stream)
 	player.play(0.0)
-	fade_in_tween.interpolate_property(player,"volume_db",-30,-10,3.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+	fade_in_tween.interpolate_property(player,"volume_db",-30,-15,3.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	fade_in_tween.start()
 
 func fade_out(player):

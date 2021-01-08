@@ -17,4 +17,7 @@ func _on_Area_body_entered(_body):
 	can_spawn = false
 
 func _on_Area_body_exited(_body):
+	for actor in area.get_overlapping_bodies():
+		if actor.is_in_group("Player"):
+			return
 	can_spawn = true

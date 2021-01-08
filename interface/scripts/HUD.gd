@@ -67,6 +67,7 @@ func _on_player_spawned():
 	is_dead = false
 	health_bar.set_max_health(get_player_max_health())
 	blood_splash.set_max_health(get_player_max_health())
+	info_container.show()
 	show()
 
 func _on_player_disconnected(player):
@@ -78,7 +79,7 @@ func _on_player_disconnected(player):
 func _on_server_disconnected():
 	is_dead = true
 	scoreboard_menu.clear_player_score()
-	info_container.visible = false
+	info_container.hide()
 
 func _on_pause_menu_pressed(value):
 	if value:

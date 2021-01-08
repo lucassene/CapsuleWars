@@ -13,4 +13,15 @@ var color_materials = {
 	"yellow" : "res://assets/materials/player-yellow.tres"
 }
 
+var colors = {
+	0: "black",
+	1: "blue",
+	2: "gray",
+	3: "green",
+	4: "purple",
+	5: "red",
+	6: "white",
+	7: "yellow"
+}
+
 var player

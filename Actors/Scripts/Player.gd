@@ -5,6 +5,7 @@ onready var bullet_decal = preload("res://Utils/scenes/BulletDecal.tscn")
 onready var blood_emitter = preload("res://particles/scenes/BloodEmitter.tscn")
 onready var death_emitter = preload("res://particles/scenes/DeathEmitter.tscn")
 onready var weapon_camera = preload("res://Utils/scenes/WeaponCamera.tscn")
+onready var sniper_view = preload("res://Utils/scenes/SniperView.tscn")
 
 onready var head: Spatial = $Head
 onready var player_controller = $PlayerController
@@ -19,7 +20,8 @@ onready var hand = $Head/Hand
 onready var hand_loc = $Head/HandLoc
 onready var primary_holster = $PrimaryHolster
 onready var secondary_holster = $SecondaryHolster
-onready var crosshair = $Head/Camera/Crosshair
+onready var crosshair = $Head/Camera/Container/Crosshair
+onready var sniper_overlay = $Head/Camera/Container/SniperOverlay
 onready var player_hud = $PlayerHUD
 onready var mesh = $Mesh
 onready var weapon_view = $WeaponView
@@ -28,7 +30,6 @@ export var HEALTH = 100 setget ,get_max_health
 export var RECOVER_DELAY = 3.0
 export var RECOVER_RATE = 1.0
 export var DEFAULT_FOV = 70
-export(PoolStringArray) var weapons = []
 export var MIN_X_FLINCH = 0.5
 export var MAX_X_FLINCH = 1.0
 export var MIN_Y_FLINCH = 0.5
@@ -45,7 +46,7 @@ signal on_player_spawned()
 signal on_menu_pressed(value)
 signal on_score_changed(item)
 
-var is_ads = false setget ,get_is_ads
+var is_ads = false setget set_is_ads,get_is_ads
 var is_moving = false setget set_is_moving,get_is_moving
 var is_firing = false setget set_is_firing,get_is_firing
 var current_anim = "headbob"
@@ -57,6 +58,7 @@ var velocity = Vector3.ZERO setget ,get_velocity
 var floor_contact = true setget ,get_floor_contact
 var recover_timer = 0.0
 var is_recovering = false
+var weapons = [-1,-1]
 
 func get_player_controller():
 	return player_controller
@@ -78,6 +80,27 @@ func get_is_moving():
 		return is_moving
 	return false
 
+func set_is_ads(value):
+	is_ads = value
+	if is_ads:
+		player_controller.set_mouse_sensitivity(current_weapon.get_ads_sensitivity())
+		current_anim = "ads-headbob"
+	else:
+		player_controller.set_mouse_sensitivity()
+		current_anim = "headbob"
+	if is_moving:
+			play_camera_anim(true)
+	if current_weapon:
+		if current_weapon.get_has_scope():
+			if is_ads == true:
+				sniper_overlay.show()
+				weapon_view.hide()
+			else:
+				sniper_overlay.hide()
+				weapon_view.show()
+		current_weapon.ads(value)
+		aim_cast.cast_to.z = current_weapon.get_range() * -1
+
 func get_is_ads():
 	return is_ads
 
@@ -97,6 +120,10 @@ func set_last_spawn(value):
 
 func get_last_spawn():
 	return last_spawn
+
+func set_weapons(primary):
+	weapons[0] = Armory.primaries[primary]
+	weapons[1] = Armory.secondaries[0]
 
 func initialize():
 	current_health = HEALTH
@@ -122,6 +149,7 @@ func _ready():
 		Global.player = self
 	get_node("/root/Game").connect_player_signals(self)
 	instance_weapon_camera()
+	instance_sniper_overlay()
 	hand.set_as_toplevel(true)
 	initialize_hand()
 	equip_weapon(hand.get_current_weapon())
@@ -191,15 +219,7 @@ func check_floor():
 
 func ads(value):
 	if current_weapon.get_can_ads():
-		is_ads = value
-		if is_ads:
-			current_anim = "ads-headbob"
-		else:
-			current_anim = "headbob"
-		if is_moving:
-			play_camera_anim(true)
-		current_weapon.ads(value)
-		aim_cast.cast_to.z = current_weapon.get_range() * -1
+		set_is_ads(value)
 
 func check_for_player():
 	if aim_cast.is_colliding():
@@ -221,11 +241,14 @@ func set_hud_name(player_name):
 	player_hud.set_name(player_name)
 
 remotesync func fire():
-	var target = null
+	print("apertou e: " + str(current_weapon.get_can_fire()))
 	if current_weapon.get_can_fire():
+		get_shot_victim()
+
+func get_shot_victim():
+		var target = null
 		var distance = 0.0
 		var point = Vector3.ZERO
-		is_firing = true
 		set_is_firing(true)
 		if is_network_master():
 			if aim_cast.is_colliding():
@@ -403,8 +426,7 @@ func play_footsteps():
 func show_menu(value):
 	if value:
 		set_is_firing(false)
-		is_ads = false
-		current_weapon.ads(false)
+		set_is_ads(false)
 	emit_signal("on_menu_pressed",value)
 
 func exit_menu():
@@ -420,8 +442,14 @@ func instance_weapon_camera():
 		add_child(cam)
 		weapon_view.texture = cam.get_texture()
 
+func instance_sniper_overlay():
+	if is_network_master():
+		var view = sniper_view.instance()
+		add_child(view)
+		sniper_overlay.texture = view.get_texture()
+
 func _on_weapon_out_of_ads():
-	is_ads = false
+	set_is_ads(false)
 
 func _on_weapon_reloaded():
 	if is_network_master():

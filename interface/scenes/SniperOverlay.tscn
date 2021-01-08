@@ -1,0 +1,98 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/textures/sniper-overlay.png" type="Texture" id=1]
+
+[node name="GridContainer" type="GridContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/vseparation = -2
+custom_constants/hseparation = -2
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 421.0
+margin_bottom = 1.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+margin_left = 419.0
+margin_right = 1500.0
+margin_bottom = 1.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+margin_left = 1498.0
+margin_right = 1919.0
+margin_bottom = 1.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect4" type="ColorRect" parent="."]
+margin_top = -1.0
+margin_right = 421.0
+margin_bottom = 1080.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 419.0
+margin_top = -1.0
+margin_right = 1500.0
+margin_bottom = 1080.0
+texture = ExtResource( 1 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="."]
+margin_left = 1498.0
+margin_top = -1.0
+margin_right = 1919.0
+margin_bottom = 1080.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect7" type="ColorRect" parent="."]
+margin_top = 1078.0
+margin_right = 421.0
+margin_bottom = 1079.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect8" type="ColorRect" parent="."]
+margin_left = 419.0
+margin_top = 1078.0
+margin_right = 1500.0
+margin_bottom = 1079.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect5" type="ColorRect" parent="."]
+margin_left = 1498.0
+margin_top = 1078.0
+margin_right = 1919.0
+margin_bottom = 1079.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )

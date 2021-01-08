@@ -7,18 +7,8 @@ const DEFAULT_PORT = 23571
 var self_data = {
 	id = -1,
 	name = "",
-	color = 0
-}
-
-var colors = {
-	0: "black",
-	1: "blue",
-	2: "gray",
-	3: "green",
-	4: "purple",
-	5: "red",
-	6: "white",
-	7: "yellow"
+	color = 0,
+	primary = 0
 }
 
 var connected_players = {}

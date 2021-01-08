@@ -63,14 +63,13 @@ tracks/0/keys = {
 ]]
 collision_mask = 3
 script = ExtResource( 1 )
-weapons = PoolStringArray( "Assault Rifle", "Pistol" )
 MIN_X_FLINCH = 1.0
 MAX_X_FLINCH = 3.0
 MIN_Y_FLINCH = 1.0
 MAX_Y_FLINCH = 3.0
 
 [node name="Mesh" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0.488986 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.488986 )
 mesh = SubResource( 1 )
 material/0 = null
 
@@ -94,6 +93,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98656, 0 )
 [node name="Camera" type="Camera" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.32 )
 cull_mask = 1048573
+fov = 40.0
 far = 200.0
 
 [node name="AimCast" type="RayCast" parent="Head/Camera"]
@@ -102,7 +102,7 @@ enabled = true
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 3
 
-[node name="Crosshair" type="CenterContainer" parent="Head/Camera"]
+[node name="Container" type="CenterContainer" parent="Head/Camera"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -110,7 +110,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="Head/Camera/Crosshair"]
+[node name="Crosshair" type="TextureRect" parent="Head/Camera/Container"]
+visible = false
 margin_left = 960.0
 margin_top = 540.0
 margin_right = 960.0
@@ -122,6 +123,15 @@ stretch_mode = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SniperOverlay" type="TextureRect" parent="Head/Camera/Container"]
+visible = false
+margin_left = 960.0
+margin_top = 540.0
+margin_right = 960.0
+margin_bottom = 540.0
+expand = true
+stretch_mode = 4
 
 [node name="CameraAnimPlayer" type="AnimationPlayer" parent="Head/Camera"]
 anims/ads-headbob = SubResource( 4 )

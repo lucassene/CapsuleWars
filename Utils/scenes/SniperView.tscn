@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://interface/scenes/SniperOverlay.tscn" type="PackedScene" id=1]
+
+[node name="SniperView" type="Viewport"]
+size = Vector2( 1920, 1080 )
+transparent_bg = true
+disable_3d = true
+usage = 0
+render_target_v_flip = true
+
+[node name="GridContainer" type="GridContainer" parent="." instance=ExtResource( 1 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = -2
+custom_constants/hseparation = -2
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}

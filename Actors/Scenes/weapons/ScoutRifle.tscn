@@ -1,0 +1,128 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://assets/animations/assault-idle.tres" type="Animation" id=1]
+[ext_resource path="res://assets/animations/assault-jump.tres" type="Animation" id=2]
+[ext_resource path="res://assets/animations/scout-draw.tres" type="Animation" id=3]
+[ext_resource path="res://assets/animations/assault-stow.tres" type="Animation" id=4]
+[ext_resource path="res://Actors/Scenes/weapons/Weapon.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/audio/assault-swap.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/assault-shot.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/materials/Pistol.tres" type="Material" id=8]
+[ext_resource path="res://assets/materials/Pistol-light.tres" type="Material" id=9]
+[ext_resource path="res://assets/materials/Black.tres" type="Material" id=10]
+[ext_resource path="res://assets/animations/scout-out_of_ammo.tres" type="Animation" id=11]
+[ext_resource path="res://assets/animations/sniper-firing.tres" type="Animation" id=12]
+[ext_resource path="res://assets/animations/scout-reload.tres" type="Animation" id=13]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 1.5, 0.65, 0.5 )
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 1.75, 0.7, 0.6 )
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 1.25, 0.25, 0.2 )
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 1.5, 0.6, 0.45 )
+
+[sub_resource type="CubeMesh" id=5]
+size = Vector3( 0.4, 1, 0.25 )
+
+[sub_resource type="CubeMesh" id=6]
+size = Vector3( 0.1, 0.3, 0.15 )
+
+[sub_resource type="CubeMesh" id=7]
+size = Vector3( 0.1, 0.1, 0.15 )
+
+[node name="ScoutRifle" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.021, -0.044, 0.437 )
+RATE_OF_FIRE = 180
+MAGAZINE = 13
+DAMAGE = 12
+HEADSHOT_DAMAGE_MULTI = 1.6
+MAX_RANGE = 120
+ADS_RANGE_MULTI = 1.5
+FALLOFF_RANGE = 75
+FALLOFF_DAMAGE_MULTI = 0.5
+ADS_POSITION = Vector3( -0.4, 0.074, 0.639 )
+DEFAULT_POSITION = Vector3( -0.021, -0.044, 0.437 )
+STOWED_POSITION = Vector3( 0.169, -0.089, 2.671 )
+ADS_SPEED = 15
+ADS_FOV = 30
+SWAY = 30
+ADS_SWAY = 75
+SPRINT_ANGLE = 50
+MIN_X_RECOIL = 0.75
+MIN_Y_RECOIL = 0.5
+MAX_Y_RECOIL = 1.75
+fire_sound = ExtResource( 7 )
+
+[node name="Model" parent="." index="0"]
+transform = Transform( 0.485426, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 10 )
+
+[node name="Muzzle" parent="Model" index="0"]
+transform = Transform( 1, -1.03398e-24, 0, -2.06795e-24, 1, -1.85361e-25, 1.42109e-14, -1.85361e-25, 1, 2.88282, 0, 7.45058e-08 )
+
+[node name="ShootPlayer" parent="Model/Muzzle" index="0"]
+transform = Transform( 2.06005, -2.48154e-24, -8.52651e-14, 0, 3.33333, -3.23376e-10, 1.13687e-13, 3.23376e-10, 3.33333, -1.98176, 1.03633, -1.3411e-07 )
+
+[node name="MuzzleSide" parent="Model/Muzzle" index="1"]
+transform = Transform( 2.06979, -9.34714e-23, -8.81073e-13, -9.92617e-24, 3.33333, -3.23376e-10, 3.83693e-13, 3.23376e-10, 3.33333, 0.659658, -0.0261294, 2.98023e-07 )
+
+[node name="MuzzleFront" parent="Model/Muzzle" index="2"]
+transform = Transform( -5.42991e-07, -6.61744e-24, 1.0016, 4.34356e-24, 3.33333, -2.81241e-23, -3.33285, -6.17869e-25, -1.63181e-07, 0.0533296, 0.121767, 0.10946 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Model" index="1"]
+transform = Transform( 1, 1.65436e-24, -2.30926e-14, -3.30872e-24, 1, -1.38778e-17, 1.7053e-13, 1.38778e-17, 1, 0.78907, 0, 5.96046e-07 )
+layers = 2
+mesh = SubResource( 2 )
+material/0 = ExtResource( 8 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="Model" index="2"]
+transform = Transform( 0.999999, 4.96308e-24, -5.50671e-14, -1.32349e-23, 1, -9.02056e-17, 5.68434e-13, 9.02056e-17, 1, 2.29023, 0.146412, 1.27405e-06 )
+layers = 2
+mesh = SubResource( 3 )
+material/0 = ExtResource( 10 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="Model" index="3"]
+transform = Transform( 0.986509, -0.101172, -6.69255e-10, 0.264889, 0.986509, 1.29455e-08, -7.29973e-09, -5.49446e-08, 1, -0.784213, -0.142539, -7.00355e-07 )
+layers = 2
+mesh = SubResource( 4 )
+material/0 = ExtResource( 8 )
+
+[node name="Clip" type="MeshInstance" parent="Model" index="4"]
+transform = Transform( 1.21224, 4.09782e-08, 0, 8.9407e-08, 0.90591, -2.6077e-08, 0, 2.08616e-07, 1, 0.183159, -0.762603, 4.17233e-07 )
+layers = 2
+mesh = SubResource( 5 )
+material/0 = ExtResource( 9 )
+
+[node name="MeshInstance7" type="MeshInstance" parent="Model" index="5"]
+transform = Transform( 1, 1.65436e-24, -3.90799e-14, -3.30872e-24, 1, -1.38778e-17, 1.7053e-13, 1.38778e-17, 1, 2.64803, 0.409054, 1.53482e-06 )
+layers = 2
+mesh = SubResource( 6 )
+material/0 = ExtResource( 10 )
+
+[node name="Slide" type="MeshInstance" parent="Model" index="6"]
+transform = Transform( 0.999999, 1.49012e-08, -2.5805e-09, -1.3411e-07, 1, 2.58068e-08, 1.83995e-08, 5.48906e-08, 1, -0.274087, 0.18445, 0.395844 )
+layers = 2
+mesh = SubResource( 7 )
+material/0 = ExtResource( 9 )
+
+[node name="AnimationPlayer" parent="." index="1"]
+anims/draw = ExtResource( 3 )
+anims/firing = ExtResource( 12 )
+anims/idle = ExtResource( 1 )
+anims/jump = ExtResource( 2 )
+anims/out_of_ammo = ExtResource( 11 )
+anims/reload = ExtResource( 13 )
+anims/stow = ExtResource( 4 )
+
+[node name="AudioPlayer" parent="." index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.145001, 0.286149, -0.00106991 )
+stream = ExtResource( 6 )
+
+[node name="BulletEmitter" type="Spatial" parent="." index="3"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -0.1365, 0.103886, 0.126867 )

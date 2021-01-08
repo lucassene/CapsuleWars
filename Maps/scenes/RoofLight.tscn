@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 0.5, 0.25, 4 )
+
+[sub_resource type="SpatialMaterial" id=2]
+emission_enabled = true
+emission = Color( 0.843137, 0.960784, 0.960784, 1 )
+emission_energy = 1.5
+emission_operator = 0
+emission_on_uv2 = false
+
+[node name="RoofLight" type="MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 0 )
+light_color = Color( 0.811765, 0.945098, 0.933333, 1 )
+light_energy = 2.5
+light_indirect_energy = 1.5
+shadow_enabled = true
+omni_range = 15.0

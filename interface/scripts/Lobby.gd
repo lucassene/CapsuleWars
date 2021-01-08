@@ -13,13 +13,13 @@ onready var log_text = $Main/Container/MainFrame/LogContainer/LogLabel
 onready var color_option = $Main/Container/SideBar/GeneralContainer/ColorPicker/ColorOption
 onready var port_text = $Main/Container/SideBar/HostJoinContainer/HostPort/HostPortText
 onready var invalid_port_label = $Main/Container/SideBar/HostJoinContainer/InvalidPort
-
-var selected_color = 0
+onready var weapon_option = $Main/Container/SideBar/ArmoryContainer/WeaponOption
 
 signal on_game_begin()
 
 func _ready():
 	add_color_options()
+	add_weapon_options()
 	Network.connect("on_new_peer",self,"_on_player_connected")
 	Network.connect("on_peer_disconnected",self,"_on_player_disconnected")
 	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
@@ -39,8 +39,15 @@ func add_color_options():
 	color_option.add_item("Yellow",7)
 	randomize()
 	color_option.selected = randi()%7
-	Network.self_data.color = Network.colors[color_option.selected]
-	selected_color = color_option.selected
+	Network.self_data.color = Global.colors[color_option.selected]
+
+func add_weapon_options():
+	weapon_option.add_item("Assault Rifle",0)
+	weapon_option.add_item("Scout Rifle",1)
+	weapon_option.add_item("Pulse Rifle",2)
+	weapon_option.add_item("Sniper Rifle",3)
+	weapon_option.selected = 0
+	Network.self_data.primary = weapon_option.selected
 
 func reset():
 	log_text.text = ""
@@ -137,8 +144,10 @@ func _on_IDText_text_changed(_new_text):
 	invalid_name_label.hide()
 
 func _on_ColorOption_item_selected(index):
-	selected_color = index
-	Network.self_data.color = Network.colors[index]
+	Network.self_data.color = Global.colors[index]
 
 func _on_ExitButton_pressed():
 	get_tree().quit()
+
+func _on_WeaponOption_item_selected(index):
+	Network.self_data.primary = index
