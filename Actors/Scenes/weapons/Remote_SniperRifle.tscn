@@ -19,6 +19,9 @@ layers = 4
 [node name="Slide" parent="Model" index="4"]
 layers = 4
 
+[node name="MeshInstance" parent="Model/Slide" index="0"]
+layers = 4
+
 [node name="MeshInstance8" parent="Model" index="5"]
 layers = 4
 

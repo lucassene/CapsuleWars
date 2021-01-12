@@ -2,17 +2,16 @@
 
 [ext_resource path="res://assets/animations/assault-idle.tres" type="Animation" id=1]
 [ext_resource path="res://assets/animations/assault-jump.tres" type="Animation" id=2]
-[ext_resource path="res://assets/animations/scout-draw.tres" type="Animation" id=3]
 [ext_resource path="res://assets/animations/assault-stow.tres" type="Animation" id=4]
 [ext_resource path="res://Actors/Scenes/weapons/Weapon.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/audio/assault-swap.wav" type="AudioStream" id=6]
-[ext_resource path="res://assets/audio/assault-shot.wav" type="AudioStream" id=7]
 [ext_resource path="res://assets/materials/Pistol.tres" type="Material" id=8]
 [ext_resource path="res://assets/materials/Pistol-light.tres" type="Material" id=9]
 [ext_resource path="res://assets/materials/Black.tres" type="Material" id=10]
 [ext_resource path="res://assets/animations/scout-out_of_ammo.tres" type="Animation" id=11]
-[ext_resource path="res://assets/animations/sniper-firing.tres" type="Animation" id=12]
+[ext_resource path="res://assets/audio/pistol_shot.wav" type="AudioStream" id=12]
 [ext_resource path="res://assets/animations/scout-reload.tres" type="Animation" id=13]
+[ext_resource path="res://assets/animations/scout-firing.tres" type="Animation" id=14]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1.5, 0.65, 0.5 )
@@ -35,18 +34,74 @@ size = Vector3( 0.1, 0.3, 0.15 )
 [sub_resource type="CubeMesh" id=7]
 size = Vector3( 0.1, 0.1, 0.15 )
 
+[sub_resource type="Animation" id=8]
+resource_name = "draw"
+length = 0.7
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.15, 0.25, 0.4, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.168994, -0.0890476, 2.671 ), Vector3( 0.168994, -0.0890476, 2.671 ), Vector3( 0.182, 0.607, 1.657 ), Vector3( 0.182, 0.607, 1.279 ), Vector3( 0.182, 0.388, 0.831 ), Vector3( -0.021, -0.044, 0.6 ), Vector3( -0.021, -0.044, 0.6 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.15, 0.25, 0.4, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 35.408, 270 ), Vector3( 0, 90, 270 ), Vector3( 0, 90, 180 ), Vector3( 0, 90, 120 ), Vector3( 0, 90, 84 ), Vector3( 0, 90, -7.363 ), Vector3( 0, 90, 0 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.7 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "on_draw_complete"
+} ]
+}
+tracks/3/type = "audio"
+tracks/3/path = NodePath("AudioPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 6 )
+} ],
+"times": PoolRealArray( 0.1 )
+}
+
 [node name="ScoutRifle" instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.021, -0.044, 0.437 )
-RATE_OF_FIRE = 180
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.021, -0.044, 0.6 )
+RATE_OF_FIRE = 160
 MAGAZINE = 13
-DAMAGE = 12
-HEADSHOT_DAMAGE_MULTI = 1.6
+DAMAGE = 30
 MAX_RANGE = 120
 ADS_RANGE_MULTI = 1.5
 FALLOFF_RANGE = 75
 FALLOFF_DAMAGE_MULTI = 0.5
 ADS_POSITION = Vector3( -0.4, 0.074, 0.639 )
-DEFAULT_POSITION = Vector3( -0.021, -0.044, 0.437 )
+DEFAULT_POSITION = Vector3( -0.021, -0.044, 0.6 )
 STOWED_POSITION = Vector3( 0.169, -0.089, 2.671 )
 ADS_SPEED = 15
 ADS_FOV = 30
@@ -54,12 +109,14 @@ SWAY = 30
 ADS_SWAY = 75
 SPRINT_ANGLE = 50
 MIN_X_RECOIL = 0.75
-MIN_Y_RECOIL = 0.5
-MAX_Y_RECOIL = 1.75
-fire_sound = ExtResource( 7 )
+MAX_X_RECOIL = 2.5
+MIN_Y_RECOIL = 0.75
+MAX_Y_RECOIL = 3.0
+ADS_RECOIL_MULTI = 0.4
+fire_sound = ExtResource( 12 )
 
 [node name="Model" parent="." index="0"]
-transform = Transform( 0.485426, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+transform = Transform( 0.485426, 0, 0, 0, 0.3, 2.91038e-11, 0, -2.91038e-11, 0.3, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 10 )
 
@@ -106,14 +163,14 @@ mesh = SubResource( 6 )
 material/0 = ExtResource( 10 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="6"]
-transform = Transform( 0.999999, 1.49012e-08, -2.5805e-09, -1.3411e-07, 1, 2.58068e-08, 1.83995e-08, 5.48906e-08, 1, -0.274087, 0.18445, 0.395844 )
+transform = Transform( 0.999999, 1.49012e-08, -2.5805e-09, -1.3411e-07, 1, 2.58068e-08, 1.83995e-08, 5.48906e-08, 1, -0.274, 0.184, 0.396 )
 layers = 2
 mesh = SubResource( 7 )
 material/0 = ExtResource( 9 )
 
 [node name="AnimationPlayer" parent="." index="1"]
-anims/draw = ExtResource( 3 )
-anims/firing = ExtResource( 12 )
+anims/draw = SubResource( 8 )
+anims/firing = ExtResource( 14 )
 anims/idle = ExtResource( 1 )
 anims/jump = ExtResource( 2 )
 anims/out_of_ammo = ExtResource( 11 )

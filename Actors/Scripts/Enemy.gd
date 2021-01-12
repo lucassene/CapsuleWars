@@ -7,8 +7,11 @@ onready var timer = $Timer
 
 var health = 100
 var current_health = 100
+var ttk = 0.0
+var shot = false
 
 func add_damage(point,damage):
+	shot = true
 	create_blood_splash(point)
 	current_health -= damage
 	if current_health <= 0:
@@ -17,8 +20,13 @@ func add_damage(point,damage):
 	else:
 		return false
 
-func _process(_delta):
+func _process(delta):
+	if shot:
+		ttk += delta
 	if current_health <= 0:
+		shot = false
+		print("Enemy morto em: " + str(ttk) + " segundos.")
+		ttk = 0.0
 		set_collision_layer_bit(0,false)
 		current_health = health
 		timer.start()

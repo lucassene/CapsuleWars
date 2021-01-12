@@ -9,6 +9,8 @@ onready var front_muzzle_sprite = $Model/Muzzle/MuzzleFront
 onready var side_muzzle_sprite = $Model/Muzzle/MuzzleSide
 onready var bullet_emitter = $BulletEmitter
 onready var mesh : MeshInstance = $Model
+onready var rate_of_fire_timer = $ROFTimer
+onready var pulse_timer: Timer = $PulseTimer
 
 enum type {
 	PRIMARY,
@@ -43,6 +45,7 @@ export var MIN_X_RECOIL = 1.0
 export var MAX_X_RECOIL = 2.0
 export var MIN_Y_RECOIL = 1.0
 export var MAX_Y_RECOIL = 1.0
+export var ADS_RECOIL_MULTI = 0.5
 
 export(AudioStream) var fire_sound
 
@@ -57,9 +60,7 @@ var can_reload = false
 var current_ammo setget ,get_current_ammo
 var can_fire = false setget ,get_can_fire
 var can_ads = false setget ,get_can_ads
-var rof_timer = 0
-var pulse_timer = 0
-var pulse_count = 1
+var pulse_count = 0
 
 signal on_out_of_ads()
 signal on_reloaded()
@@ -130,44 +131,33 @@ func get_damage(distance,is_headshot):
 	return dmg
 
 func _ready():
-	var pr = str(float(60.0)/PULSE_RATE)
-	print("rate do pulse :" + pr)
 	set_process(false)
 	transform.origin = DEFAULT_POSITION
 	current_ammo = MAGAZINE
+	calculate_rof()
 	connect_signals()
 
 func _process(delta):
-	calculate_rof(delta)
 	if is_ads:
 		transform.origin = transform.origin.linear_interpolate(ADS_POSITION,ADS_SPEED * delta)
 	else:
 		transform.origin = transform.origin.linear_interpolate(DEFAULT_POSITION,ADS_SPEED * delta)
 
-func calculate_rof(delta):
-	if current_ammo > 0:
-		if (!PULSE and !can_fire) or (PULSE and !is_pulse_firing and !can_fire): 
-			print("comecou a contar")
-			rof_timer += delta
-		if is_pulse_firing: pulse_fire(delta)
-		var rof = float(60.0) / RATE_OF_FIRE
-		if rof_timer >= rof and !is_reloading:
-			print("pode atirar")
-			rof_timer = 0.0
-			can_fire = true
-			auto_fire()
+func calculate_rof():
+	var rof = float(60.0) / RATE_OF_FIRE
+	rate_of_fire_timer.wait_time = rof
+	if PULSE:
+		var pulse = float(60.0) / PULSE_RATE
+		pulse_timer.wait_time = pulse
 
-func pulse_fire(delta):
-	pulse_timer += delta
+func pulse_fire():
 	if pulse_count < PULSE_SHOTS:
-		if pulse_timer >= float(60.0) / PULSE_RATE:
-			pulse_count += 1
-			pulse_timer = 0
 			player.get_shot_victim()
 	else:
-		pulse_timer = 0
-		pulse_count = 1
+		pulse_count = 0
 		is_pulse_firing = false
+		player.set_is_firing(false)
+		rate_of_fire_timer.start()
 
 func auto_fire():
 	if AUTO and player.get_is_firing():
@@ -216,6 +206,19 @@ func draw_weapon():
 	emit_signal("on_out_of_ads")
 	anim_player.play("draw")
 
+func play_shot_sound():
+	if shoot_player.stream == fire_sound:
+		shoot_player.seek(0.0)
+	else:
+		shoot_player.set_stream(fire_sound)
+	var recoil_multi = 1
+	if is_ads: recoil_multi = ADS_RECOIL_MULTI
+	player.shake_camera(MAX_X_RECOIL * recoil_multi,MIN_X_RECOIL * recoil_multi,MAX_Y_RECOIL * recoil_multi,MIN_Y_RECOIL * recoil_multi)
+	shoot_player.play()
+
+func stop_shot_sound():
+	shoot_player.stop()
+
 func emit_bullet():
 	var shell = bullet.instance()
 	bullet_emitter.add_child(shell)
@@ -247,7 +250,6 @@ func _on_AnimationPlayer_animation_started(anim_name):
 		"idle":
 			can_ads = true
 			can_swap = true
-			#if current_ammo > 0: can_fire = true
 			return
 		"draw":
 			is_ads = false
@@ -267,15 +269,13 @@ func _on_AnimationPlayer_animation_started(anim_name):
 			return
 		"firing","out_of_ammo":
 			can_swap = false
-			rof_timer = 0.0
-			pulse_timer = 0.0
-			if PULSE: is_pulse_firing = true
-			if shoot_player.stream == fire_sound:
-				shoot_player.seek(0.0)
+			can_fire = false
+			can_reload = false
+			if PULSE: 
+				is_pulse_firing = true
+				pulse_timer.start()
 			else:
-				shoot_player.set_stream(fire_sound)
-			shoot_player.play()
-			if is_network_master(): player.shake_camera(MAX_X_RECOIL,MIN_X_RECOIL,MAX_Y_RECOIL,MIN_Y_RECOIL)
+				rate_of_fire_timer.start()
 			return
 
 func _on_AnimationPlayer_animation_finished(anim_name):
@@ -284,14 +284,14 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		"firing":
 			can_swap = true
 			can_ads = true
-			can_fire = false
+			can_reload = true
 			front_muzzle_sprite.hide()
 			side_muzzle_sprite.hide()
 			return
 		"out_of_ammo":
 			can_ads = true
 			can_swap = true
-			can_fire = false
+			can_reload = true
 			return
 		"reload":
 			is_reloading = false
@@ -319,3 +319,12 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 func _on_player_dead(_actor):
 	is_ads = false
 
+func _on_ROFTimer_timeout():
+	if !is_reloading and current_ammo > 0:
+		can_fire = true
+		auto_fire()
+
+func _on_PulseTimer_timeout():
+	if is_pulse_firing:
+		pulse_count += 1
+		pulse_fire()

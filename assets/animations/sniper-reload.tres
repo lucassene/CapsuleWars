@@ -87,8 +87,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 1.5, 1.6 ),
+"times": PoolRealArray( 0.1, 1.5, 1.6 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -0.342863, 0.210294, -0.177343 ), Vector3( -0.342863, 0.210294, -0.177343 ), Vector3( 0.596, 0.21, -0.177 ) ]
+"values": [ Vector3( -0.343, 0.256, -0.177 ), Vector3( -0.343, 0.256, -0.177 ), Vector3( 0.596, 0.256, -0.177 ) ]
 }

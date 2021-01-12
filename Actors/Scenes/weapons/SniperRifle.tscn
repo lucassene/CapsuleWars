@@ -1,47 +1,140 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://assets/animations/assault-idle.tres" type="Animation" id=1]
 [ext_resource path="res://assets/animations/assault-jump.tres" type="Animation" id=2]
-[ext_resource path="res://assets/animations/scout-draw.tres" type="Animation" id=3]
+[ext_resource path="res://assets/animations/sniper-draw.tres" type="Animation" id=3]
 [ext_resource path="res://assets/animations/assault-stow.tres" type="Animation" id=4]
 [ext_resource path="res://Actors/Scenes/weapons/Weapon.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/audio/assault-swap.wav" type="AudioStream" id=6]
-[ext_resource path="res://assets/audio/assault-shot.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/audio/sniper-shot.wav" type="AudioStream" id=7]
 [ext_resource path="res://assets/materials/Pistol.tres" type="Material" id=8]
 [ext_resource path="res://assets/materials/Leather.tres" type="Material" id=9]
 [ext_resource path="res://assets/materials/Black.tres" type="Material" id=10]
-[ext_resource path="res://assets/animations/sniper-out_of_ammo.tres" type="Animation" id=11]
+[ext_resource path="res://assets/animations/sniper-out-of-ammo.tres" type="Animation" id=11]
 [ext_resource path="res://assets/animations/sniper-reload.tres" type="Animation" id=12]
-[ext_resource path="res://assets/animations/sniper-firing.tres" type="Animation" id=13]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1.5, 0.65, 0.5 )
 
-[sub_resource type="CubeMesh" id=3]
+[sub_resource type="CubeMesh" id=2]
 size = Vector3( 4, 0.25, 0.2 )
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="CubeMesh" id=3]
 size = Vector3( 1.6, 0.5, 0.4 )
 
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 0.1, 0.2, 0.2 )
+
+[sub_resource type="CubeMesh" id=5]
+size = Vector3( 0.05, 0.1, 0.2 )
+
 [sub_resource type="CubeMesh" id=6]
-size = Vector3( 0.1, 0.3, 0.15 )
+size = Vector3( 0.25, 0.4, 0.4 )
 
-[sub_resource type="CubeMesh" id=10]
-size = Vector3( 0.3, 0.4, 0.4 )
-
-[sub_resource type="CubeMesh" id=9]
+[sub_resource type="CubeMesh" id=7]
 size = Vector3( 0.4, 0.75, 0.3 )
 
 [sub_resource type="CubeMesh" id=8]
 size = Vector3( 1.3, 0.3, 0.3 )
 
+[sub_resource type="Animation" id=9]
+length = 2.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Model:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.06, 0.2, 1.3, 1.4, 1.401, 1.7, 1.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -0.25, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( -0.0408478, 0, 0 ), Vector3( -0.0408478, 0, 0 ), Vector3( -0.0408478, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Model:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.06, 0.2, 1.3, 1.4, 1.7, 1.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 0.406126, 0.277392, 1 ),
+"update": 0,
+"values": [ Vector3( -5.55842e-09, 0, 0 ), Vector3( 0, 0, 3 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 6.565, 0, 0 ), Vector3( 6.565, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Model/Muzzle/MuzzleSide:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.01, 0.06 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Model/Muzzle/MuzzleFront:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.01, 0.06 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 1.7 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "emit_bullet"
+} ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Model/Slide:translation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 1.3, 1.4, 1.7, 1.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.596, 0.255673, -0.177 ), Vector3( 0.596, 0.255673, -0.177 ), Vector3( -0.304, 0.256, -0.177 ), Vector3( -0.304, 0.256, -0.177 ), Vector3( 0.596, 0.256, -0.177 ) ]
+}
+tracks/6/type = "method"
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "play_shot_sound"
+} ]
+}
+
 [node name="SniperRifle" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.021, -0.044, 0.437 )
 HAS_SCOPE = true
-RATE_OF_FIRE = 90
+RATE_OF_FIRE = 24
 MAGAZINE = 4
-DAMAGE = 25
-HEADSHOT_DAMAGE_MULTI = 4.0
+DAMAGE = 50
+HEADSHOT_DAMAGE_MULTI = 2.0
 MAX_RANGE = 200
 ADS_RANGE_MULTI = 1.5
 FALLOFF_RANGE = 125
@@ -54,13 +147,15 @@ ADS_FOV = 20
 SWAY = 30
 ADS_SWAY = 75
 SPRINT_ANGLE = 50
-MIN_X_RECOIL = 0.75
-MIN_Y_RECOIL = 0.5
-MAX_Y_RECOIL = 1.75
+MIN_X_RECOIL = 3.25
+MAX_X_RECOIL = 6.0
+MIN_Y_RECOIL = 1.5
+MAX_Y_RECOIL = 6.0
+ADS_RECOIL_MULTI = 0.25
 fire_sound = ExtResource( 7 )
 
 [node name="Model" parent="." index="0"]
-transform = Transform( 0.485426, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+transform = Transform( 0.485426, 0, 0, 0, 0.298033, -0.0342991, 0, 0.0342991, 0.298033, -0.0408478, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 9 )
 
@@ -69,6 +164,7 @@ transform = Transform( 1, -1.03398e-24, 0, -2.06795e-24, 1, -1.85361e-25, 1.4210
 
 [node name="ShootPlayer" parent="Model/Muzzle" index="0"]
 transform = Transform( 2.06005, -2.48154e-24, -9.23706e-14, 3.9443e-31, 3.33333, -3.23376e-10, 1.13687e-13, 3.23376e-10, 3.33333, -1.98176, 1.35266, -1.3411e-07 )
+stream = ExtResource( 7 )
 
 [node name="MuzzleSide" parent="Model/Muzzle" index="1"]
 transform = Transform( 2.06979, -9.34714e-23, -8.81073e-13, -9.92617e-24, 3.33333, -3.23376e-10, 3.83693e-13, 3.23376e-10, 3.33333, 0.659658, -0.0261294, 2.98023e-07 )
@@ -79,66 +175,72 @@ transform = Transform( -5.42991e-07, -6.61744e-24, 1.0016, 4.34356e-24, 3.33333,
 [node name="MeshInstance3" type="MeshInstance" parent="Model" index="1"]
 transform = Transform( 0.999999, 4.96308e-24, -7.28306e-14, -1.32349e-23, 1, -9.02056e-17, 5.68434e-13, 9.02056e-17, 1, 1.551, 0.277477, 1.3411e-06 )
 layers = 2
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 material/0 = ExtResource( 10 )
 
 [node name="MeshInstance4" type="MeshInstance" parent="Model" index="2"]
 transform = Transform( 0.986509, -0.101172, -6.69269e-10, 0.264889, 0.986509, 1.29455e-08, -7.29973e-09, -5.49446e-08, 1, -0.997234, -0.203305, -6.55651e-07 )
 layers = 2
-mesh = SubResource( 4 )
+mesh = SubResource( 3 )
 material/0 = ExtResource( 9 )
 
 [node name="MeshInstance7" type="MeshInstance" parent="Model" index="3"]
-transform = Transform( 1, 1.65436e-24, -5.32907e-14, -3.30872e-24, 1, -1.38778e-17, 1.7053e-13, 1.38778e-17, 1, 3.41772, 0.540119, 1.60933e-06 )
+transform = Transform( 1, 1.65436e-24, -6.03961e-14, -3.30872e-24, 1, -1.38778e-17, 1.7053e-13, 1.38778e-17, 1, 3.41772, 0.465428, 1.63913e-06 )
 layers = 2
-mesh = SubResource( 6 )
+mesh = SubResource( 4 )
 material/0 = ExtResource( 10 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="4"]
-transform = Transform( 1, 7.45058e-09, 1.56069e-09, 7.45058e-09, 1, -2.4334e-09, 1.00549e-10, -2.3371e-09, 1, 0.596, 0.21, -0.177 )
+transform = Transform( 1, 7.45058e-09, 1.56069e-09, 7.45058e-09, 1, -2.4334e-09, 1.00549e-10, -2.3371e-09, 1, -0.304, 0.256, -0.177 )
 layers = 2
-mesh = SubResource( 6 )
+mesh = SubResource( 4 )
+material/0 = ExtResource( 10 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Model/Slide" index="0"]
+transform = Transform( 1, 0, -1.06581e-14, 8.88178e-16, 1, 9.14485e-18, -1.42109e-14, -1.69422e-15, 1, 0, 0, -0.162917 )
+layers = 2
+mesh = SubResource( 5 )
 material/0 = ExtResource( 10 )
 
 [node name="MeshInstance8" type="MeshInstance" parent="Model" index="5"]
-transform = Transform( 1, 1.65436e-24, -5.68434e-14, -3.30872e-24, 1, -1.38778e-17, 1.7053e-13, 1.38778e-17, 1, -0.244072, 0.540119, 1.62423e-06 )
+transform = Transform( 1, 1.65436e-24, -5.68434e-14, -3.30872e-24, 1, -1.38778e-17, 1.77636e-13, 1.38778e-17, 1, -0.244072, 0.49815, 1.62423e-06 )
 layers = 2
-mesh = SubResource( 6 )
+mesh = SubResource( 4 )
 material/0 = ExtResource( 10 )
 
 [node name="MeshInstance9" type="MeshInstance" parent="Model" index="6"]
-transform = Transform( 1, 1.65436e-24, -6.03961e-14, -3.30872e-24, 1, -1.38778e-17, 1.7053e-13, 1.38778e-17, 1, 0.514668, 0.540119, 1.63168e-06 )
+transform = Transform( 1, 1.65436e-24, -6.03961e-14, -3.30872e-24, 1, -1.38778e-17, 1.77636e-13, 1.38778e-17, 1, 0.514668, 0.49815, 1.63913e-06 )
 layers = 2
-mesh = SubResource( 6 )
+mesh = SubResource( 4 )
 material/0 = ExtResource( 10 )
 
 [node name="MeshInstance11" type="MeshInstance" parent="Model" index="7"]
-transform = Transform( 1, 1.65436e-24, -6.75016e-14, -3.30872e-24, 1, -1.38778e-17, 1.7053e-13, 1.38778e-17, 1, 0.731615, 0.818769, 1.65403e-06 )
+transform = Transform( 1, 1.65436e-24, -6.75016e-14, -3.30872e-24, 1, -1.38778e-17, 1.77636e-13, 1.38778e-17, 1, 0.731615, 0.736465, 1.65403e-06 )
 layers = 2
-mesh = SubResource( 10 )
+mesh = SubResource( 6 )
 material/0 = ExtResource( 10 )
 
 [node name="MeshInstance12" type="MeshInstance" parent="Model" index="8"]
 transform = Transform( 1, 1.65436e-24, -9.23706e-14, -3.30872e-24, 1, -1.38778e-17, 1.77636e-13, 1.38778e-17, 1, -0.444375, -0.354352, 1.71363e-06 )
 layers = 2
-mesh = SubResource( 10 )
+mesh = SubResource( 6 )
 material/0 = ExtResource( 10 )
 
 [node name="Clip" type="MeshInstance" parent="Model" index="9"]
 transform = Transform( 1, 3.72529e-09, 0, 0, 1, -2.6077e-08, 0, 1.86265e-09, 1, 0.183159, -0.641863, 4.17233e-07 )
 layers = 2
-mesh = SubResource( 9 )
+mesh = SubResource( 7 )
 material/0 = ExtResource( 8 )
 
 [node name="MeshInstance10" type="MeshInstance" parent="Model" index="10"]
-transform = Transform( 1, 1.65436e-24, -7.10543e-14, -3.30872e-24, 1, -1.38778e-17, 1.7053e-13, 1.38778e-17, 1, 0.0382267, 0.821693, 1.66893e-06 )
+transform = Transform( 1, 1.65436e-24, -7.10543e-14, -3.30872e-24, 1, -1.38778e-17, 1.77636e-13, 1.38778e-17, 1, 0.0382266, 0.739389, 1.68383e-06 )
 layers = 2
 mesh = SubResource( 8 )
 material/0 = ExtResource( 10 )
 
 [node name="AnimationPlayer" parent="." index="1"]
 anims/draw = ExtResource( 3 )
-anims/firing = ExtResource( 13 )
+anims/firing = SubResource( 9 )
 anims/idle = ExtResource( 1 )
 anims/jump = ExtResource( 2 )
 anims/out_of_ammo = ExtResource( 11 )
@@ -150,4 +252,4 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.145001, 0.378938, -0.001069
 stream = ExtResource( 6 )
 
 [node name="BulletEmitter" type="Spatial" parent="." index="3"]
-transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0.00127694, 0.103886, 0.0607766 )
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -0.180513, 0.103886, -0.103861 )

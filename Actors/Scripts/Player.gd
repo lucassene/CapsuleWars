@@ -21,19 +21,20 @@ onready var hand_loc = $Head/HandLoc
 onready var primary_holster = $PrimaryHolster
 onready var secondary_holster = $SecondaryHolster
 onready var crosshair = $Head/Camera/Container/Crosshair
-onready var sniper_overlay = $Head/Camera/Container/SniperOverlay
+#onready var sniper_overlay = $Head/Camera/Container/SniperOverlay
 onready var player_hud = $PlayerHUD
 onready var mesh = $Mesh
-onready var weapon_view = $WeaponView
+onready var weapon_view = $CenterContainer/WeaponView
+onready var container = $Head/Camera/Container
 
 export var HEALTH = 100 setget ,get_max_health
 export var RECOVER_DELAY = 3.0
 export var RECOVER_RATE = 1.0
 export var DEFAULT_FOV = 70
 export var MIN_X_FLINCH = 0.5
-export var MAX_X_FLINCH = 1.0
+export var MAX_X_FLINCH = 1.5
 export var MIN_Y_FLINCH = 0.5
-export var MAX_Y_FLINCH = 1.0
+export var MAX_Y_FLINCH = 1.5
 
 signal on_weapon_equipped(clip_size)
 signal on_weapon_changed(current_ammo,clip_size)
@@ -59,6 +60,7 @@ var floor_contact = true setget ,get_floor_contact
 var recover_timer = 0.0
 var is_recovering = false
 var weapons = [-1,-1]
+var sniper_overlay
 
 func get_player_controller():
 	return player_controller
@@ -85,19 +87,20 @@ func set_is_ads(value):
 	if is_ads:
 		player_controller.set_mouse_sensitivity(current_weapon.get_ads_sensitivity())
 		current_anim = "ads-headbob"
+		if current_weapon and is_network_master() and current_weapon.get_has_scope():
+			sniper_overlay.show()
+			weapon_view.hide()
+			crosshair.hide()
 	else:
 		player_controller.set_mouse_sensitivity()
 		current_anim = "headbob"
+		if current_weapon and is_network_master() and current_weapon.get_has_scope():
+			sniper_overlay.hide()
+			weapon_view.show()
+			crosshair.show()
 	if is_moving:
 			play_camera_anim(true)
-	if current_weapon:
-		if current_weapon.get_has_scope():
-			if is_ads == true:
-				sniper_overlay.show()
-				weapon_view.hide()
-			else:
-				sniper_overlay.hide()
-				weapon_view.show()
+	if current_weapon: 
 		current_weapon.ads(value)
 		aim_cast.cast_to.z = current_weapon.get_range() * -1
 
@@ -121,16 +124,29 @@ func set_last_spawn(value):
 func get_last_spawn():
 	return last_spawn
 
-func set_weapons(primary):
-	weapons[0] = Armory.primaries[primary]
-	weapons[1] = Armory.secondaries[0]
+func set_weapons(primary,secondary):
+	var primary_weapon = Armory.primaries[primary]
+	if primary_weapon: 
+		weapons[0] = primary_weapon
+	else:
+		print("Null primary weapon")
+		weapons[0] = Armory.primaries[0]
+	var secondary_weapon = Armory.secondaries[secondary]
+	if secondary_weapon:
+		weapons[1] = secondary_weapon
+	else:
+		print("Null secondary weapon")
+		weapons[1] = Armory.secondaries[0]
 
 func initialize():
 	current_health = HEALTH
 	player_hud.set_progress(current_health)
 	state_machine.set_state("Idle")
-	if is_network_master(): camera.current = true
-	emit_signal("on_player_spawned")
+	if is_network_master(): 
+		weapon_view.show()
+		crosshair.show()
+		camera.current = true
+		emit_signal("on_player_spawned")
 
 func initialize_hand():
 	if !is_network_master():
@@ -147,13 +163,14 @@ func _ready():
 		print("Meu unique id: " + str(get_tree().get_network_unique_id()))
 		print("Meu nome é: " + name)
 		Global.player = self
+		hand.set_as_toplevel(true)
 	get_node("/root/Game").connect_player_signals(self)
 	instance_weapon_camera()
 	instance_sniper_overlay()
-	hand.set_as_toplevel(true)
 	initialize_hand()
 	equip_weapon(hand.get_current_weapon())
-	emit_signal("on_weapon_equipped",current_weapon.get_magazine())
+	if is_network_master(): 
+		emit_signal("on_weapon_equipped",current_weapon.get_magazine())
 	player_controller._initialize(state_machine)
 	state_machine.initialize("Idle")
 
@@ -164,8 +181,8 @@ func _unhandled_input(event):
 
 func _process(delta):
 	recover_health(delta)
-	weapon_sway(delta)
 	if is_network_master():
+		hand.global_transform.origin = hand_loc.global_transform.origin
 		if is_ads and camera.fov > current_weapon.get_ads_fov():
 			camera.fov = lerp(camera.fov,current_weapon.get_ads_fov(), current_weapon.get_ads_speed() * delta)
 		elif !is_ads and camera.fov < DEFAULT_FOV:
@@ -175,6 +192,7 @@ func _process(delta):
 
 func _physics_process(delta):
 	if is_network_master():
+		weapon_sway(delta)
 		check_for_player()
 		check_floor()
 		state_machine.update(delta)
@@ -192,7 +210,6 @@ remote func update_position(position,body_rotation,head_rotation):
 	head.rotation.x = head_rotation
 
 func weapon_sway(delta):
-	hand.global_transform.origin = hand_loc.global_transform.origin
 	hand.rotation.y = lerp_angle(hand.rotation.y,rotation.y,current_weapon.get_sway() * delta)
 	hand.rotation.z = lerp_angle(hand.rotation.z,head.rotation.z,current_weapon.get_sway() * delta)
 	if player_controller.is_sprinting() and !is_ads and !is_firing:
@@ -241,7 +258,6 @@ func set_hud_name(player_name):
 	player_hud.set_name(player_name)
 
 remotesync func fire():
-	print("apertou e: " + str(current_weapon.get_can_fire()))
 	if current_weapon.get_can_fire():
 		get_shot_victim()
 
@@ -351,21 +367,20 @@ remotesync func deactivate_player(value,point = null):
 	elif point: create_death_splash(point)
 	set_process(!value)
 	set_physics_process(!value)
-	crosshair.visible = !value
+	if is_network_master(): crosshair.visible = !value
 	set_collision_layer_bit(0,!value)
 	set_collision_mask_bit(0,!value)
 	if value and point: yield(get_tree().create_timer(1),"timeout")
 	visible = !value
 
 func place_decal(target):
-	if target.is_in_group("World"):
-		var bullet = bullet_decal.instance()
-		target.add_child(bullet)
-		bullet.global_transform.origin = aim_cast.get_collision_point()
-		if aim_cast.get_collision_normal().is_equal_approx(Vector3.UP):
-			bullet.rotation_degrees.x = 90
-		else:
-			bullet.look_at(aim_cast.get_collision_point() + aim_cast.get_collision_normal(),Vector3.UP)
+	var bullet = bullet_decal.instance()
+	target.add_child(bullet)
+	bullet.global_transform.origin = aim_cast.get_collision_point()
+	if aim_cast.get_collision_normal().is_equal_approx(Vector3.UP):
+		bullet.rotation_degrees.x = 90
+	else:
+		bullet.look_at(aim_cast.get_collision_point() + aim_cast.get_collision_normal(),Vector3.UP)
 
 remotesync func update_score(item,value,is_headshot = false):
 	Scores.update_score(int(name),item,value,is_headshot)
@@ -427,6 +442,7 @@ func show_menu(value):
 	if value:
 		set_is_firing(false)
 		set_is_ads(false)
+		play_camera_anim(false)
 	emit_signal("on_menu_pressed",value)
 
 func exit_menu():
@@ -445,8 +461,9 @@ func instance_weapon_camera():
 func instance_sniper_overlay():
 	if is_network_master():
 		var view = sniper_view.instance()
+		view.hide()
 		add_child(view)
-		sniper_overlay.texture = view.get_texture()
+		sniper_overlay = view
 
 func _on_weapon_out_of_ads():
 	set_is_ads(false)

@@ -13,7 +13,8 @@ onready var log_text = $Main/Container/MainFrame/LogContainer/LogLabel
 onready var color_option = $Main/Container/SideBar/GeneralContainer/ColorPicker/ColorOption
 onready var port_text = $Main/Container/SideBar/HostJoinContainer/HostPort/HostPortText
 onready var invalid_port_label = $Main/Container/SideBar/HostJoinContainer/InvalidPort
-onready var weapon_option = $Main/Container/SideBar/ArmoryContainer/WeaponOption
+onready var primary_option = $Main/Container/SideBar/ArmoryContainer/PrimaryOption
+onready var secondary_option = $Main/Container/SideBar/ArmoryContainer/SecondaryOption
 
 signal on_game_begin()
 
@@ -42,12 +43,17 @@ func add_color_options():
 	Network.self_data.color = Global.colors[color_option.selected]
 
 func add_weapon_options():
-	weapon_option.add_item("Assault Rifle",0)
-	weapon_option.add_item("Scout Rifle",1)
-	weapon_option.add_item("Pulse Rifle",2)
-	weapon_option.add_item("Sniper Rifle",3)
-	weapon_option.selected = 0
-	Network.self_data.primary = weapon_option.selected
+	primary_option.add_item("Assault Rifle",0)
+	primary_option.add_item("Scout Rifle",1)
+	primary_option.add_item("Pulse Rifle",2)
+	primary_option.add_item("Sniper Rifle",3)
+	primary_option.selected = 0
+	Network.self_data.primary = primary_option.selected
+	
+	secondary_option.add_item("Pistol",0)
+	secondary_option.add_item("SMG",1)
+	secondary_option.selected = 0
+	Network.self_data.secondary = secondary_option.selected
 
 func reset():
 	log_text.text = ""
@@ -149,5 +155,8 @@ func _on_ColorOption_item_selected(index):
 func _on_ExitButton_pressed():
 	get_tree().quit()
 
-func _on_WeaponOption_item_selected(index):
+func _on_PrimaryOption_item_selected(index):
 	Network.self_data.primary = index
+
+func _on_SecondaryOption_item_selected(index):
+	Network.self_data.secondary = index

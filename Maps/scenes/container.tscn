@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/materials/light-grid.tres" type="Material" id=1]
+[ext_resource path="res://assets/materials/orange-grid.tres" type="Material" id=2]
+[ext_resource path="res://assets/meshes/container.glb" type="PackedScene" id=3]
+
+[node name="container" instance=ExtResource( 3 )]
+
+[node name="container" parent="." index="0"]
+material/0 = ExtResource( 2 )
+material/1 = ExtResource( 1 )
+
+[node name="container" parent="container" index="0" groups=[
+"World",
+]]
+collision_layer = 2

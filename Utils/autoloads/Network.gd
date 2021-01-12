@@ -8,7 +8,8 @@ var self_data = {
 	id = -1,
 	name = "",
 	color = 0,
-	primary = 0
+	primary = 0,
+	secondary = 0
 }
 
 var connected_players = {}

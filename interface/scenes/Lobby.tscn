@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://interface/scripts/Lobby.gd" type="Script" id=1]
 [ext_resource path="res://interface/resources/HUDSmallFont.tres" type="DynamicFont" id=2]
 [ext_resource path="res://interface/resources/HUDBigFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://interface/Theme.tres" type="Theme" id=4]
 
 [node name="Lobby" type="Control"]
 anchor_right = 1.0
@@ -55,7 +56,7 @@ margin_bottom = 41.0
 custom_fonts/font = ExtResource( 3 )
 text = "General"
 
-[node name="HSeparator" type="HSeparator" parent="Main/Container/SideBar/GeneralContainer"]
+[node name="HSeparator2" type="HSeparator" parent="Main/Container/SideBar/GeneralContainer"]
 margin_top = 56.0
 margin_right = 300.0
 margin_bottom = 60.0
@@ -113,6 +114,7 @@ margin_left = 61.0
 margin_right = 300.0
 margin_bottom = 33.0
 size_flags_horizontal = 3
+theme = ExtResource( 4 )
 custom_fonts/font = ExtResource( 2 )
 custom_constants/arrow_margin = 3
 toggle_mode = false
@@ -120,7 +122,8 @@ toggle_mode = false
 [node name="ArmoryContainer" type="VBoxContainer" parent="Main/Container/SideBar"]
 margin_top = 210.0
 margin_right = 300.0
-margin_bottom = 319.0
+margin_bottom = 450.0
+custom_constants/separation = 15
 
 [node name="Label2" type="Label" parent="Main/Container/SideBar/ArmoryContainer"]
 margin_right = 300.0
@@ -128,26 +131,49 @@ margin_bottom = 41.0
 custom_fonts/font = ExtResource( 3 )
 text = "Armory"
 
-[node name="WeaponLabel" type="Label" parent="Main/Container/SideBar/ArmoryContainer"]
-margin_top = 45.0
+[node name="HSeparator" type="HSeparator" parent="Main/Container/SideBar/ArmoryContainer"]
+margin_top = 56.0
 margin_right = 300.0
-margin_bottom = 72.0
+margin_bottom = 60.0
+
+[node name="WeaponLabel" type="Label" parent="Main/Container/SideBar/ArmoryContainer"]
+margin_top = 75.0
+margin_right = 300.0
+margin_bottom = 102.0
 custom_fonts/font = ExtResource( 2 )
 text = "Primary Weapon:"
 
-[node name="WeaponOption" type="OptionButton" parent="Main/Container/SideBar/ArmoryContainer"]
-margin_top = 76.0
+[node name="PrimaryOption" type="OptionButton" parent="Main/Container/SideBar/ArmoryContainer"]
+margin_top = 117.0
 margin_right = 300.0
-margin_bottom = 109.0
+margin_bottom = 150.0
 size_flags_horizontal = 3
+theme = ExtResource( 4 )
+custom_fonts/font = ExtResource( 2 )
+custom_constants/arrow_margin = 3
+toggle_mode = false
+
+[node name="WeaponLabel2" type="Label" parent="Main/Container/SideBar/ArmoryContainer"]
+margin_top = 165.0
+margin_right = 300.0
+margin_bottom = 192.0
+custom_fonts/font = ExtResource( 2 )
+text = "Secondary Weapon:"
+
+[node name="SecondaryOption" type="OptionButton" parent="Main/Container/SideBar/ArmoryContainer"]
+margin_top = 207.0
+margin_right = 300.0
+margin_bottom = 240.0
+size_flags_horizontal = 3
+theme = ExtResource( 4 )
 custom_fonts/font = ExtResource( 2 )
 custom_constants/arrow_margin = 3
 toggle_mode = false
 
 [node name="HostJoinContainer" type="VBoxContainer" parent="Main/Container/SideBar"]
-margin_top = 369.0
+margin_top = 500.0
 margin_right = 300.0
-margin_bottom = 663.0
+margin_bottom = 794.0
 custom_constants/separation = 15
 
 [node name="Label2" type="Label" parent="Main/Container/SideBar/HostJoinContainer"]
@@ -256,7 +282,7 @@ __meta__ = {
 }
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="Main/Container/SideBar"]
-margin_top = 713.0
+margin_top = 844.0
 margin_right = 300.0
 margin_bottom = 980.0
 size_flags_vertical = 3
@@ -264,18 +290,18 @@ custom_constants/separation = 20
 alignment = 2
 
 [node name="BeginButton" type="Button" parent="Main/Container/SideBar/ButtonsContainer"]
-margin_top = 147.0
+margin_top = 16.0
 margin_right = 300.0
-margin_bottom = 197.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 0, 50 )
 custom_fonts/font = ExtResource( 2 )
 disabled = true
 text = "Begin"
 
 [node name="ExitButton" type="Button" parent="Main/Container/SideBar/ButtonsContainer"]
-margin_top = 217.0
+margin_top = 86.0
 margin_right = 300.0
-margin_bottom = 267.0
+margin_bottom = 136.0
 rect_min_size = Vector2( 0, 50 )
 custom_fonts/font = ExtResource( 2 )
 text = "Exit Game"
@@ -305,7 +331,8 @@ custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
 [connection signal="text_changed" from="Main/Container/SideBar/GeneralContainer/IDName/IDText" to="." method="_on_IDText_text_changed"]
 [connection signal="item_selected" from="Main/Container/SideBar/GeneralContainer/ColorPicker/ColorOption" to="." method="_on_ColorOption_item_selected"]
-[connection signal="item_selected" from="Main/Container/SideBar/ArmoryContainer/WeaponOption" to="." method="_on_WeaponOption_item_selected"]
+[connection signal="item_selected" from="Main/Container/SideBar/ArmoryContainer/PrimaryOption" to="." method="_on_PrimaryOption_item_selected"]
+[connection signal="item_selected" from="Main/Container/SideBar/ArmoryContainer/SecondaryOption" to="." method="_on_SecondaryOption_item_selected"]
 [connection signal="pressed" from="Main/Container/SideBar/HostJoinContainer/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="Main/Container/SideBar/HostJoinContainer/JoinButton" to="." method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="Main/Container/SideBar/ButtonsContainer/BeginButton" to="." method="_on_BeginButton_pressed"]

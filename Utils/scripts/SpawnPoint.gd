@@ -8,6 +8,10 @@ func set_can_spawn(value):
 	can_spawn = value
 
 func get_can_spawn():
+	if can_spawn:
+		for actor in area.get_overlapping_bodies():
+			if actor.is_in_group("Player"):
+				return false
 	return can_spawn
 
 func get_spawn_rotation():
@@ -17,7 +21,4 @@ func _on_Area_body_entered(_body):
 	can_spawn = false
 
 func _on_Area_body_exited(_body):
-	for actor in area.get_overlapping_bodies():
-		if actor.is_in_group("Player"):
-			return
 	can_spawn = true

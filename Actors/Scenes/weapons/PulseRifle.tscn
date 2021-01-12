@@ -2,11 +2,11 @@
 
 [ext_resource path="res://assets/animations/assault-idle.tres" type="Animation" id=1]
 [ext_resource path="res://assets/animations/assault-jump.tres" type="Animation" id=2]
-[ext_resource path="res://assets/animations/scout-draw.tres" type="Animation" id=3]
+[ext_resource path="res://assets/animations/pulse-draw.tres" type="Animation" id=3]
 [ext_resource path="res://assets/animations/assault-stow.tres" type="Animation" id=4]
 [ext_resource path="res://Actors/Scenes/weapons/Weapon.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/audio/assault-reload-slide.wav" type="AudioStream" id=6]
-[ext_resource path="res://assets/audio/assault-shot.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/audio/assault-swap.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/smg-shot.wav" type="AudioStream" id=7]
 [ext_resource path="res://assets/materials/Pistol.tres" type="Material" id=8]
 [ext_resource path="res://assets/materials/Pistol-light.tres" type="Material" id=9]
 [ext_resource path="res://assets/materials/Black.tres" type="Material" id=10]
@@ -29,11 +29,11 @@ size = Vector3( 1.5, 0.6, 0.45 )
 [sub_resource type="CubeMesh" id=5]
 size = Vector3( 0.4, 1, 0.25 )
 
-[sub_resource type="CubeMesh" id=11]
+[sub_resource type="CubeMesh" id=6]
 material = ExtResource( 8 )
 size = Vector3( 0.2, 1, 0.25 )
 
-[sub_resource type="CubeMesh" id=12]
+[sub_resource type="CubeMesh" id=7]
 size = Vector3( 0.1, 0.1, 0.2 )
 
 [sub_resource type="CubeMesh" id=8]
@@ -48,18 +48,19 @@ material = ExtResource( 10 )
 size = Vector3( 0.1, 0.4, 0.2 )
 
 [node name="PulseRifle" instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.021, -0.044, 0.437 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.041, -0.06, 0.6 )
 PULSE = true
-PULSE_RATE = 520
-RATE_OF_FIRE = 460
+PULSE_RATE = 580
+RATE_OF_FIRE = 720
 MAGAZINE = 15
 DAMAGE = 12
+HEADSHOT_DAMAGE_MULTI = 1.2
 ADS_RANGE_MULTI = 1.5
 FALLOFF_RANGE = 75
 FALLOFF_DAMAGE_MULTI = 0.5
 ADS_SENSITIVITY = 0.015
 ADS_POSITION = Vector3( -0.4, 0.1, 0.532 )
-DEFAULT_POSITION = Vector3( -0.041, -0.037, 0.511 )
+DEFAULT_POSITION = Vector3( -0.041, -0.06, 0.6 )
 STOWED_POSITION = Vector3( 0.169, -0.089, 2.671 )
 ADS_SPEED = 15
 ADS_FOV = 40
@@ -67,12 +68,14 @@ SWAY = 30
 ADS_SWAY = 75
 SPRINT_ANGLE = 50
 MIN_X_RECOIL = 0.75
+MAX_X_RECOIL = 2.75
 MIN_Y_RECOIL = 0.5
-MAX_Y_RECOIL = 1.75
+MAX_Y_RECOIL = 2.25
+ADS_RECOIL_MULTI = 0.75
 fire_sound = ExtResource( 7 )
 
 [node name="Model" parent="." index="0"]
-transform = Transform( 0.485426, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+transform = Transform( 0.485426, 0, 0, 0, 0.3, 2.91038e-11, 0, -2.91038e-11, 0.3, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 8 )
 
@@ -116,17 +119,17 @@ material/0 = ExtResource( 9 )
 [node name="Grip" type="MeshInstance" parent="Model" index="5"]
 transform = Transform( 1.13552, 0.317167, -3.19744e-14, -0.424416, 0.848574, 5.14026e-09, 2.1817e-09, -4.36188e-09, 1, -0.216395, -0.498622, 3.94881e-07 )
 layers = 2
-mesh = SubResource( 11 )
+mesh = SubResource( 6 )
 material/0 = null
 
 [node name="MeshInstance7" type="MeshInstance" parent="Model" index="6"]
 transform = Transform( 1, 1.65436e-24, -3.19744e-14, -3.30872e-24, 1, -1.38778e-17, 1.77636e-13, 1.38778e-17, 1, 2.41529, 0.361664, 1.43796e-06 )
 layers = 2
-mesh = SubResource( 12 )
+mesh = SubResource( 7 )
 material/0 = ExtResource( 10 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="7"]
-transform = Transform( 0.999999, 2.98023e-08, -2.2436e-09, -1.11759e-07, 1, -2.08676e-09, 1.50016e-08, 5.72675e-08, 1, -0.274087, 0.18445, 0.395844 )
+transform = Transform( 0.999999, 2.98023e-08, -2.2436e-09, -1.11759e-07, 1, -2.08676e-09, 1.50016e-08, 5.72675e-08, 1, -0.274, 0.184, 0.396 )
 layers = 2
 mesh = SubResource( 8 )
 material/0 = ExtResource( 9 )

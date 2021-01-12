@@ -5,17 +5,21 @@
 [node name="GridContainer" type="GridContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/vseparation = -2
-custom_constants/hseparation = -2
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = -1
+custom_constants/hseparation = -1
 columns = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 421.0
-margin_bottom = 1.0
-mouse_filter = 1
+margin_right = 420.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )
@@ -23,26 +27,24 @@ color = Color( 0, 0, 0, 1 )
 [node name="ColorRect2" type="ColorRect" parent="."]
 margin_left = 419.0
 margin_right = 1500.0
-margin_bottom = 1.0
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )
 
 [node name="ColorRect3" type="ColorRect" parent="."]
-margin_left = 1498.0
+margin_left = 1499.0
 margin_right = 1919.0
-margin_bottom = 1.0
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )
 
 [node name="ColorRect4" type="ColorRect" parent="."]
 margin_top = -1.0
-margin_right = 421.0
+margin_right = 420.0
 margin_bottom = 1080.0
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )
@@ -52,47 +54,52 @@ margin_left = 419.0
 margin_top = -1.0
 margin_right = 1500.0
 margin_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture = ExtResource( 1 )
-stretch_mode = 4
+stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect6" type="ColorRect" parent="."]
-margin_left = 1498.0
+margin_left = 1499.0
 margin_top = -1.0
 margin_right = 1919.0
 margin_bottom = 1080.0
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )
 
 [node name="ColorRect7" type="ColorRect" parent="."]
-margin_top = 1078.0
-margin_right = 421.0
+margin_top = 1079.0
+margin_right = 420.0
 margin_bottom = 1079.0
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )
 
 [node name="ColorRect8" type="ColorRect" parent="."]
 margin_left = 419.0
-margin_top = 1078.0
+margin_top = 1079.0
 margin_right = 1500.0
 margin_bottom = 1079.0
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )
 
 [node name="ColorRect5" type="ColorRect" parent="."]
-margin_left = 1498.0
-margin_top = 1078.0
+margin_left = 1499.0
+margin_top = 1079.0
 margin_right = 1919.0
 margin_bottom = 1079.0
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )

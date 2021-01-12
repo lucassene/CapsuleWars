@@ -105,9 +105,8 @@ func fire(param):
 		actor.rpc("stop_firing")
 
 func aim(param):
-	if param and actor.get_is_moving():
+	if param and state_machine.get_current_state() == "Sprinting":
 		state_machine.set_state("Running")
-		yield(get_tree().create_timer(0.15),"timeout")
 	actor.ads(param)
 
 func sprint(param):

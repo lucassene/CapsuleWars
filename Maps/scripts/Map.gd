@@ -9,6 +9,7 @@ onready var music_player_b = $MusicPlayerB
 onready var fade_in_tween = $FadeInTween
 onready var fade_out_tween = $FadeOutTween
 onready var spawn_container = $SpawnPoints
+onready var kill_sound_player = $KillSoundPlayer
 
 var client_ready_count = 0
 var last_spawn_point
@@ -35,12 +36,13 @@ func create_players_intances():
 			name = "",
 			color = 0,
 			primary = 0,
+			secondary = 0,
 			spawn_index = -1
 		}
 		new_player = Global.player_scene.instance()
 		new_player.set_name(str(id))
 		new_player.set_network_master(id)
-		new_player.set_weapons(Network.connected_players[id].primary)
+		new_player.set_weapons(Network.connected_players[id].primary,Network.connected_players[id].secondary)
 		players_container.add_child(new_player)
 		new_player.set_material(Network.connected_players[id].color)
 		new_player.set_hud_name(Network.connected_players[id].name)
@@ -51,6 +53,7 @@ func create_players_intances():
 		player_spawn.name = Network.connected_players[id].name
 		player_spawn.color = Network.connected_players[id].color
 		player_spawn.primary = Network.connected_players[id].primary
+		player_spawn.secondary = Network.connected_players[id].secondary
 		player_spawns.append(player_spawn)
 	if Network.connected_players.size() == 1:
 		start_game()
@@ -61,11 +64,14 @@ func spawn_player(actor):
 	randomize()
 	var spawn = null
 	var spawn_points = spawn_container.get_children()
+	var try_count = 0
 	while(spawn == null):
 		var random = rand_range(0,spawn_points.size())
 		spawn = spawn_points[random]
-		if !spawn.get_can_spawn() or spawn == actor.get_last_spawn():
-			spawn = null
+		if try_count <= 10:
+			try_count += 1
+			if !spawn.get_can_spawn() or spawn == actor.get_last_spawn():
+				spawn = null
 	return spawn.get_index()
 
 remotesync func activate_player(id,spawn_index):
@@ -90,7 +96,7 @@ remote func receive_player_spawns(player_spawns):
 		var spawn = spawn_container.get_child(item.spawn_index)
 		new_player.set_name(str(item.id))
 		new_player.set_network_master(item.id)
-		new_player.set_weapons(item.primary)
+		new_player.set_weapons(item.primary,item.secondary)
 		players_container.add_child(new_player)
 		new_player.global_transform.origin = spawn.global_transform.origin
 		new_player.rotation = spawn.rotation
@@ -166,6 +172,7 @@ remotesync func _on_server_disconnected():
 func _on_player_killed(id,is_headshot,_victim_id):
 	if is_network_master():
 		var player_scene = get_node("/root/Game/Players/" + str(id))
+		kill_sound_player.play()
 		player_scene.rpc("update_score","kills",1,is_headshot)
 
 func _on_player_can_spawn(actor):

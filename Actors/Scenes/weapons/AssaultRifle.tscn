@@ -13,6 +13,7 @@
 [ext_resource path="res://assets/animations/assault-reload.tres" type="Animation" id=11]
 [ext_resource path="res://assets/animations/assault-out_of_ammo.tres" type="Animation" id=12]
 [ext_resource path="res://assets/animations/assault-draw.tres" type="Animation" id=13]
+[ext_resource path="res://assets/animations/assault-firing.tres" type="Animation" id=14]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1.5, 0.8, 0.6 )
@@ -41,78 +42,13 @@ size = Vector3( 0.2, 0.5, 0.2 )
 [sub_resource type="CubeMesh" id=9]
 size = Vector3( 0.1, 0.1, 0.25 )
 
-[sub_resource type="Animation" id=10]
-length = 0.1
-step = 0.01
-tracks/0/type = "value"
-tracks/0/path = NodePath("Model:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.06, 0.1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( -0.2, 0, 0 ), Vector3( 0, 0, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Model:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.06, 0.1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( -5.55842e-09, 0, 0 ), Vector3( 0, 0, 3 ), Vector3( 0, 0, 0 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Model/Muzzle/MuzzleSide:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.01, 0.06 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Model/Muzzle/MuzzleFront:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 0.01, 0.06 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/4/type = "method"
-tracks/4/path = NodePath(".")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0.1 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "emit_bullet"
-} ]
-}
-
 [node name="AssaultRifle" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.073, -0.177, 0.437 )
 AUTO = true
 RATE_OF_FIRE = 920
 MAGAZINE = 30
-DAMAGE = 10
+DAMAGE = 6
+HEADSHOT_DAMAGE_MULTI = 1.25
 MAX_RANGE = 80
 ADS_RANGE_MULTI = 1.3
 FALLOFF_RANGE = 60
@@ -127,18 +63,22 @@ SWAY = 30
 ADS_SWAY = 75
 SPRINT_ANGLE = 50
 MIN_X_RECOIL = 0.75
-MAX_X_RECOIL = 2.25
-MIN_Y_RECOIL = 0.3
-MAX_Y_RECOIL = 1.5
+MAX_X_RECOIL = 3.0
+MIN_Y_RECOIL = 0.75
+MAX_Y_RECOIL = 2.0
+ADS_RECOIL_MULTI = 0.75
 fire_sound = ExtResource( 6 )
 
 [node name="Model" parent="." index="0"]
-transform = Transform( 0.485426, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+transform = Transform( 0.485426, 0, 0, 0, 0.3, 2.91038e-11, 0, -2.91038e-11, 0.3, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 10 )
 
 [node name="Muzzle" parent="Model" index="0"]
 transform = Transform( 1, -1.03398e-24, 0, -2.06795e-24, 1, -1.85361e-25, 1.42109e-14, -1.85361e-25, 1, 2.88282, 0, 7.45058e-08 )
+
+[node name="ShootPlayer" parent="Model/Muzzle" index="0"]
+stream = ExtResource( 6 )
 
 [node name="MuzzleSide" parent="Model/Muzzle" index="1"]
 transform = Transform( 2.06979, -9.34714e-23, -8.81073e-13, -9.92617e-24, 3.33333, -3.23376e-10, 3.83693e-13, 3.23376e-10, 3.33333, 0.659658, -0.0261294, 2.98023e-07 )
@@ -189,14 +129,14 @@ mesh = SubResource( 8 )
 material/0 = ExtResource( 10 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="8"]
-transform = Transform( 0.999999, 2.6077e-08, 2.84217e-14, -5.21541e-08, 1, -5.32907e-15, 5.68434e-13, 4.44089e-15, 1, 0.351, 0.295, 0.396 )
+transform = Transform( 0.999999, 2.6077e-08, 2.84217e-14, -5.21541e-08, 1, -5.32907e-15, 5.68434e-13, 4.44089e-15, 1, 0.350899, 0.294692, 0.395844 )
 layers = 2
 mesh = SubResource( 9 )
 material/0 = ExtResource( 8 )
 
 [node name="AnimationPlayer" parent="." index="1"]
 anims/draw = ExtResource( 13 )
-anims/firing = SubResource( 10 )
+anims/firing = ExtResource( 14 )
 anims/idle = ExtResource( 1 )
 anims/jump = ExtResource( 2 )
 anims/out_of_ammo = ExtResource( 12 )

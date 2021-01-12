@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/materials/black-grid.tres" type="Material" id=1]
+[ext_resource path="res://assets/materials/purple-grid.tres" type="Material" id=2]
+[ext_resource path="res://assets/meshes/building-01.glb" type="PackedScene" id=3]
+
+[node name="building-01" instance=ExtResource( 3 )]
+
+[node name="building-01" parent="." index="0"]
+use_in_baked_light = true
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 2 )
+
+[node name="building-01" parent="building-01" index="0" groups=[
+"World",
+]]
+collision_layer = 2

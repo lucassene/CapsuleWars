@@ -18,7 +18,9 @@ var local_score = {
 	damage = 0,
 	kills = 0,
 	deaths = 0,
-	kd = 1.0
+	kd = 1.0,
+	shots_fired = 0,
+	hits = 0
 }
 
 signal on_score_changed(id,item)

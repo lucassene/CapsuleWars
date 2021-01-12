@@ -1,0 +1,294 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://Actors/Scenes/weapons/Weapon.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/animations/smg-reload.tres" type="Animation" id=2]
+[ext_resource path="res://assets/audio/smg-shot.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/animations/smg-firing.tres" type="Animation" id=4]
+[ext_resource path="res://assets/animations/smg-out_of_ammo.tres" type="Animation" id=5]
+[ext_resource path="res://assets/animations/smg-stow.tres" type="Animation" id=6]
+[ext_resource path="res://assets/materials/Pistol.tres" type="Material" id=8]
+[ext_resource path="res://assets/materials/Pistol-light.tres" type="Material" id=9]
+[ext_resource path="res://assets/materials/Black.tres" type="Material" id=11]
+[ext_resource path="res://assets/audio/pistol-swap.wav" type="AudioStream" id=12]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 0.8, 0.25, 0.25 )
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 0.75, 0.4, 0.6 )
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 0.3, 0.15, 0.15 )
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 0.05, 0.25, 0.25 )
+
+[sub_resource type="CubeMesh" id=5]
+size = Vector3( 0.05, 0.1, 0.1 )
+
+[sub_resource type="CubeMesh" id=6]
+size = Vector3( 0.02, 0.6, 0.15 )
+
+[sub_resource type="CubeMesh" id=7]
+size = Vector3( 0.7, 0.25, 0.6 )
+
+[sub_resource type="CubeMesh" id=8]
+size = Vector3( 1, 1, 1 )
+
+[sub_resource type="CubeMesh" id=9]
+
+[sub_resource type="CubeMesh" id=10]
+size = Vector3( 2.5, 0.75, 2.5 )
+
+[sub_resource type="Animation" id=11]
+resource_name = "draw"
+length = 0.35
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.15, 0.2, 0.3, 0.35 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.739043, -1.67266, 1.48322 ), Vector3( 0.739, -1.673, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0.421, 0 ), Vector3( -1.23746e-14, -0.116552, -7.59547e-08 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.25, 0.3, 0.35 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 90, 270 ), Vector3( 0, 90, 380 ), Vector3( 0, 90, 360 ), Vector3( 0, 90, 360 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.35 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "on_draw_complete"
+} ]
+}
+tracks/3/type = "audio"
+tracks/3/path = NodePath("AudioPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 12 )
+} ],
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "idle"
+length = 3.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Model:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5, 1.7, 3.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.021, 0 ), Vector3( 0, 0.023, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Model:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.5, 1.7, 3.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -1, 0, 0 ), Vector3( -1, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Model/Muzzle/MuzzleSide:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Model/Muzzle/MuzzleFront:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "jump"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Model:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 10 ), Vector3( 0, 0, -6 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Model:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, -0.187698, 0 ), Vector3( 0, 0, 0 ) ]
+}
+
+[node name="SMG" instance=ExtResource( 1 )]
+transform = Transform( 1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0.739043, -1.67266, 1.48322 )
+TYPE = 1
+AUTO = true
+RATE_OF_FIRE = 780
+MAGAZINE = 26
+DAMAGE = 4
+HEADSHOT_DAMAGE_MULTI = 1.2
+MAX_RANGE = 60
+FALLOFF_RANGE = 30
+FALLOFF_DAMAGE_MULTI = 0.6
+ADS_SENSITIVITY = 0.03
+ADS_POSITION = Vector3( -0.4, 0.066, 0.274 )
+DEFAULT_POSITION = Vector3( -0.006, -0.024, 0.094 )
+STOWED_POSITION = Vector3( 0.739, -1.673, 1.483 )
+ADS_SPEED = 25
+MIN_X_RECOIL = 1.25
+MAX_X_RECOIL = 3.0
+MIN_Y_RECOIL = 0.25
+MAX_Y_RECOIL = 1.25
+ADS_RECOIL_MULTI = 0.75
+fire_sound = ExtResource( 3 )
+
+[node name="Model" parent="." index="0"]
+transform = Transform( 1, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 11 )
+
+[node name="Mesh1" type="MeshInstance" parent="Model" index="0"]
+transform = Transform( 1, -1.49012e-08, -1.30385e-08, 1.78814e-07, 1, 2.98023e-08, -1.49012e-07, 3.72529e-09, 1, -0.120441, 0.023, -1.37924e-08 )
+layers = 2
+mesh = SubResource( 2 )
+material/0 = ExtResource( 8 )
+
+[node name="Mesh2" type="MeshInstance" parent="Model" index="1"]
+transform = Transform( 1, -1.49012e-08, -1.30385e-08, 1.78814e-07, 1, 2.98023e-08, -1.49012e-07, 3.72529e-09, 1, -0.605364, 0.0771456, 2.48288e-08 )
+layers = 2
+mesh = SubResource( 3 )
+material/0 = ExtResource( 8 )
+
+[node name="Mesh3" type="MeshInstance" parent="Model" index="2"]
+transform = Transform( 1, -1.49012e-08, -1.30385e-08, 1.78814e-07, 1, 2.98023e-08, -1.49012e-07, 3.72529e-09, 1, -0.769533, 0.0771456, 4.92919e-08 )
+layers = 2
+mesh = SubResource( 4 )
+material/0 = ExtResource( 8 )
+
+[node name="Slide" type="MeshInstance" parent="Model" index="3"]
+transform = Transform( 1, -1.78814e-07, 1.47149e-07, 5.96046e-08, 0.999935, 0.0114142, -1.63913e-07, -0.0114142, 0.999935, -0.0205493, 0.0188945, -0.342042 )
+layers = 2
+mesh = SubResource( 5 )
+material/0 = ExtResource( 9 )
+
+[node name="Mesh4" type="MeshInstance" parent="Model" index="4"]
+transform = Transform( 1, -1.49012e-08, -1.30385e-08, 1.78814e-07, 1, 2.98023e-08, -1.49012e-07, 3.72529e-09, 1, -0.778279, -0.297069, 4.9201e-08 )
+layers = 2
+mesh = SubResource( 6 )
+material/0 = ExtResource( 8 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="Model" index="5"]
+transform = Transform( 1, 0, -5.32907e-14, -5.68434e-14, 1, -1.834e-16, 9.80549e-13, 1.91269e-16, 1, -0.0948577, -0.275441, -0.000709381 )
+layers = 2
+mesh = SubResource( 7 )
+material/0 = ExtResource( 9 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="Model" index="6"]
+transform = Transform( 0.185185, 0.0626465, 7.89328e-09, -0.0875832, 1.33065, -1.43134e-08, 2.63025e-08, 3.41505e-08, 0.455787, -0.303963, -0.62082, -0.00222085 )
+layers = 2
+mesh = SubResource( 8 )
+material/0 = ExtResource( 9 )
+
+[node name="MeshInstance5" type="MeshInstance" parent="Model" index="7"]
+transform = Transform( 0.145994, 0.0493885, -1.51421e-09, -0.0731139, 1.11082, -1.1962e-08, -5.05425e-09, 2.69293e-08, 0.517625, -0.303963, -0.62082, -0.00222085 )
+layers = 2
+mesh = SubResource( 8 )
+material/0 = ExtResource( 8 )
+
+[node name="Clip" type="MeshInstance" parent="Model" index="8"]
+transform = Transform( 0.0928042, -0.0756627, -1.58325e-07, 0.00866818, 0.810071, -8.82428e-08, 1.3411e-07, -3.27826e-07, 0.14717, 0.0827482, -1.38424, 1.97649e-07 )
+layers = 2
+mesh = SubResource( 9 )
+material/0 = ExtResource( 8 )
+
+[node name="ClipMount" type="MeshInstance" parent="Model" index="9"]
+transform = Transform( 0.0928041, -0.0756627, -1.61149e-07, 0.00866815, 0.81007, -2.20287e-08, 1.02917e-07, 3.84031e-08, 0.14717, 0.0149657, -0.577989, 2.4411e-07 )
+layers = 2
+mesh = SubResource( 10 )
+material/0 = ExtResource( 9 )
+
+[node name="Muzzle" parent="Model" index="10"]
+transform = Transform( 1, 0, 0, -5.68434e-14, 1, 1.08573e-17, 1.42109e-14, 1.77962e-17, 1, 0.411469, 1.10596e-07, 9.15601e-08 )
+
+[node name="ShootPlayer" parent="Model/Muzzle" index="0"]
+transform = Transform( 1, 1.42109e-14, -2.4869e-14, 0, 3.33333, -3.23376e-10, 7.10543e-14, 3.23376e-10, 3.33333, -0.585944, 0.53181, -1.19157e-07 )
+
+[node name="MuzzleSide" parent="Model/Muzzle" index="1"]
+transform = Transform( 1, -3.1044e-09, 3.1044e-09, 0, 3.33333, 1.69407e-21, 2.84217e-13, 3.23376e-10, 3.33333, 0.273382, 0.0790767, 3.0509e-07 )
+
+[node name="MuzzleFront" parent="Model/Muzzle" index="2"]
+transform = Transform( -5.42991e-07, 0, 1.0016, 1.63443e-17, 3.33333, 0, -3.33285, 8.71055e-17, -1.63181e-07, -0.0648676, 0.309775, 0.12539 )
+
+[node name="AnimationPlayer" parent="." index="1"]
+anims/draw = SubResource( 11 )
+anims/firing = ExtResource( 4 )
+anims/idle = SubResource( 12 )
+anims/jump = SubResource( 13 )
+anims/out_of_ammo = ExtResource( 5 )
+anims/reload = ExtResource( 2 )
+anims/stow = ExtResource( 6 )
+
+[node name="AudioPlayer" parent="." index="2"]
+stream = ExtResource( 12 )
+
+[node name="BulletEmitter" type="Spatial" parent="." index="3"]
+transform = Transform( -1.62921e-07, 0, -1, -3.38813e-20, 1, 0, 1, 0, -1.62921e-07, 0.0245875, 0.0432404, 0.114445 )

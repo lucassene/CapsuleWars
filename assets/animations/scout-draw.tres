@@ -16,7 +16,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.05, 0.15, 0.25, 0.4, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0.168994, -0.0890476, 2.671 ), Vector3( 0.168994, -0.0890476, 2.671 ), Vector3( 0.182, 0.607, 1.657 ), Vector3( 0.182, 0.607, 1.279 ), Vector3( 0.182, 0.388, 0.831 ), Vector3( -0.021, -0.044, 0.437 ), Vector3( -0.021, -0.044, 0.437 ) ]
+"values": [ Vector3( 0.168994, -0.0890476, 2.671 ), Vector3( 0.168994, -0.0890476, 2.671 ), Vector3( 0.182, 0.607, 1.657 ), Vector3( 0.182, 0.607, 1.279 ), Vector3( 0.182, 0.388, 0.831 ), Vector3( -0.021, -0.044, 0.6 ), Vector3( -0.021, -0.044, 0.6 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath(".:rotation_degrees")
