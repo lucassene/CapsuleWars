@@ -1,5 +1,8 @@
 extends Node
 
+onready var knife = preload("res://Actors/Scenes/weapons/MeleeWeapon.tscn")
+onready var remote_knife = preload("res://Actors/Scenes/weapons/Remote_MeleeWeapon.tscn")
+
 enum type {
 	PRIMARY,
 	SECONDARY
@@ -31,3 +34,4 @@ var secondaries = {
 	0: "Pistol",
 	1: "SMG"
 }
+

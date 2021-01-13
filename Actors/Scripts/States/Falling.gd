@@ -12,6 +12,7 @@ func handle_input(event):
 	if player_controller.check_input_pressed(event,"escape","show_menu",true): return
 	if player_controller.check_input_pressed(event,"fire","fire",true): return
 	if player_controller.check_input_released(event,"fire","fire",false): return
+	if player_controller.check_input_pressed(event,"melee","melee"): return
 	if player_controller.check_input_released(event,"sprint","sprint",false): return
 	if player_controller.check_input_pressed(event,"aim","aim",true): return
 	if player_controller.check_input_released(event,"aim","aim",false): return

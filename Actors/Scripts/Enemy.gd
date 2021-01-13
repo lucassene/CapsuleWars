@@ -14,6 +14,7 @@ func add_damage(point,damage):
 	shot = true
 	create_blood_splash(point)
 	current_health -= damage
+	print("inimigo com: " + str(current_health))
 	if current_health <= 0:
 		create_death_splash(point)
 		return true

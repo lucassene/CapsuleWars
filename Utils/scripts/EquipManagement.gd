@@ -8,8 +8,15 @@ var can_swap = true
 var player
  
 func initialize(actor,items):
-	print(items)
 	player = actor
+	instance_weapons(items)
+	current_weapon = weapons[0]
+	current_index = 0
+	parent_weapon(current_weapon)
+	current_weapon.draw_weapon()
+
+func instance_weapons(items):
+	print(items)
 	for each in items:
 		var weapon = Armory.weapons[each].instance()
 		weapon.connect("on_stowed",self,"_on_weapon_stowed")
@@ -17,10 +24,29 @@ func initialize(actor,items):
 		weapon.set_owner(player)
 		player.stow_weapon(weapon)
 		weapons.append(weapon)
+	instance_melee_weapon()
+
+func instance_melee_weapon():
+	var melee_weapon
+	if is_network_master():
+		melee_weapon = Armory.knife.instance()
+	else:
+		melee_weapon = Armory.remote_knife.instance()
+	melee_weapon.set_owner(player)
+	player.add_melee_weapon(melee_weapon)
+
+func change_loadout(items):
+	free_current_loadout()
+	instance_weapons(items)
 	current_weapon = weapons[0]
 	current_index = 0
 	parent_weapon(current_weapon)
 	current_weapon.draw_weapon()
+
+func free_current_loadout():
+	for weapon in weapons:
+		weapon.queue_free()
+	weapons.clear()
 
 func set_current_weapon(index):
 	if current_weapon:

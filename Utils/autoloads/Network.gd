@@ -20,12 +20,14 @@ signal on_server_disconnected()
 signal on_server_created()
 signal on_client_created()
 signal on_cant_create_server(message)
+signal on_connected_to_server()
 
 func _ready():
 	get_tree().connect("network_peer_connected",self,"_on_player_connected")
 	get_tree().connect("network_peer_disconnected", self, "_on_player_disconnected")
 	get_tree().connect("connection_failed",self,"_on_connection_failed")
 	get_tree().connect("server_disconnected",self,"_on_server_disconnected")
+	get_tree().connect("connected_to_server",self,"_on_connected_to_server")
 
 func create_server(nickname,server_port):
 	var peer = NetworkedMultiplayerENet.new()
@@ -58,16 +60,16 @@ func get_player_info(id):
 	return connected_players[id]
 
 remote func receive_player_info(id,info):
-	connected_players[id] = info
-	if get_tree().is_network_server():
-		for player_id in connected_players:
-			if player_id != 1:
-				var player_data = connected_players[player_id]
-				rpc_id(player_id,"receive_player_info",player_id,player_data)
-	emit_signal("on_new_peer",id)
+	if !is_player_already_connected(id):
+		connected_players[id] = info
+		emit_signal("on_new_peer",id)
 
-remote func receive_server_info(info):
-	connected_players[1] = info
+remote func connect_to_server(peers_info):
+	print(peers_info)
+	for peer in peers_info:
+		connected_players[peer] = peers_info[peer]
+		emit_signal("on_new_peer", peer)
+	rpc("receive_player_info",get_tree().get_network_unique_id(),self_data)
 
 remote func send_info_to_server():
 	if not get_tree().is_network_server():
@@ -76,14 +78,23 @@ remote func send_info_to_server():
 func clear_connected_players():
 	connected_players.clear()
 
+func is_player_already_connected(id):
+	for player_id in connected_players:
+		if player_id == id:
+			return true
+	return false
+
+func _on_connected_to_server():
+	emit_signal("on_connected_to_server")
+
 func _on_player_connected(id):
-	rpc_id(id,"send_info_to_server")
 	if get_tree().is_network_server():
-		rpc_id(id,"receive_server_info",self_data)
+		rpc_id(id,"connect_to_server",connected_players)
 
 func _on_player_disconnected(id):
-	emit_signal("on_peer_disconnected",connected_players[id])
-	clear_connected_players()
+	var player = connected_players[id]
+	if player: emit_signal("on_peer_disconnected",connected_players[id])
+	connected_players.erase(id)
 
 func _on_connection_failed():
 	clear_connected_players()

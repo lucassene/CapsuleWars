@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/materials/Pistol-light.tres" type="Material" id=1]
+[ext_resource path="res://assets/materials/knife-blade.tres" type="Material" id=2]
+[ext_resource path="res://assets/meshes/knife.glb" type="PackedScene" id=3]
+
+[node name="knife" instance=ExtResource( 3 )]
+
+[node name="knife" parent="." index="0"]
+layers = 2
+use_in_baked_light = false
+material/0 = ExtResource( 2 )
+material/1 = ExtResource( 1 )

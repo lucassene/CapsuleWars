@@ -121,10 +121,9 @@ tracks/5/keys = {
 [node name="Pistol" instance=ExtResource( 7 )]
 transform = Transform( -5.21253e-16, -4.37114e-08, 1, -1, 1.19249e-08, 0, -1.19249e-08, -1, -4.37114e-08, 0.739043, -1.67266, 1.48322 )
 TYPE = 1
-RATE_OF_FIRE = 320
 MAGAZINE = 8
-DAMAGE = 16
-HEADSHOT_DAMAGE_MULTI = 1.2
+DAMAGE = 15
+HEADSHOT_DAMAGE_MULTI = 1.25
 MAX_RANGE = 60
 FALLOFF_RANGE = 30
 ADS_SENSITIVITY = 0.03

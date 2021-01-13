@@ -3,6 +3,7 @@ class_name Player
 
 onready var bullet_decal = preload("res://Utils/scenes/BulletDecal.tscn")
 onready var blood_emitter = preload("res://particles/scenes/BloodEmitter.tscn")
+onready var melee_splash = preload("res://particles/scenes/MeleeSplash.tscn")
 onready var death_emitter = preload("res://particles/scenes/DeathEmitter.tscn")
 onready var weapon_camera = preload("res://Utils/scenes/WeaponCamera.tscn")
 onready var sniper_view = preload("res://Utils/scenes/SniperView.tscn")
@@ -20,8 +21,8 @@ onready var hand = $Head/Hand
 onready var hand_loc = $Head/HandLoc
 onready var primary_holster = $PrimaryHolster
 onready var secondary_holster = $SecondaryHolster
+onready var melee_holster = $MeleeHolster
 onready var crosshair = $Head/Camera/Container/Crosshair
-#onready var sniper_overlay = $Head/Camera/Container/SniperOverlay
 onready var player_hud = $PlayerHUD
 onready var mesh = $Mesh
 onready var weapon_view = $CenterContainer/WeaponView
@@ -52,6 +53,7 @@ var is_moving = false setget set_is_moving,get_is_moving
 var is_firing = false setget set_is_firing,get_is_firing
 var current_anim = "headbob"
 var current_weapon
+var melee_weapon
 var current_health
 var last_player_spotted
 var last_spawn setget set_last_spawn,get_last_spawn
@@ -138,6 +140,25 @@ func set_weapons(primary,secondary):
 		print("Null secondary weapon")
 		weapons[1] = Armory.secondaries[0]
 
+func set_remote_weapons():
+	var remote_weapons = []
+	for weapon in weapons:
+		var new_weapon = "Remote " + weapon
+		remote_weapons.append(new_weapon)
+	weapons = remote_weapons
+
+remotesync func change_loadout(primary,secondary):
+	set_weapons(primary,secondary)
+	if !is_network_master():
+		set_remote_weapons()
+	hand.change_loadout(weapons)
+	equip_weapon(hand.get_current_weapon())
+
+func initialize_hand():
+	if !is_network_master():
+		set_remote_weapons()
+	hand.initialize(self,weapons)
+
 func initialize():
 	current_health = HEALTH
 	player_hud.set_progress(current_health)
@@ -147,15 +168,6 @@ func initialize():
 		crosshair.show()
 		camera.current = true
 		emit_signal("on_player_spawned")
-
-func initialize_hand():
-	if !is_network_master():
-		var remote_weapons = []
-		for weapon in weapons:
-			var new_weapon = "Remote " + weapon
-			remote_weapons.append(new_weapon)
-		weapons = remote_weapons
-	hand.initialize(self,weapons)
 
 func _ready():
 	randomize()
@@ -169,8 +181,6 @@ func _ready():
 	instance_sniper_overlay()
 	initialize_hand()
 	equip_weapon(hand.get_current_weapon())
-	if is_network_master(): 
-		emit_signal("on_weapon_equipped",current_weapon.get_magazine())
 	player_controller._initialize(state_machine)
 	state_machine.initialize("Idle")
 
@@ -188,7 +198,7 @@ func _process(delta):
 		elif !is_ads and camera.fov < DEFAULT_FOV:
 			camera.fov = lerp(camera.fov,DEFAULT_FOV,current_weapon.get_ads_speed() * delta)
 		if Input.is_action_just_pressed("dmg_test"):
-			add_damage(int(name),Vector3.ZERO,10,false)
+			add_damage(int(name),Vector3.ZERO,10,false,false)
 
 func _physics_process(delta):
 	if is_network_master():
@@ -225,7 +235,7 @@ func recover_health(delta):
 			player_hud.set_progress(current_health)
 			if is_network_master(): 
 				emit_signal("on_health_changed",current_health)
-			if current_health == HEALTH:
+			if current_health >= HEALTH:
 				is_recovering = false
 
 func jump():
@@ -291,7 +301,8 @@ func hit_target(target,point,distance,is_headshot):
 		return
 	if target.is_in_group("Player"):
 		rpc("update_score","damage",damage,is_headshot)
-		target.rpc("add_damage",int(name),point,damage,is_headshot)
+		if is_network_master():
+			target.rpc("add_damage",int(name),point,damage,is_headshot,false)
 		return
 	if target.is_in_group("Enemy"):
 		var is_dead = target.add_damage(point,damage)
@@ -300,8 +311,8 @@ func hit_target(target,point,distance,is_headshot):
 			rpc("update_score","kills",1,is_headshot)
 		return
 
-remotesync func add_damage(attacker_id,point,damage,is_headshot):
-	create_blood_splash(point)
+remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
+	create_blood_splash(point,is_melee)
 	current_health -= damage
 	print("player health: " + str(current_health))
 	play_hurt_sound()
@@ -319,8 +330,22 @@ remotesync func add_damage(attacker_id,point,damage,is_headshot):
 		return true
 	return false
 
-func create_blood_splash(point):
-	var blood = blood_emitter.instance()
+remotesync func melee_attack():
+	if melee_weapon.is_ready():
+		melee_holster.remove_child(melee_weapon)
+		hand.add_child(melee_weapon)
+		melee_weapon.attack()
+
+func melee_hit(target,point):
+	if is_network_master():
+		target.rpc("add_damage",int(name),point,melee_weapon.get_damage(),false,true)
+
+func create_blood_splash(point,is_melee):
+	var blood
+	if is_melee:
+		blood = melee_splash.instance()
+	else:
+		blood = blood_emitter.instance()
 	add_child(blood)
 	blood.global_transform.origin = point
 	blood.emitting = true
@@ -399,6 +424,8 @@ remotesync func equip_weapon(weapon):
 	if weapon:
 		current_weapon = hand.get_current_weapon()
 		aim_cast.cast_to.z = weapon.get_range() * -1
+		if is_network_master(): 
+			emit_signal("on_weapon_equipped",current_weapon.get_magazine())
 
 remotesync func equip_slot(index):
 	equip_weapon(hand.equip_weapon(index))
@@ -426,6 +453,15 @@ func stow_weapon(weapon):
 	else:
 		secondary_holster.add_child(weapon)
 	weapon.transform.origin = Vector3.ZERO
+
+func add_melee_weapon(weapon):
+	melee_weapon = weapon
+	melee_holster.add_child(weapon)
+	weapon.translation = Vector3.ZERO
+
+remotesync func stow_melee_weapon():
+	hand.remove_child(melee_weapon)
+	melee_holster.add_child(melee_weapon)
 
 func play_footsteps():
 	var random = rand_range(0,3)
@@ -473,4 +509,5 @@ func _on_weapon_reloaded():
 		emit_signal("on_reload")
 
 func _on_Player_tree_exiting():
-	player_controller.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if is_network_master():
+		player_controller.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

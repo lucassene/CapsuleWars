@@ -3,7 +3,7 @@ extends Control
 onready var info_container = $Container/InfoContainer
 onready var health_bar = $Container/InfoContainer/HealthContainer/HealthBar
 onready var ammo_counter = $Container/InfoContainer/AmmoContainer/AmmoCounter
-onready var respawn_hud = $Container/RespawnContainer/RespawnHUD
+onready var respawn_hud = $RespawnHUD
 onready var warning_label = $Container/TextContainer/WarningLabel
 onready var timer = $Container/Timer
 onready var tween = $Container/Timer/Tween
@@ -90,6 +90,7 @@ func _on_pause_menu_pressed(value):
 		pause_menu.hide()
 
 func _on_spawn_time_reached(actor):
+	print("chegou")
 	is_dead = false
 	info_container.visible = true
 	scoreboard_menu.hide()

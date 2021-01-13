@@ -95,7 +95,7 @@ func get_sprint_angle():
 	return SPRINT_ANGLE
 
 func get_can_fire():
-	if !is_stowed and is_draw:
+	if !is_stowed and is_draw and current_ammo > 0:
 		if PULSE and !is_pulse_firing and can_fire:
 			return true
 		if !PULSE and can_fire:

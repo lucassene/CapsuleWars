@@ -1,0 +1,63 @@
+[gd_resource type="Animation" load_steps=2 format=2]
+
+[ext_resource path="res://assets/audio/knife-slash.wav" type="AudioStream" id=2]
+
+[resource]
+resource_name = "attack"
+length = 0.75
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.65, 0.75 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.46051, -1.94883, 2.00188 ), Vector3( -1.615, -1.418, 1.8 ), Vector3( -1.77, -0.887, 1.8 ), Vector3( -1.847, -0.622, 0.407 ), Vector3( -1.538, -0.489, -0.498 ), Vector3( -1.538, -0.489, -0.498 ), Vector3( -1.847, -0.622, 0.407 ), Vector3( -1.77, -0.887, 1.8 ), Vector3( -1.615, -1.418, 1.8 ), Vector3( -1.46051, -1.94883, 2.00188 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.2, 0.3, 0.35, 0.4, 0.45, 0.55, 0.65, 0.7, 0.75 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 90, 180 ), Vector3( 6.68, 90.016, 270 ), Vector3( 13.36, 90.032, 360 ), Vector3( 20.04, 90.049, 540 ), Vector3( 33.399, 90.082, 638 ), Vector3( 46.196, 59.797, 638.948 ), Vector3( 46.196, 59.797, 638.948 ), Vector3( 33.399, 90.082, 638 ), Vector3( 20.04, 90.049, 540 ), Vector3( 13.36, 90.032, 360 ), Vector3( 6.68, 90.016, 270 ), Vector3( 0, 90, 180 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.35, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ true ],
+"method": "activate_area"
+}, {
+"args": [ false ],
+"method": "activate_area"
+} ]
+}
+tracks/3/type = "audio"
+tracks/3/path = NodePath("AudioStreamPlayer3D")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"clips": [ {
+"end_offset": 0.108247,
+"start_offset": 0.0,
+"stream": ExtResource( 2 )
+} ],
+"times": PoolRealArray( 0.1 )
+}

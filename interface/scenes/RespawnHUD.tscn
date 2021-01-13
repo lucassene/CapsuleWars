@@ -1,31 +1,142 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://interface/scripts/RespawnHUD.gd" type="Script" id=1]
 [ext_resource path="res://interface/resources/HUDFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://interface/resources/HUDBigFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://interface/Theme.tres" type="Theme" id=4]
 
-[node name="RespawnHUD" type="HBoxContainer"]
+[node name="RespawnHUD" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="."]
-margin_top = 523.0
-margin_right = 200.0
-margin_bottom = 557.0
+[node name="CenterContainer" type="MarginContainer" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -600.0
+mouse_filter = 2
+size_flags_horizontal = 3
+custom_constants/margin_right = 100
+custom_constants/margin_top = 100
+custom_constants/margin_left = 100
+custom_constants/margin_bottom = 50
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="CenterContainer" parent="CenterContainer"]
+margin_left = 100.0
+margin_top = 100.0
+margin_right = 1820.0
+margin_bottom = 550.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer"]
+margin_left = 512.0
+margin_top = 122.0
+margin_right = 1208.0
+margin_bottom = 327.0
+custom_constants/separation = 15
+
+[node name="RespawnContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/VContainer"]
+margin_right = 696.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 0, 75 )
+alignment = 1
+
+[node name="RespawnLabel" type="Label" parent="CenterContainer/MarginContainer/VContainer/RespawnContainer"]
+margin_left = 196.0
+margin_top = 20.0
+margin_right = 396.0
+margin_bottom = 54.0
 size_flags_horizontal = 0
 custom_fonts/font = ExtResource( 2 )
 text = "Respawning in:"
 
-[node name="CountdownLabel" type="Label" parent="."]
-margin_left = 204.0
-margin_top = 523.0
-margin_right = 263.0
-margin_bottom = 557.0
-rect_min_size = Vector2( 50, 0 )
+[node name="CountdownLabel" type="Label" parent="CenterContainer/MarginContainer/VContainer/RespawnContainer"]
+margin_left = 400.0
+margin_top = 20.0
+margin_right = 500.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 100, 0 )
 size_flags_horizontal = 0
 custom_fonts/font = ExtResource( 2 )
 text = "0.00"
+
+[node name="LoadoutContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/VContainer"]
+margin_top = 90.0
+margin_right = 696.0
+margin_bottom = 205.0
+rect_min_size = Vector2( 400, 0 )
+size_flags_horizontal = 0
+custom_constants/separation = 15
+
+[node name="Label" type="Label" parent="CenterContainer/MarginContainer/VContainer/LoadoutContainer"]
+margin_right = 696.0
+margin_bottom = 41.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 3 )
+text = "Change loadout"
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/MarginContainer/VContainer/LoadoutContainer"]
+margin_top = 56.0
+margin_right = 696.0
+margin_bottom = 60.0
+
+[node name="Container" type="HBoxContainer" parent="CenterContainer/MarginContainer/VContainer/LoadoutContainer"]
+margin_top = 75.0
+margin_right = 696.0
+margin_bottom = 115.0
+custom_constants/separation = 15
+
+[node name="PrimaryContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container"]
+margin_right = 321.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+
+[node name="Label3" type="Label" parent="CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container/PrimaryContainer"]
+margin_right = 117.0
+margin_bottom = 40.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 2 )
+text = "Primary: "
+
+[node name="PrimaryOption" type="OptionButton" parent="CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container/PrimaryContainer"]
+margin_left = 121.0
+margin_right = 321.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 200, 0 )
+theme = ExtResource( 4 )
+custom_fonts/font = ExtResource( 2 )
+
+[node name="SecondaryContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container"]
+margin_left = 336.0
+margin_right = 696.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container/SecondaryContainer"]
+margin_right = 156.0
+margin_bottom = 40.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 2 )
+text = "Secondary: "
+
+[node name="SecondaryOption" type="OptionButton" parent="CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container/SecondaryContainer"]
+margin_left = 160.0
+margin_right = 360.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 200, 0 )
+theme = ExtResource( 4 )
+custom_fonts/font = ExtResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+[connection signal="item_selected" from="CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container/PrimaryContainer/PrimaryOption" to="." method="_on_PrimaryOption_item_selected"]
+[connection signal="item_selected" from="CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container/SecondaryContainer/SecondaryOption" to="." method="_on_SecondaryOption_item_selected"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

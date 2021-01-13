@@ -157,10 +157,12 @@ func _on_game_begin():
 
 func _on_player_disconnected(player):
 	var player_scene = get_node("/root/Game/Players/" + str(player.id))
-	Scores.player_scores.erase(player.id)
-	player_scene.queue_free()
+	if player_scene:
+		Scores.player_scores.erase(player.id)
+		player_scene.queue_free()
 
 remotesync func _on_server_disconnected():
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	Scores.clear_scores()
 	for child in players_container.get_children():
 		if child.is_in_group("Player"):

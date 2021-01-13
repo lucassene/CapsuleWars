@@ -94,22 +94,6 @@ size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 9 )
 
-[node name="RespawnContainer" type="CenterContainer" parent="Container"]
-margin_left = 40.0
-margin_top = 40.0
-margin_right = 1880.0
-margin_bottom = 1040.0
-mouse_filter = 2
-
-[node name="RespawnHUD" parent="Container/RespawnContainer" instance=ExtResource( 4 )]
-visible = false
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 788.0
-margin_top = 483.0
-margin_right = 1051.0
-margin_bottom = 517.0
-
 [node name="Timer" type="Timer" parent="Container"]
 wait_time = 2.0
 one_shot = true
@@ -123,13 +107,17 @@ margin_top = 40.0
 margin_right = 1880.0
 margin_bottom = 1040.0
 
+[node name="RespawnHUD" parent="." instance=ExtResource( 4 )]
+visible = false
+margin_top = -266.0
+
 [node name="PauseMenu" parent="." instance=ExtResource( 5 )]
 visible = false
 
 [node name="Scoreboard" parent="." instance=ExtResource( 6 )]
 visible = false
-[connection signal="on_spawn_time_reached" from="Container/RespawnContainer/RespawnHUD" to="." method="_on_spawn_time_reached"]
 [connection signal="timeout" from="Container/Timer" to="." method="_on_Timer_timeout"]
 [connection signal="tween_completed" from="Container/Timer/Tween" to="." method="_on_Tween_tween_completed"]
+[connection signal="on_spawn_time_reached" from="RespawnHUD" to="." method="_on_spawn_time_reached"]
 [connection signal="on_exit_to_lobby" from="PauseMenu" to="." method="_on_exit_to_lobby"]
 [connection signal="on_pause_menu_exited" from="PauseMenu" to="." method="_on_pause_menu_exited"]

@@ -5,7 +5,7 @@
 [ext_resource path="res://assets/animations/sniper-draw.tres" type="Animation" id=3]
 [ext_resource path="res://assets/animations/assault-stow.tres" type="Animation" id=4]
 [ext_resource path="res://Actors/Scenes/weapons/Weapon.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/audio/assault-swap.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/assault-reload-slide.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/audio/sniper-shot.wav" type="AudioStream" id=7]
 [ext_resource path="res://assets/materials/Pistol.tres" type="Material" id=8]
 [ext_resource path="res://assets/materials/Leather.tres" type="Material" id=9]
@@ -155,7 +155,7 @@ ADS_RECOIL_MULTI = 0.25
 fire_sound = ExtResource( 7 )
 
 [node name="Model" parent="." index="0"]
-transform = Transform( 0.485426, 0, 0, 0, 0.298033, -0.0342991, 0, 0.0342991, 0.298033, -0.0408478, 0, 0 )
+transform = Transform( 0.485426, 0, 0, 0, 0.3, 2.91038e-11, 0, -2.91038e-11, 0.3, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 9 )
 
@@ -191,7 +191,7 @@ mesh = SubResource( 4 )
 material/0 = ExtResource( 10 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="4"]
-transform = Transform( 1, 7.45058e-09, 1.56069e-09, 7.45058e-09, 1, -2.4334e-09, 1.00549e-10, -2.3371e-09, 1, -0.304, 0.256, -0.177 )
+transform = Transform( 1, 7.45058e-09, 1.56069e-09, 7.45058e-09, 1, -2.4334e-09, 1.00549e-10, -2.3371e-09, 1, 0.596, 0.256, -0.177 )
 layers = 2
 mesh = SubResource( 4 )
 material/0 = ExtResource( 10 )

@@ -104,6 +104,9 @@ func fire(param):
 	else:
 		actor.rpc("stop_firing")
 
+func melee(_param):
+	actor.rpc("melee_attack")
+
 func aim(param):
 	if param and state_machine.get_current_state() == "Sprinting":
 		state_machine.set_state("Running")

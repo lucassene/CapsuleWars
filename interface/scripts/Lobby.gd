@@ -26,6 +26,7 @@ func _ready():
 	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
 	Network.connect("on_cant_create_server",self,"_on_cant_create_server")
 	Network.connect("on_server_created",self,"_on_server_created")
+	Network.connect("on_connected_to_server",self,"_on_connected_to_server")
 	connect("on_game_begin",Network,"_on_game_begin")
 	get_tree().connect("connection_failed",self,"_on_connection_failed")
 
@@ -114,10 +115,15 @@ func _on_BeginButton_pressed():
 	append_log("Beginning the game...")
 	emit_signal("on_game_begin")
 
-func _on_player_connected(id):
-	if get_tree().is_network_server():
-		append_log(Network.get_player_info(id).name + " (" + str(Network.get_player_info(id).id) + ") " + "has connected.")
-		rpc_id(id,"receive_log_text",log_text.text)
+func _on_player_connected(peer_id):
+		print(peer_id)
+		var player_info = Network.get_player_info(peer_id).name + " (" + str(Network.get_player_info(peer_id).id) + ")"
+		var text = ""
+		if peer_id == 1:
+			text = "%s is hosting the game." % player_info
+		else:
+			text = "%s has connected." % player_info
+		append_log(text)
 
 func _on_player_disconnected(player):
 	append_log(player.name + " has disconnected.")
@@ -136,7 +142,10 @@ func _on_server_disconnected():
 func _on_server_created():
 	buttons_disabled(true)
 	begin_button.disabled = false
-	append_log(Network.get_player_info(1).name + " (" + str(Network.get_player_info(1).id) + ") " + "is hosting the game.")
+	append_log("You (" + str(Network.get_player_info(1).id) + ") " + "are hosting the game.")
+
+func _on_connected_to_server():
+	append_log("You (" + str(Network.self_data.id) + ") " + " are connected to the server.")
 
 func _on_cant_create_server(error):
 	match error:
