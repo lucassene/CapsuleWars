@@ -63,6 +63,7 @@ var recover_timer = 0.0
 var is_recovering = false
 var weapons = [-1,-1]
 var sniper_overlay
+var is_dead = false
 
 func get_player_controller():
 	return player_controller
@@ -299,22 +300,20 @@ func hit_target(target,point,distance,is_headshot):
 	if target.is_in_group("World"):
 		place_decal(target)
 		return
-	if target.is_in_group("Player"):
+	if target.is_in_group("Player") and is_network_master():
 		rpc("update_score","damage",damage,is_headshot)
-		if is_network_master():
-			target.rpc("add_damage",int(name),point,damage,is_headshot,false)
+		target.rpc("add_damage",int(name),point,damage,is_headshot,false)
 		return
 	if target.is_in_group("Enemy"):
-		var is_dead = target.add_damage(point,damage)
+		var is_enemy_dead = target.add_damage(point,damage)
 		rpc("update_score","damage",damage,is_headshot)
-		if is_dead:
+		if is_enemy_dead:
 			rpc("update_score","kills",1,is_headshot)
 		return
 
 remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
 	create_blood_splash(point,is_melee)
 	current_health -= damage
-	print("player health: " + str(current_health))
 	play_hurt_sound()
 	player_hud.set_progress(current_health)
 	is_recovering = true
@@ -322,7 +321,8 @@ remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
 	if is_network_master():
 		shake_camera(MIN_X_FLINCH,MAX_X_FLINCH,MIN_Y_FLINCH,MAX_Y_FLINCH)
 		emit_signal("on_health_changed",current_health)
-	if current_health <= 0:
+	if current_health <= 0 and !is_dead:
+		is_dead = true
 		is_recovering = false
 		emit_signal("on_player_killed",attacker_id,is_headshot,int(name))
 		if is_network_master(): rpc("update_score","deaths",1)
@@ -368,12 +368,15 @@ func create_death_splash(point):
 
 remotesync func set_dead_state(value,attacker_id = null,point = null):
 	if !value:
+		is_dead = false
 		rpc("deactivate_player",value,point)
 		state_machine.set_state("Idle")
 		if is_network_master(): camera.current = !value
+		hand.reload_weapons()
 	else:
 		is_firing = false
 		is_ads = false
+		player_controller.set_mouse_sensitivity()
 		rpc("deactivate_player",value,point)
 		state_machine.set_state("Dead")
 		audio_player.set_stream(Mixer.death_scream)
@@ -382,6 +385,7 @@ remotesync func set_dead_state(value,attacker_id = null,point = null):
 		yield(get_tree().create_timer(1.0),"timeout")
 		emit_signal("on_player_death",self)
 		if is_network_master():
+			sniper_overlay.hide()
 			if attacker_id:
 				get_node("/root/Game/Players/" + str(attacker_id)).camera.current = true
 			else:
@@ -400,10 +404,13 @@ remotesync func deactivate_player(value,point = null):
 
 func place_decal(target):
 	var bullet = bullet_decal.instance()
+	var normal = aim_cast.get_collision_normal()
 	target.add_child(bullet)
 	bullet.global_transform.origin = aim_cast.get_collision_point()
-	if aim_cast.get_collision_normal().is_equal_approx(Vector3.UP):
+	if normal.is_equal_approx(Vector3.UP):
 		bullet.rotation_degrees.x = 90
+	elif normal.is_equal_approx(Vector3.DOWN):
+		bullet.rotation_degrees.x = -90
 	else:
 		bullet.look_at(aim_cast.get_collision_point() + aim_cast.get_collision_normal(),Vector3.UP)
 

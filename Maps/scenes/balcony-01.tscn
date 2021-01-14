@@ -7,7 +7,6 @@
 [node name="balcony-01" instance=ExtResource( 3 )]
 
 [node name="balcony-01" parent="." index="0"]
-use_in_baked_light = true
 material/0 = ExtResource( 2 )
 material/1 = ExtResource( 1 )
 

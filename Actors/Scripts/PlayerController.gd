@@ -95,11 +95,9 @@ func fire(param):
 	if param:
 		if is_sprinting() and actor.get_is_moving():
 			state_machine.set_state("Running")
-			yield(get_tree().create_timer(0.1),"timeout")
 		elif is_sprinting():
 			state_machine.enter_air_state()
 			current_speed = state_machine.states.Running.SPEED
-			yield(get_tree().create_timer(0.15),"timeout")
 		actor.rpc("fire")
 	else:
 		actor.rpc("stop_firing")

@@ -49,3 +49,6 @@ func _on_AnimationPlayer_animation_finished(_anim_name):
 func _on_Area_body_entered(body):
 	if body.is_in_group("Player") and body != player:
 		player.melee_hit(body,ray_cast.get_collision_point())
+		return
+	if body.is_in_group("Enemy"):
+		print("acertou o inimigo!")

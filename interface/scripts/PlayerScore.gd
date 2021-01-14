@@ -34,7 +34,7 @@ func update_score():
 	score_label.text = str(Scores.player_scores[player_id].score)
 
 func update_damage():
-	damage_label.text = str(Scores.player_scores[player_id].damage)
+	damage_label.text = str(int(Scores.player_scores[player_id].damage))
 
 func update_kills():
 	kills_label.text = str(Scores.player_scores[player_id].kills)

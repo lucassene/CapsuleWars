@@ -6,10 +6,10 @@
 [ext_resource path="res://assets/audio/knife-slash.wav" type="AudioStream" id=4]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.457351, 0.635804, 0.392829 )
+extents = Vector3( 0.673229, 0.838186, 0.630761 )
 
 [node name="MeleeWeapon" type="Spatial"]
-transform = Transform( 1.62921e-07, -5.30863e-14, 1, -3.25841e-07, -1, 0, 1, -3.25841e-07, -1.62921e-07, -1.46051, -1.94883, 2.00188 )
+transform = Transform( 4.37114e-08, -3.82137e-15, 1, -8.74228e-08, -1, 0, 1, -8.74228e-08, -4.37114e-08, -1.46051, -1.94883, 2.00188 )
 script = ExtResource( 2 )
 MIN_X_RECOIL = -2.0
 MAX_X_RECOIL = -5.0
@@ -18,6 +18,7 @@ MIN_Y_RECOIL = -1.0
 [node name="knife" parent="." instance=ExtResource( 1 )]
 
 [node name="Area" type="Area" parent="."]
+transform = Transform( 1, 0, -4.91738e-07, 4.47035e-07, 1, -4.76837e-07, -1.19209e-07, 1.49012e-07, 1, 2.38419e-07, 0.197892, 0.245064 )
 monitoring = false
 monitorable = false
 collision_layer = 0
@@ -33,7 +34,7 @@ anims/attack = ExtResource( 3 )
 one_shot = true
 
 [node name="RayCast" type="RayCast" parent="."]
-transform = Transform( -0.941512, 0.33698, 3.25718e-08, -0.33698, -0.941512, -7.02148e-09, 2.83006e-08, -1.75869e-08, 1, 0, 0, 0 )
+transform = Transform( -0.873705, 0.486457, 3.25718e-08, -0.486457, -0.873705, -7.02154e-09, 2.50424e-08, -2.19795e-08, 1, 0, 0, 0 )
 enabled = true
 cast_to = Vector3( 0, -2, 0 )
 

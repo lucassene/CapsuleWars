@@ -131,13 +131,13 @@ func get_damage(distance,is_headshot):
 	return dmg
 
 func _ready():
-	set_process(false)
+	set_physics_process(false)
 	transform.origin = DEFAULT_POSITION
 	current_ammo = MAGAZINE
 	calculate_rof()
 	connect_signals()
 
-func _process(delta):
+func _physics_process(delta):
 	if is_ads:
 		transform.origin = transform.origin.linear_interpolate(ADS_POSITION,ADS_SPEED * delta)
 	else:
@@ -225,7 +225,7 @@ func emit_bullet():
 	shell.emitting = true
 
 func on_stowed():
-	set_process(false)
+	set_physics_process(false)
 	is_stowed = true
 	is_draw = false
 	emit_signal("on_stowed",self)
@@ -234,8 +234,9 @@ func on_draw_complete():
 	transform.origin = DEFAULT_POSITION
 	is_draw = true
 	is_stowed = false
+	can_fire = true
 	emit_signal("on_draw_completed")
-	set_process(true)
+	set_physics_process(true)
 
 func _on_AnimationPlayer_animation_started(anim_name):
 	match anim_name:

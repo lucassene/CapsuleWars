@@ -78,6 +78,10 @@ func parent_weapon(to_parent):
 	to_parent.to_stowed_position()
 	add_child(to_parent)
 
+func reload_weapons():
+	for weapon in weapons:
+		weapon.set_full_magazine()
+
 func _on_weapon_stowed(stowed_weapon):
 	player.stow_weapon(stowed_weapon)
 	parent_weapon(current_weapon)
