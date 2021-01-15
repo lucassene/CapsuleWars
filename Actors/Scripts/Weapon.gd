@@ -60,6 +60,7 @@ var can_reload = false
 var current_ammo setget ,get_current_ammo
 var can_fire = false setget ,get_can_fire
 var can_ads = false setget ,get_can_ads
+var is_busy = false setget ,get_is_busy
 var pulse_count = 0
 
 signal on_out_of_ads()
@@ -101,6 +102,9 @@ func get_can_fire():
 		if !PULSE and can_fire:
 			return true
 	return false
+
+func get_is_busy():
+	return is_busy
 
 func get_can_swap():
 	return can_swap
@@ -158,10 +162,13 @@ func pulse_fire():
 		is_pulse_firing = false
 		player.set_is_firing(false)
 		rate_of_fire_timer.start()
+		is_busy = false
 
 func auto_fire():
 	if AUTO and player.get_is_firing():
 		player.fire()
+	else:
+		is_busy = false
 
 func set_owner(actor):
 	player = actor
@@ -247,6 +254,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 			can_ads = false
 			can_swap = false
 			can_fire = false
+			is_busy = true
 			return
 		"idle":
 			can_ads = true
@@ -258,6 +266,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 			can_swap = false
 			can_fire = false
 			can_reload = false
+			is_busy = true
 			return
 		"stow":
 			is_ads = false
@@ -267,11 +276,13 @@ func _on_AnimationPlayer_animation_started(anim_name):
 			can_swap = false
 			can_fire = false
 			can_reload = false
+			is_busy = true
 			return
 		"firing","out_of_ammo":
 			can_swap = false
 			can_fire = false
 			can_reload = false
+			is_busy = true
 			if PULSE: 
 				is_pulse_firing = true
 				pulse_timer.start()
@@ -288,17 +299,20 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			can_reload = true
 			front_muzzle_sprite.hide()
 			side_muzzle_sprite.hide()
+			if !AUTO and !PULSE: is_busy = false
 			return
 		"out_of_ammo":
 			can_ads = true
 			can_swap = true
 			can_reload = true
+			is_busy = false
 			return
 		"reload":
 			is_reloading = false
 			can_ads = true
 			can_swap = true
 			can_fire = true
+			is_busy = false
 			return
 		"draw":
 			is_stowed = false
@@ -307,6 +321,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			can_fire = true
 			can_swap = true
 			can_reload = true
+			is_busy = false
 			return
 		"stow":
 			is_stowed = true

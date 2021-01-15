@@ -9,14 +9,19 @@ onready var invalid_name_label = $Main/Container/SideBar/GeneralContainer/Invali
 onready var host_button = $Main/Container/SideBar/HostJoinContainer/HostButton
 onready var join_button = $Main/Container/SideBar/HostJoinContainer/JoinButton
 onready var begin_button = $Main/Container/SideBar/ButtonsContainer/BeginButton
-onready var log_text = $Main/Container/MainFrame/LogContainer/LogLabel
+onready var exit_button = $Main/Container/SideBar/ButtonsContainer/ExitButton
+onready var log_text = $Main/Container/MainFrame/Container/LogContainer/LogLabel
 onready var color_option = $Main/Container/SideBar/GeneralContainer/ColorPicker/ColorOption
 onready var port_text = $Main/Container/SideBar/HostJoinContainer/HostPort/HostPortText
 onready var invalid_port_label = $Main/Container/SideBar/HostJoinContainer/InvalidPort
 onready var primary_option = $Main/Container/SideBar/ArmoryContainer/PrimaryOption
 onready var secondary_option = $Main/Container/SideBar/ArmoryContainer/SecondaryOption
+onready var credits_ui = $Credits
 
 signal on_game_begin()
+
+var is_begining = false
+var is_showing_credits = false
 
 func _ready():
 	add_color_options()
@@ -29,6 +34,14 @@ func _ready():
 	Network.connect("on_connected_to_server",self,"_on_connected_to_server")
 	connect("on_game_begin",Network,"_on_game_begin")
 	get_tree().connect("connection_failed",self,"_on_connection_failed")
+
+func _unhandled_input(event):
+	if visible == true and event.is_action_pressed("escape"):
+		if is_showing_credits:
+			is_showing_credits = false
+			return
+		if !is_begining:
+			get_tree().quit()
 
 func add_color_options():
 	color_option.add_item("Black",0)
@@ -59,8 +72,7 @@ func add_weapon_options():
 func reset():
 	log_text.text = ""
 	show()
-	buttons_disabled(false)
-	begin_button.disabled = true
+	deactivate_hud(false)
 
 remote func receive_log_text(text):
 	append_log(text)
@@ -69,8 +81,27 @@ func buttons_disabled(value):
 	host_button.disabled = value
 	join_button.disabled = value
 
+func deactivate_hud(value):
+	id_text.editable = !value
+	color_option.disabled = value
+	primary_option.disabled = value
+	secondary_option.disabled = value
+	host_ip_address.editable = !value
+	port_text.editable = !value
+	host_button.disabled = value
+	join_button.disabled = value
+	begin_button.disabled = value
+	exit_button.disabled = value
+
 func append_log(text):
 	log_text.append_bbcode(text + LINE_BREAK)
+
+remotesync func begin_game():
+	is_begining = true
+	deactivate_hud(true)
+	append_log("Starting the game...")
+	if get_tree().is_network_server():
+		emit_signal("on_game_begin")
 
 func _on_HostButton_pressed():
 	var can_join = true
@@ -112,8 +143,7 @@ func _on_JoinButton_pressed():
 		append_log("Connecting to the host...")
 
 func _on_BeginButton_pressed():
-	append_log("Beginning the game...")
-	emit_signal("on_game_begin")
+	rpc("begin_game")
 
 func _on_player_connected(peer_id):
 		print(peer_id)
@@ -169,3 +199,7 @@ func _on_PrimaryOption_item_selected(index):
 
 func _on_SecondaryOption_item_selected(index):
 	Network.self_data.secondary = index
+
+func _on_CreditsButton_pressed():
+	credits_ui.start_credits()
+	is_showing_credits = true

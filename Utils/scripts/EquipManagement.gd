@@ -82,6 +82,9 @@ func reload_weapons():
 	for weapon in weapons:
 		weapon.set_full_magazine()
 
+func is_busy():
+	return current_weapon.get_is_busy()
+
 func _on_weapon_stowed(stowed_weapon):
 	player.stow_weapon(stowed_weapon)
 	parent_weapon(current_weapon)

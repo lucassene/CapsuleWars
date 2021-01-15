@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://interface/scripts/Lobby.gd" type="Script" id=1]
 [ext_resource path="res://interface/resources/HUDSmallFont.tres" type="DynamicFont" id=2]
 [ext_resource path="res://interface/resources/HUDBigFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://interface/Theme.tres" type="Theme" id=4]
+[ext_resource path="res://interface/scenes/Credits.tscn" type="PackedScene" id=5]
 
 [node name="Lobby" type="Control"]
 anchor_right = 1.0
@@ -306,14 +307,14 @@ rect_min_size = Vector2( 0, 50 )
 custom_fonts/font = ExtResource( 2 )
 text = "Exit Game"
 
-[node name="MainFrame" type="ScrollContainer" parent="Main/Container"]
+[node name="MainFrame" type="MarginContainer" parent="Main/Container"]
 margin_left = 304.0
 margin_right = 1820.0
 margin_bottom = 980.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="LogContainer" type="MarginContainer" parent="Main/Container/MainFrame"]
+[node name="Container" type="MarginContainer" parent="Main/Container/MainFrame"]
 margin_right = 1516.0
 margin_bottom = 980.0
 size_flags_horizontal = 3
@@ -321,14 +322,50 @@ size_flags_vertical = 3
 custom_constants/margin_right = 20
 custom_constants/margin_top = 0
 custom_constants/margin_left = 20
-custom_constants/margin_bottom = 20
 
-[node name="LogLabel" type="RichTextLabel" parent="Main/Container/MainFrame/LogContainer"]
+[node name="LogContainer" type="VBoxContainer" parent="Main/Container/MainFrame/Container"]
 margin_left = 20.0
 margin_right = 1496.0
-margin_bottom = 960.0
+margin_bottom = 980.0
+custom_constants/separation = 15
+
+[node name="Label" type="Label" parent="Main/Container/MainFrame/Container/LogContainer"]
+margin_right = 1476.0
+margin_bottom = 41.0
+custom_fonts/font = ExtResource( 3 )
+text = "Capsule Wars"
+
+[node name="HSeparator" type="HSeparator" parent="Main/Container/MainFrame/Container/LogContainer"]
+margin_top = 56.0
+margin_right = 1476.0
+margin_bottom = 60.0
+
+[node name="LogLabel" type="RichTextLabel" parent="Main/Container/MainFrame/Container/LogContainer"]
+margin_top = 75.0
+margin_right = 1476.0
+margin_bottom = 915.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
+
+[node name="CreditsContainer" type="HBoxContainer" parent="Main/Container/MainFrame/Container/LogContainer"]
+margin_top = 930.0
+margin_right = 1476.0
+margin_bottom = 980.0
+alignment = 2
+
+[node name="CreditsButton" type="Button" parent="Main/Container/MainFrame/Container/LogContainer/CreditsContainer"]
+margin_left = 1351.0
+margin_right = 1476.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 125, 50 )
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Credits"
+
+[node name="Credits" parent="." instance=ExtResource( 5 )]
+visible = false
 [connection signal="text_changed" from="Main/Container/SideBar/GeneralContainer/IDName/IDText" to="." method="_on_IDText_text_changed"]
 [connection signal="item_selected" from="Main/Container/SideBar/GeneralContainer/ColorPicker/ColorOption" to="." method="_on_ColorOption_item_selected"]
 [connection signal="item_selected" from="Main/Container/SideBar/ArmoryContainer/PrimaryOption" to="." method="_on_PrimaryOption_item_selected"]
@@ -337,3 +374,4 @@ bbcode_enabled = true
 [connection signal="pressed" from="Main/Container/SideBar/HostJoinContainer/JoinButton" to="." method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="Main/Container/SideBar/ButtonsContainer/BeginButton" to="." method="_on_BeginButton_pressed"]
 [connection signal="pressed" from="Main/Container/SideBar/ButtonsContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="pressed" from="Main/Container/MainFrame/Container/LogContainer/CreditsContainer/CreditsButton" to="." method="_on_CreditsButton_pressed"]

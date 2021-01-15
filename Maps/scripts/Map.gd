@@ -23,9 +23,9 @@ func _ready():
 	main_hud.connect("on_exit_to_lobby",self,"_on_exit_to_lobby")
 	Scores.connect("on_kill_streak",main_hud,"_on_player_kill_streak")
 
-func _unhandled_input(event):
-	if is_in_lobby and event.is_action_pressed("escape"):
-		get_tree().quit()
+#func _unhandled_input(event):
+#	if is_in_lobby and event.is_action_pressed("escape"):
+#		get_tree().quit()
 
 func create_players_intances():
 	var new_player
@@ -47,7 +47,6 @@ func create_players_intances():
 		new_player.set_material(Network.connected_players[id].color)
 		new_player.set_hud_name(Network.connected_players[id].name)
 		var spawn_index = spawn_player(new_player)
-		activate_player(id,spawn_index)
 		player_spawn.id = id
 		player_spawn.spawn_index = spawn_index
 		player_spawn.name = Network.connected_players[id].name

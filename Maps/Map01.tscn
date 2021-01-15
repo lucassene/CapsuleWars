@@ -26,13 +26,13 @@
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 96.5, 1, 104 )
 
-[sub_resource type="BakedLightmapData" id=3]
+[sub_resource type="BakedLightmapData" id=2]
 bounds = AABB( -67, -20.5, -67, 134, 41, 134 )
 cell_space_transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 33.5, 10.25, 33.5 )
 cell_subdiv = 8
 octree = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 )
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="CubeMesh" id=3]
 size = Vector3( 0.5, 0.25, 4 )
 
 [node name="Game" type="Node"]
@@ -639,34 +639,34 @@ material = ExtResource( 3 )
 [node name="SpawnPoints" type="Node" parent="."]
 
 [node name="SP1" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.996422, 0, -0.0845125, 0, 1, 0, 0.0845125, 0, 0.996422, -32.374, 3.25, 50.1173 )
+transform = Transform( 0.688013, 0, -0.725698, 0, 1, 0, 0.725698, 0, 0.688013, -53.8902, 3.25, 53.3732 )
 
 [node name="SP8" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.767747, 0, -0.640753, 0, 1, 0, 0.640753, 0, 0.767747, -55.374, 16.25, 27.6173 )
+transform = Transform( 0.767747, 0, -0.640753, 0, 1, 0, 0.640753, 0, 0.767747, -55.374, 16.25, 25.946 )
 
 [node name="SP4" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.0314978, 0, 0.999504, 0, 1, 0, -0.999504, 0, 0.0314978, 27.314, 3.25, 46.314 )
+transform = Transform( 0.0314978, 0, 0.999504, 0, 1, 0, -0.999504, 0, 0.0314978, 27.2797, 3.25, 47.402 )
 
 [node name="SP7" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.767747, 0, -0.640753, 0, 1, 0, 0.640753, 0, 0.767747, -8.87395, 16.25, 43.1173 )
+transform = Transform( 0.15659, 0, -0.987664, 0, 1, 0, 0.987664, 0, 0.15659, -13.9161, 16.25, 53.865 )
 
 [node name="SP2" parent="SpawnPoints" instance=ExtResource( 7 )]
 transform = Transform( -0.426047, 0, 0.904701, 0, 1, 0, -0.904701, 0, -0.426047, 40.013, 3.25, -21.413 )
 
 [node name="SP3" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( -0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819, -21.425, 3.25, -43.318 )
+transform = Transform( -0.187107, 0, -0.98234, 0, 1, 0, 0.98234, 0, -0.187107, -21.425, 3.25, -43.318 )
 
 [node name="SP5" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( -0.940981, 0, 0.338459, 0, 1, 0, -0.338459, 0, -0.940981, 56.7458, 16.25, -52.9301 )
+transform = Transform( -0.843325, 0, 0.537403, 0, 1, 0, -0.537403, 0, -0.843325, 56.7458, 16.25, -52.9301 )
 
 [node name="SP6" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( -0.966295, 0, -0.257436, 0, 1, 0, 0.257436, 0, -0.966295, -53.425, 3.25, -53.318 )
+transform = Transform( -0.966295, 0, -0.257436, 0, 1, 0, 0.257436, 0, -0.966295, -52.4642, 3.25, -55.4803 )
 
 [node name="SP9" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( -0.422618, 0, 0.906308, 0, 1, 0, -0.906308, 0, -0.422618, 52.5, 3.25, -52 )
+transform = Transform( -0.0510807, 0, 0.998695, 0, 1, 0, -0.998695, 0, -0.0510807, 55.9084, 3.25, -54.4918 )
 
 [node name="SP10" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.996195, 0, 0.0871557, 0, 1, 0, -0.0871557, 0, 0.996195, 2.58716, 3.25, 38.9962 )
+transform = Transform( 0.998538, 0, 0.0540613, 0, 1, 0, -0.0540613, 0, 0.998538, 3.39691, 3.25, 38.9524 )
 
 [node name="DeathArea" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -14, 0 )
@@ -697,7 +697,7 @@ bake_energy = 2.0
 bake_hdr = true
 bake_extents = Vector3( 67, 20.5, 67 )
 capture_cell_size = 2.0
-light_data = SubResource( 3 )
+light_data = SubResource( 2 )
 
 [node name="RoofLight6" parent="Lights" instance=ExtResource( 5 )]
 transform = Transform( 1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, 51.45, 22.55, -58.9 )
@@ -717,7 +717,7 @@ transform = Transform( -4.37114e-08, 1, 8.35187e-23, -1, -4.37114e-08, -4.37114e
 
 [node name="RoofLight-Off" parent="Lights" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51.2302, 12.8137, 8.4 )
-mesh = SubResource( 4 )
+mesh = SubResource( 3 )
 material/0 = null
 
 [node name="RoofLight8" parent="Lights" instance=ExtResource( 5 )]

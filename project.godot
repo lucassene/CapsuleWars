@@ -32,9 +32,11 @@ _global_script_class_icons={
 
 [application]
 
-config/name="MultiplayerFPS"
+config/name="Capsule Wars"
+config/description="A prototype game where capsules fight for their lives!"
 run/main_scene="res://Maps/Map01.tscn"
 config/icon="res://icon.png"
+config/windows_native_icon="res://icon.ico"
 
 [autoload]
 

@@ -1,0 +1,374 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://interface/resources/HUDBigFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://interface/resources/HUDFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://interface/resources/HUDSmallFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://interface/scripts/Credits.gd" type="Script" id=4]
+
+[node name="Credits" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="MainContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VContainer" type="VBoxContainer" parent="MainContainer"]
+margin_left = 430.0
+margin_top = 44.0
+margin_right = 1490.0
+margin_bottom = 1036.0
+custom_constants/separation = 80
+
+[node name="CreatorContainer" type="VBoxContainer" parent="MainContainer/VContainer"]
+margin_right = 1060.0
+margin_bottom = 78.0
+size_flags_horizontal = 3
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/CreatorContainer"]
+modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
+margin_right = 1060.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 3 )
+text = "Design and Programming by"
+align = 1
+
+[node name="Label2" type="Label" parent="MainContainer/VContainer/CreatorContainer"]
+margin_top = 37.0
+margin_right = 1060.0
+margin_bottom = 78.0
+custom_fonts/font = ExtResource( 1 )
+text = "Lucas Sene Grandchamp"
+align = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="MainContainer/VContainer"]
+margin_top = 158.0
+margin_right = 1060.0
+margin_bottom = 471.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/VContainer/CenterContainer"]
+margin_right = 1060.0
+margin_bottom = 313.0
+custom_constants/separation = 30
+
+[node name="FXContainer" type="VBoxContainer" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
+margin_right = 1060.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/FXContainer"]
+modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
+margin_right = 1060.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 3 )
+text = "Sound Effects"
+align = 1
+
+[node name="Label2" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/FXContainer"]
+margin_top = 37.0
+margin_right = 1060.0
+margin_bottom = 64.0
+custom_fonts/font = ExtResource( 3 )
+text = "from freesound.org"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
+margin_top = 94.0
+margin_right = 1060.0
+margin_bottom = 128.0
+custom_constants/separation = 40
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_right = 146.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "EFlexMusic"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 186.0
+margin_right = 293.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "RMF298"
+align = 1
+valign = 1
+
+[node name="Label3" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 333.0
+margin_right = 476.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "AlineAudio"
+align = 1
+valign = 1
+
+[node name="Label4" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 516.0
+margin_right = 620.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Gemesil"
+align = 1
+valign = 1
+
+[node name="Label5" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 660.0
+margin_right = 862.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Dersuperanton"
+align = 1
+valign = 1
+
+[node name="Label6" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 902.0
+margin_right = 1060.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Twisterman"
+align = 1
+valign = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
+margin_top = 158.0
+margin_right = 1060.0
+margin_bottom = 192.0
+custom_constants/separation = 40
+alignment = 1
+
+[node name="Label7" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 79.0
+margin_right = 232.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Nox_Sound"
+align = 1
+valign = 1
+
+[node name="Label8" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 272.0
+margin_right = 514.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Tehlordoswag420"
+align = 1
+valign = 1
+
+[node name="Label9" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 554.0
+margin_right = 667.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Imbubec"
+align = 1
+valign = 1
+
+[node name="Label10" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 707.0
+margin_right = 827.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Nioczkus"
+align = 1
+valign = 1
+
+[node name="Label11" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 867.0
+margin_right = 980.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "KNO SFX"
+align = 1
+valign = 1
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
+modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
+margin_top = 222.0
+margin_right = 1060.0
+margin_bottom = 249.0
+custom_fonts/font = ExtResource( 3 )
+text = "and"
+align = 1
+valign = 1
+
+[node name="Label12" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
+margin_top = 279.0
+margin_right = 1060.0
+margin_bottom = 313.0
+custom_fonts/font = ExtResource( 2 )
+text = "ToneDock"
+align = 1
+valign = 1
+
+[node name="MusicContainer" type="VBoxContainer" parent="MainContainer/VContainer"]
+margin_top = 551.0
+margin_right = 1060.0
+margin_bottom = 716.0
+size_flags_horizontal = 3
+custom_constants/separation = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/VContainer/MusicContainer"]
+margin_right = 1060.0
+margin_bottom = 64.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/MusicContainer/VBoxContainer"]
+modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
+margin_right = 1060.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 3 )
+text = "Music"
+align = 1
+
+[node name="Label2" type="Label" parent="MainContainer/VContainer/MusicContainer/VBoxContainer"]
+margin_top = 37.0
+margin_right = 1060.0
+margin_bottom = 64.0
+custom_fonts/font = ExtResource( 3 )
+text = "from bensound.com"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VContainer/MusicContainer"]
+margin_top = 94.0
+margin_right = 1060.0
+margin_bottom = 165.0
+custom_constants/separation = 40
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/VContainer/MusicContainer/HBoxContainer"]
+margin_left = 177.0
+margin_right = 529.0
+margin_bottom = 71.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/MusicContainer/HBoxContainer/VBoxContainer"]
+margin_right = 352.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "\"The Elevator Bossa Nova\""
+align = 1
+
+[node name="Label2" type="Label" parent="MainContainer/VContainer/MusicContainer/HBoxContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 352.0
+margin_bottom = 71.0
+custom_fonts/font = ExtResource( 3 )
+text = "Composed by Benjamin Tissot"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer/VContainer/MusicContainer/HBoxContainer"]
+margin_left = 569.0
+margin_right = 882.0
+margin_bottom = 71.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/MusicContainer/HBoxContainer/VBoxContainer2"]
+margin_right = 313.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "\"Badass\""
+align = 1
+
+[node name="Label2" type="Label" parent="MainContainer/VContainer/MusicContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 44.0
+margin_right = 313.0
+margin_bottom = 71.0
+custom_fonts/font = ExtResource( 3 )
+text = "Composed by Benjamin Tissot"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/VContainer"]
+margin_top = 796.0
+margin_right = 1060.0
+margin_bottom = 854.0
+
+[node name="Label3" type="Label" parent="MainContainer/VContainer/VBoxContainer"]
+modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
+margin_right = 1060.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 3 )
+text = "Textures"
+align = 1
+
+[node name="Label4" type="Label" parent="MainContainer/VContainer/VBoxContainer"]
+margin_top = 31.0
+margin_right = 1060.0
+margin_bottom = 58.0
+custom_fonts/font = ExtResource( 3 )
+text = "Kenney Prototype Textures"
+align = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer/VContainer"]
+margin_top = 934.0
+margin_right = 1060.0
+margin_bottom = 992.0
+
+[node name="Label3" type="Label" parent="MainContainer/VContainer/VBoxContainer2"]
+modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
+margin_right = 1060.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 3 )
+text = "Thanks"
+align = 1
+
+[node name="Label4" type="Label" parent="MainContainer/VContainer/VBoxContainer2"]
+margin_top = 31.0
+margin_right = 1060.0
+margin_bottom = 58.0
+custom_fonts/font = ExtResource( 3 )
+text = "To my wife and all my friends who have played this prototype while it was buggy as hell."
+align = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -100.0
+custom_constants/margin_right = 70
+custom_constants/margin_bottom = 50
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_right = 1850.0
+margin_bottom = 50.0
+alignment = 2
+
+[node name="BackButton" type="Button" parent="MarginContainer/HBoxContainer"]
+margin_left = 1725.0
+margin_right = 1850.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 125, 50 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 3 )
+text = "Back"
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
