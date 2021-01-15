@@ -42,7 +42,7 @@ func on_health_changed(current_health):
 			sound_player.play(0.0)
 
 func _on_Tween_tween_completed(_object, _key):
-	pass
-	if current == 100:
+	if current >= max_health:
+		current = max_health
 		sound_player.set_stream(recovered_sound)
 		sound_player.play()

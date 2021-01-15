@@ -639,34 +639,40 @@ material = ExtResource( 3 )
 [node name="SpawnPoints" type="Node" parent="."]
 
 [node name="SP1" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.688013, 0, -0.725698, 0, 1, 0, 0.725698, 0, 0.688013, -53.8902, 3.25, 53.3732 )
-
-[node name="SP8" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.767747, 0, -0.640753, 0, 1, 0, 0.640753, 0, 0.767747, -55.374, 16.25, 25.946 )
+transform = Transform( 0.688013, 0, -0.725698, 0, 1, 0, 0.725698, 0, 0.688013, -53.89, 0, 53.373 )
 
 [node name="SP4" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.0314978, 0, 0.999504, 0, 1, 0, -0.999504, 0, 0.0314978, 27.2797, 3.25, 47.402 )
-
-[node name="SP7" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.15659, 0, -0.987664, 0, 1, 0, 0.987664, 0, 0.15659, -13.9161, 16.25, 53.865 )
+transform = Transform( 0.0314978, 0, 0.999504, 0, 1, 0, -0.999504, 0, 0.0314978, 27.28, 0, 47.402 )
 
 [node name="SP2" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( -0.426047, 0, 0.904701, 0, 1, 0, -0.904701, 0, -0.426047, 40.013, 3.25, -21.413 )
+transform = Transform( -0.426047, 0, 0.904701, 0, 1, 0, -0.904701, 0, -0.426047, 40.013, 0, -21.413 )
 
 [node name="SP3" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( -0.187107, 0, -0.98234, 0, 1, 0, 0.98234, 0, -0.187107, -21.425, 3.25, -43.318 )
-
-[node name="SP5" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( -0.843325, 0, 0.537403, 0, 1, 0, -0.537403, 0, -0.843325, 56.7458, 16.25, -52.9301 )
-
-[node name="SP6" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( -0.966295, 0, -0.257436, 0, 1, 0, 0.257436, 0, -0.966295, -52.4642, 3.25, -55.4803 )
-
-[node name="SP9" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( -0.0510807, 0, 0.998695, 0, 1, 0, -0.998695, 0, -0.0510807, 55.9084, 3.25, -54.4918 )
+transform = Transform( -0.187107, 0, -0.98234, 0, 1, 0, 0.98234, 0, -0.187107, -21.425, 0, -43.318 )
 
 [node name="SP10" parent="SpawnPoints" instance=ExtResource( 7 )]
-transform = Transform( 0.998538, 0, 0.0540613, 0, 1, 0, -0.0540613, 0, 0.998538, 3.39691, 3.25, 38.9524 )
+transform = Transform( 0.998538, 0, 0.0540613, 0, 1, 0, -0.0540613, 0, 0.998538, 3.39701, 0, 38.952 )
+
+[node name="SP9" parent="SpawnPoints" instance=ExtResource( 7 )]
+transform = Transform( -0.0510807, 0, 0.998695, 0, 1, 0, -0.998695, 0, -0.0510807, 55.908, 0, -54.492 )
+
+[node name="SP6" parent="SpawnPoints" instance=ExtResource( 7 )]
+transform = Transform( -0.966295, 0, -0.257436, 0, 1, 0, 0.257436, 0, -0.966295, -52.464, 0, -55.48 )
+
+[node name="SP8" parent="SpawnPoints" instance=ExtResource( 7 )]
+transform = Transform( 0.767747, 0, -0.640753, 0, 1, 0, 0.640753, 0, 0.767747, -55.374, 14, 25.946 )
+
+[node name="SP11" parent="SpawnPoints" instance=ExtResource( 7 )]
+transform = Transform( -0.431928, 0, -0.901908, 0, 1, 0, 0.901908, 0, -0.431928, -55.374, 14, -2.03373 )
+
+[node name="SP7" parent="SpawnPoints" instance=ExtResource( 7 )]
+transform = Transform( 0.15659, 0, -0.987664, 0, 1, 0, 0.987664, 0, 0.15659, -13.916, 14, 53.865 )
+
+[node name="SP12" parent="SpawnPoints" instance=ExtResource( 7 )]
+transform = Transform( -0.0658043, 0, 0.997833, 0, 1, 0, -0.997833, 0, -0.0658043, 50.037, 14, 48.2724 )
+
+[node name="SP5" parent="SpawnPoints" instance=ExtResource( 7 )]
+transform = Transform( -0.843325, 0, 0.537403, 0, 1, 0, -0.537403, 0, -0.843325, 56.746, 14, -52.93 )
 
 [node name="DeathArea" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -14, 0 )
@@ -745,7 +751,7 @@ volume_db = -30.0
 [node name="KillSoundPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
 [connection signal="_on_player_can_spawn" from="CanvasLayer/MainHUD" to="." method="_on_player_can_spawn"]
-[connection signal="on_game_begin" from="CanvasLayer/Lobby" to="CanvasLayer/MainHUD" method="_on_game_begin"]
 [connection signal="on_game_begin" from="CanvasLayer/Lobby" to="." method="_on_game_begin"]
+[connection signal="on_game_begin" from="CanvasLayer/Lobby" to="CanvasLayer/MainHUD" method="_on_game_begin"]
 [connection signal="body_entered" from="DeathArea" to="." method="_on_DeathArea_body_entered"]
 [connection signal="tween_completed" from="FadeOutTween" to="." method="_on_FadeOutTween_tween_completed"]

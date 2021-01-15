@@ -15,6 +15,7 @@ var client_ready_count = 0
 var last_spawn_point
 var is_in_lobby = true
 var stream_to_be_played
+var server_spawn_index = 0
 
 func _ready():
 	play_music(Mixer.lobby_music)
@@ -22,10 +23,6 @@ func _ready():
 	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
 	main_hud.connect("on_exit_to_lobby",self,"_on_exit_to_lobby")
 	Scores.connect("on_kill_streak",main_hud,"_on_player_kill_streak")
-
-#func _unhandled_input(event):
-#	if is_in_lobby and event.is_action_pressed("escape"):
-#		get_tree().quit()
 
 func create_players_intances():
 	var new_player
@@ -47,6 +44,7 @@ func create_players_intances():
 		new_player.set_material(Network.connected_players[id].color)
 		new_player.set_hud_name(Network.connected_players[id].name)
 		var spawn_index = spawn_player(new_player)
+		if id == 1: server_spawn_index = spawn_index
 		player_spawn.id = id
 		player_spawn.spawn_index = spawn_index
 		player_spawn.name = Network.connected_players[id].name
@@ -55,6 +53,7 @@ func create_players_intances():
 		player_spawn.secondary = Network.connected_players[id].secondary
 		player_spawns.append(player_spawn)
 	if Network.connected_players.size() == 1:
+		activate_player(1,server_spawn_index)
 		start_game()
 	else:
 		rpc("receive_player_spawns",player_spawns)
@@ -71,6 +70,7 @@ func spawn_player(actor):
 			try_count += 1
 			if !spawn.get_can_spawn() or spawn == actor.get_last_spawn():
 				spawn = null
+	spawn.set_can_spawn(false)
 	return spawn.get_index()
 
 remotesync func activate_player(id,spawn_index):
@@ -89,19 +89,20 @@ func get_player_by_id(id):
 			return child
 	return null
 
-remote func receive_player_spawns(player_spawns):
-	for item in player_spawns:
-		var new_player = Global.player_scene.instance()
-		var spawn = spawn_container.get_child(item.spawn_index)
-		new_player.set_name(str(item.id))
-		new_player.set_network_master(item.id)
-		new_player.set_weapons(item.primary,item.secondary)
-		players_container.add_child(new_player)
-		new_player.global_transform.origin = spawn.global_transform.origin
-		new_player.rotation = spawn.rotation
-		new_player.set_material(item.color)
-		new_player.set_hud_name(item.name)
-	rpc_id(1,"on_client_ready")
+remotesync func receive_player_spawns(player_spawns):
+	if get_tree().is_network_server():
+		activate_player(1,server_spawn_index)
+	else:
+		for item in player_spawns:
+			var new_player = Global.player_scene.instance()
+			new_player.set_name(str(item.id))
+			new_player.set_network_master(item.id)
+			new_player.set_weapons(item.primary,item.secondary)
+			players_container.add_child(new_player)
+			activate_player(item.id,item.spawn_index)
+			new_player.set_material(item.color)
+			new_player.set_hud_name(item.name)
+		rpc_id(1,"on_client_ready")
 
 remote func on_client_ready():
 	client_ready_count += 1
@@ -112,6 +113,8 @@ remote func on_client_ready():
 
 remotesync func start_game():
 	for player in players_container.get_children():
+#		if get_tree().is_network_server() and player.name == "1":
+#			activate_player(1,server_spawn_index)
 		player.initialize()
 	is_in_lobby = false
 	play_music(Mixer.action_music)

@@ -9,11 +9,11 @@ export var MOUSE_SENSITITY = 0.05
 var state_machine
 var current_sensitivity = 0.05 setget set_mouse_sensitivity
 var current_speed = 0.0 setget set_current_speed,get_current_speed
-var current_acceleration = 0.0 setget set_current_acceleration
+var current_acceleration = 0.0 setget set_current_acceleration,get_current_acceleration
 
 var h_velocity = Vector3.ZERO
 var movement = Vector3.ZERO setget ,get_movement
-var gravity_vector = Vector3.ZERO
+var gravity_vector = Vector3.DOWN setget ,get_gravity_vector
 
 func set_current_speed(value):
 	current_speed = value
@@ -24,11 +24,17 @@ func get_current_speed():
 func set_current_acceleration(value):
 	current_acceleration = value
 
+func get_current_acceleration():
+	return current_acceleration
+
 func get_movement():
 	return movement
 
 func set_mouse_sensitivity(value = MOUSE_SENSITITY):
 	current_sensitivity = value
+
+func get_gravity_vector():
+	return gravity_vector
 
 func _initialize(fsm):
 	state_machine = fsm

@@ -65,12 +65,7 @@ var weapons = [-1,-1]
 var sniper_overlay
 var is_dead = false
 
-var last_state = {
-	time = 0.0,
-	position = Vector3.ZERO,
-	body_rotation = 0.0,
-	head_rotation = 0.0
-}
+var remote_states = []
 
 func get_player_controller():
 	return player_controller
@@ -171,6 +166,7 @@ func initialize():
 	current_health = HEALTH
 	player_hud.set_progress(current_health)
 	state_machine.set_state("Idle")
+	update_position(OS.get_system_time_msecs(),global_transform.origin,rotation.y,head.rotation.x)
 	hand.reload_weapons()
 	if is_network_master(): 
 		weapon_view.show()
@@ -178,12 +174,15 @@ func initialize():
 		camera.current = true
 		emit_signal("on_player_spawned")
 	current_weapon.draw_weapon()
+	set_process(true)
+	set_physics_process(true)
 
 func _ready():
 	randomize()
+	set_process(false)
+	set_physics_process(false)
 	if is_network_master():
-		print("Meu unique id: " + str(get_tree().get_network_unique_id()))
-		print("Meu nome é: " + name)
+		print("Unique id: " + str(get_tree().get_network_unique_id()))
 		Global.player = self
 		hand.set_as_toplevel(true)
 	get_node("/root/Game").connect_player_signals(self)
@@ -216,8 +215,7 @@ func _physics_process(delta):
 		check_for_player()
 		check_floor()
 		state_machine.update(delta)
-		if velocity != Vector3.ZERO:
-			rpc_unreliable("update_position",global_transform.origin,rotation.y,head.rotation.x,OS.get_system_time_msecs())
+		rpc_unreliable("update_position",OS.get_system_time_msecs(),global_transform.origin,rotation.y,head.rotation.x)
 	else:
 		move_puppet(delta)
 
@@ -227,18 +225,32 @@ func move(delta):
 	return velocity
 
 func move_puppet(delta):
-	var position_delta = OS.get_system_time_msecs() - last_state.time
-	if position_delta > 100: position_delta = 100
-	global_transform.origin = global_transform.origin.linear_interpolate(last_state.position, delta * position_delta)
-	rotation.y = lerp_angle(rotation.y,last_state.body_rotation,delta * position_delta)
-	head.rotation.x = lerp_angle(head.rotation.x,last_state.head_rotation,delta * position_delta)
+	var last_state
+	if remote_states.size() == 1:
+		last_state = remote_states[0]
+	else:
+		last_state = remote_states[1]
+	var time_delta = OS.get_system_time_msecs() - last_state.time
+	time_delta = clamp(time_delta,20,60)
+	global_transform.origin = global_transform.origin.linear_interpolate(last_state.body_position, delta * time_delta)
+	rotation.y = lerp_angle(rotation.y,last_state.body_rotation,delta * time_delta)
+	head.rotation.x = lerp_angle(head.rotation.x,last_state.head_rotation,delta * time_delta)
 
-remote func update_position(position,body_rotation,head_rotation,time):
-	last_state.time = time
-	last_state.position = position
-	last_state.body_rotation = body_rotation
-	last_state.head_rotation = head_rotation
-	
+remote func update_position(time,position,body_rotation,head_rotation):
+	var player_state = create_state(time,position,body_rotation,head_rotation)
+	if remote_states.size() > 1:
+		remote_states.remove(0)
+	remote_states.append(player_state)
+
+func create_state(state_time,position,body_rot,head_rot):
+	var state = {
+		time = state_time,
+		body_position = position,
+		body_rotation = body_rot,
+		head_rotation = head_rot
+	}
+	return state
+
 func weapon_sway(delta):
 	hand.rotation.y = lerp_angle(hand.rotation.y,rotation.y,current_weapon.get_sway() * delta)
 	hand.rotation.z = lerp_angle(hand.rotation.z,head.rotation.z,current_weapon.get_sway() * delta)
@@ -412,8 +424,8 @@ remotesync func deactivate_player(value,point = null):
 		initialize()
 	elif point: 
 		create_death_splash(point)
-	set_process(!value)
-	set_physics_process(!value)
+		set_process(false)
+		set_physics_process(false)
 	if is_network_master(): crosshair.visible = !value
 	set_collision_layer_bit(0,!value)
 	set_collision_mask_bit(0,!value)
