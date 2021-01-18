@@ -1,7 +1,7 @@
 # CapsuleWars
 > A 3D multiplayer FPS (First Person Shooter) made in Godot, using GDScript.
 
-A small project developed to allow up to 6 players play a short and fun FPS match online. The game has many features present in the majority games of the genre and shows the capabilities of Godot engine.
+A small project developed to allow up to 6 players play a short and fun FPS match online. The game has many features present in the majority of games of the genre and shows some of Godot's engine capabilities.
 
 ![](https://i.ibb.co/2kkhrkp/Capsule-Wars-Screen.jpg)
 
