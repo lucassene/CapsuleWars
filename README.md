@@ -54,8 +54,8 @@ This games presents features, such as:
 
 ## Meta
 
-Lucas Sene Grandchamp – lsgrandchamp@gmail.com
+> If you have played the game, please let me know how it was. Send me an email telling it, I'll be forever grateful.
 
-If you have played, please let me know how it was. Send me an email telling it, I'll be forever grateful.
+Lucas Sene Grandchamp – lsgrandchamp@gmail.com
 
 [https://github.com/lucassene](https://github.com/lucassene)
