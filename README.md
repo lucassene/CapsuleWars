@@ -17,7 +17,7 @@ Windows:
 1. Give your external IP to any of your friends that you want to play with.
 2. If you want, you can change the default port (23571) to any other. Just type it in the *Port* Field in the lobby inside the game.
 3. If you connect to the internet through a router or modem you will need to port forward the desired port in your device's configuration. If you need any help, try this [website](https://www.noip.com/support/knowledgebase/general-port-forwarding-guide/).
-4. With the above steps taken care, just hit the *Host* button.
+4. With the above steps out of the way, just hit the *Host* button.
 > The port issue can be overcome by having a dedicated server or using services such as [Steamworks](https://partner.steamgames.com/).
 
 ## Joining a game
