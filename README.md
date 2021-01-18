@@ -15,7 +15,7 @@ Windows:
 ## Hosting a game
 
 1. Have your *external* IP in hands. You do not need to type it in the *IP* field.
-2. If you want, you can change the default port (23571) to any other. Just type it in the *Port* Field in the lobby inside the game.
+2. If you want, you can change the default port (23571). Just type it in the *Port* Field in the lobby inside the game, otherwise, leave it blank.
 3. If you connect to the internet through a router or modem you will need to port forward the desired port in your device's configuration. If you need any help, try this [website](https://www.noip.com/support/knowledgebase/general-port-forwarding-guide/).*
 4. With the above steps out of the way, just hit the *Host* button.
 5. Give your *external* IP to the people you want to play with and wait them to join.
