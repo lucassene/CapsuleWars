@@ -44,6 +44,7 @@ func create_players_intances():
 		new_player.set_material(Network.connected_players[id].color)
 		new_player.set_hud_name(Network.connected_players[id].name)
 		var spawn_index = spawn_player(new_player)
+		new_player.set_last_spawn(spawn_container.get_child(spawn_index))
 		if id == 1: server_spawn_index = spawn_index
 		player_spawn.id = id
 		player_spawn.spawn_index = spawn_index
@@ -78,6 +79,7 @@ remotesync func activate_player(id,spawn_index):
 	var actor = get_player_by_id(id)
 	if actor:
 		spawn.set_can_spawn(false)
+		print("spawn do " + str(id) + ": " + str(spawn.get_index()))
 		actor.set_last_spawn(spawn)
 		actor.global_transform.origin = spawn.global_transform.origin
 		actor.rotation = spawn.rotation
@@ -106,15 +108,13 @@ remotesync func receive_player_spawns(player_spawns):
 
 remote func on_client_ready():
 	client_ready_count += 1
-	print(str(get_tree().get_rpc_sender_id()) + " está pronto!")
+	print(str(get_tree().get_rpc_sender_id()) + " is ready!")
 	if client_ready_count == Network.connected_players.size() - 1:
 		rpc("start_game")
 		client_ready_count = 0
 
 remotesync func start_game():
 	for player in players_container.get_children():
-#		if get_tree().is_network_server() and player.name == "1":
-#			activate_player(1,server_spawn_index)
 		player.initialize()
 	is_in_lobby = false
 	play_music(Mixer.action_music)

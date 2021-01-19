@@ -164,7 +164,7 @@ mesh = SubResource( 6 )
 material/0 = ExtResource( 10 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="6"]
-transform = Transform( 0.999999, 1.49012e-08, -2.5805e-09, -1.3411e-07, 1, 2.58068e-08, 1.83995e-08, 5.48906e-08, 1, -0.274, 0.184, 0.396 )
+transform = Transform( 0.999999, 1.49012e-08, -2.5805e-09, -1.3411e-07, 1, 2.58068e-08, 1.83995e-08, 5.48906e-08, 1, -0.622327, 0.18445, 0.395844 )
 layers = 2
 mesh = SubResource( 7 )
 material/0 = ExtResource( 9 )

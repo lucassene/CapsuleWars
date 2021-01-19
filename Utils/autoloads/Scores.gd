@@ -13,6 +13,7 @@ const KILLER_STREAK_BONUS = 25
 var player_scores = {}
 
 var local_score = {
+	id = -1,
 	name = "",
 	score = 0,
 	damage = 0,

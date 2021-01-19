@@ -49,6 +49,7 @@ signal on_menu_pressed(value)
 signal on_score_changed(item)
 
 var is_ads = false setget set_is_ads,get_is_ads
+var was_ads = false
 var is_moving = false setget set_is_moving,get_is_moving
 var is_firing = false setget set_is_firing,get_is_firing
 var current_anim = "headbob"
@@ -166,7 +167,7 @@ func initialize():
 	current_health = HEALTH
 	player_hud.set_progress(current_health)
 	state_machine.set_state("Idle")
-	update_position(OS.get_system_time_msecs(),global_transform.origin,rotation.y,head.rotation.x)
+	update_position(OS.get_system_time_msecs(),last_spawn.global_transform.origin,rotation.y,head.rotation.x)
 	hand.reload_weapons()
 	if is_network_master(): 
 		weapon_view.show()
@@ -197,6 +198,8 @@ func _unhandled_input(event):
 	if is_network_master() and state_machine.get_current_state() != "Dead":
 		state_machine.handle_input(event)
 		player_controller.handle_input(event)
+		if event.is_action_pressed("dmg_test"):
+			rpc_id(int(name),"set_dead_state",true)
 
 func _process(delta):
 	recover_health(delta)
@@ -206,8 +209,6 @@ func _process(delta):
 			camera.fov = lerp(camera.fov,current_weapon.get_ads_fov(), current_weapon.get_ads_speed() * delta)
 		elif !is_ads and camera.fov < DEFAULT_FOV:
 			camera.fov = lerp(camera.fov,DEFAULT_FOV,current_weapon.get_ads_speed() * delta)
-		if Input.is_action_just_pressed("dmg_test"):
-			add_damage(int(name),Vector3.ZERO,10,false,false)
 
 func _physics_process(delta):
 	if is_network_master():
@@ -279,6 +280,12 @@ func check_floor():
 func ads(value):
 	if current_weapon.get_can_ads():
 		set_is_ads(value)
+	if !value: was_ads = false
+
+func back_to_ads():
+	if was_ads:
+		set_is_ads(true)
+		was_ads = false
 
 func check_for_player():
 	if aim_cast.is_colliding():
@@ -302,6 +309,9 @@ func set_hud_name(player_name):
 remotesync func fire():
 	if current_weapon.get_can_fire():
 		get_shot_victim()
+		if is_network_master() and current_weapon.get_has_scope() and is_ads:
+			was_ads = true
+			set_is_ads(false)
 
 func get_shot_victim():
 		var target = null

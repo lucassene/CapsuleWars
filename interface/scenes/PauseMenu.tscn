@@ -49,9 +49,9 @@ __meta__ = {
 [node name="Menu" type="VBoxContainer" parent="Container/Margin"]
 margin_left = 75.0
 margin_top = 50.0
-margin_right = 350.0
+margin_right = 425.0
 margin_bottom = 1005.0
-rect_min_size = Vector2( 275, 200 )
+rect_min_size = Vector2( 350, 200 )
 mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
@@ -63,34 +63,37 @@ __meta__ = {
 
 [node name="CommandsPanel" parent="Container/Margin/Menu" instance=ExtResource( 4 )]
 margin_top = 0.0
-margin_right = 275.0
-margin_bottom = 695.0
+margin_right = 350.0
+margin_bottom = 644.0
 
 [node name="Label" type="Label" parent="Container/Margin/Menu"]
-margin_top = 725.0
-margin_right = 275.0
-margin_bottom = 766.0
+margin_top = 674.0
+margin_right = 350.0
+margin_bottom = 715.0
 custom_fonts/font = ExtResource( 2 )
 text = "Paused"
 
 [node name="BackButton" type="Button" parent="Container/Margin/Menu"]
-margin_top = 796.0
-margin_right = 275.0
-margin_bottom = 829.0
+margin_top = 745.0
+margin_right = 350.0
+margin_bottom = 795.0
+rect_min_size = Vector2( 0, 50 )
 custom_fonts/font = ExtResource( 3 )
 text = "Back"
 
 [node name="LobbyButton" type="Button" parent="Container/Margin/Menu"]
-margin_top = 859.0
-margin_right = 275.0
-margin_bottom = 892.0
+margin_top = 825.0
+margin_right = 350.0
+margin_bottom = 875.0
+rect_min_size = Vector2( 0, 50 )
 custom_fonts/font = ExtResource( 3 )
 text = "Back to Lobby"
 
 [node name="ExitButton" type="Button" parent="Container/Margin/Menu"]
-margin_top = 922.0
-margin_right = 275.0
+margin_top = 905.0
+margin_right = 350.0
 margin_bottom = 955.0
+rect_min_size = Vector2( 0, 50 )
 custom_fonts/font = ExtResource( 3 )
 text = "Exit Game"
 [connection signal="pressed" from="Container/Margin/Menu/BackButton" to="." method="_on_BackButton_pressed"]

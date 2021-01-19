@@ -13,8 +13,8 @@ export var SPAWN_TIME = 4.0
 
 var actor
 var primary_index = 0
-var secondary_index = 0
 var current_primary = 0
+var secondary_index = 0
 var current_secondary = 0
 var can_respawn = false
 
@@ -38,11 +38,15 @@ func set_weapon_options():
 	primary_option.add_item("Pulse Rifle",2)
 	primary_option.add_item("Sniper Rifle",3)
 	primary_option.selected = Network.self_data.primary
+	current_primary = primary_option.selected
+	primary_index = primary_option.selected
 	
 	secondary_option.add_item("Pistol",0)
 	secondary_option.add_item("SMG",1)
 	secondary_option.selected = 0
 	secondary_option.selected = Network.self_data.secondary
+	current_secondary = secondary_option.selected
+	secondary_index = secondary_option.selected
 
 func set_respawn_possible(value):
 	can_respawn = value
@@ -70,18 +74,20 @@ func on_player_death(player):
 
 func respawn():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if primary_index != current_primary or secondary_index != current_secondary:
-		actor.rpc("change_loadout",primary_index,secondary_index)
+	if current_primary != primary_index or current_secondary != secondary_index:
+		primary_index = current_primary
+		secondary_index = current_secondary
+		actor.rpc("change_loadout",current_primary,current_secondary)
 	emit_signal("on_spawn_time_reached",actor)
 	visible = false
 
 func _on_PrimaryOption_item_selected(index):
 	Network.self_data.primary = index
-	primary_index = index
+	current_primary = index
 
 func _on_SecondaryOption_item_selected(index):
 	Network.self_data.secondary = index
-	secondary_index = index
+	current_secondary = index
 
 func _on_Timer_timeout():
 	can_respawn = true

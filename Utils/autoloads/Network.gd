@@ -19,7 +19,7 @@ signal on_peer_disconnected(info)
 signal on_server_disconnected()
 signal on_server_created()
 signal on_client_created()
-signal on_cant_create_server(message)
+signal on_cant_create_server(error)
 signal on_connected_to_server()
 
 func _ready():

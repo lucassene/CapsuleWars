@@ -146,8 +146,8 @@ func _on_BeginButton_pressed():
 	rpc("begin_game")
 
 func _on_player_connected(peer_id):
-		print(peer_id)
-		var player_info = Network.get_player_info(peer_id).name + " (" + str(Network.get_player_info(peer_id).id) + ")"
+		print(str(peer_id) + " has connected")
+		var player_info = Network.get_player_info(peer_id).name
 		var text = ""
 		if peer_id == 1:
 			text = "%s is hosting the game." % player_info
@@ -172,18 +172,18 @@ func _on_server_disconnected():
 func _on_server_created():
 	buttons_disabled(true)
 	begin_button.disabled = false
-	append_log("You (" + str(Network.get_player_info(1).id) + ") " + "are hosting the game.")
+	append_log("You are hosting the game.")
 
 func _on_connected_to_server():
-	append_log("You (" + str(Network.self_data.id) + ") " + " are connected to the server.")
+	append_log("You are connected to the server.")
 
 func _on_cant_create_server(error):
 	match error:
 		ERR_CANT_CREATE:
-			append_log("Error creating the server.")
+			append_log("Error creating a server.")
 		ERR_ALREADY_IN_USE:
-			append_log("You already have a running server.")
-	reset()
+			append_log("You already have a server running.")
+	deactivate_hud(false)
 
 func _on_IDText_text_changed(_new_text):
 	invalid_name_label.hide()

@@ -90,5 +90,5 @@ tracks/5/keys = {
 "times": PoolRealArray( 0, 1.5, 1.6 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -0.566, 0.184, 0.396 ), Vector3( -0.566, 0.184, 0.396 ), Vector3( -0.274, 0.184, 0.396 ) ]
+"values": [ Vector3( -0.566, 0.184, 0.319 ), Vector3( -0.566, 0.184, 0.319 ), Vector3( -0.274, 0.184, 0.319 ) ]
 }

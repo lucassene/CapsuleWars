@@ -283,6 +283,7 @@ func _on_AnimationPlayer_animation_started(anim_name):
 			can_fire = false
 			can_reload = false
 			is_busy = true
+			if HAS_SCOPE: can_ads = false
 			if PULSE: 
 				is_pulse_firing = true
 				pulse_timer.start()
@@ -300,6 +301,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			front_muzzle_sprite.hide()
 			side_muzzle_sprite.hide()
 			if !AUTO and !PULSE: is_busy = false
+			if HAS_SCOPE: player.back_to_ads()
 			return
 		"out_of_ammo":
 			can_ads = true

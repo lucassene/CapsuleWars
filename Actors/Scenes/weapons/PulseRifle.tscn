@@ -5,7 +5,7 @@
 [ext_resource path="res://assets/animations/pulse-draw.tres" type="Animation" id=3]
 [ext_resource path="res://assets/animations/assault-stow.tres" type="Animation" id=4]
 [ext_resource path="res://Actors/Scenes/weapons/Weapon.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/audio/assault-swap.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/assault-reload-slide.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/audio/smg-shot.wav" type="AudioStream" id=7]
 [ext_resource path="res://assets/materials/Pistol.tres" type="Material" id=8]
 [ext_resource path="res://assets/materials/Pistol-light.tres" type="Material" id=9]
@@ -129,7 +129,7 @@ mesh = SubResource( 7 )
 material/0 = ExtResource( 10 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="7"]
-transform = Transform( 0.999999, 2.98023e-08, -2.2436e-09, -1.11759e-07, 1, -2.08676e-09, 1.50016e-08, 5.72675e-08, 1, -0.274, 0.184, 0.396 )
+transform = Transform( 0.999999, 2.98023e-08, -2.2436e-09, -1.11759e-07, 1, -2.08676e-09, 1.50016e-08, 5.72675e-08, 1, -0.274, 0.184, 0.319 )
 layers = 2
 mesh = SubResource( 8 )
 material/0 = ExtResource( 9 )

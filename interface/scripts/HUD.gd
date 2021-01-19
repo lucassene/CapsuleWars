@@ -79,6 +79,8 @@ func _on_player_disconnected(player):
 func _on_server_disconnected():
 	is_dead = true
 	scoreboard_menu.clear_player_score()
+	scoreboard_menu.hide()
+	respawn_hud.hide()
 	info_container.hide()
 
 func _on_pause_menu_pressed(value):

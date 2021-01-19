@@ -54,7 +54,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 1.4, 1.6, 2 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -0.622327, 0.18445, 0.395844 ), Vector3( -0.622327, 0.18445, 0.395844 ), Vector3( -0.230092, 0.18445, 0.395844 ), Vector3( -0.230092, 0.18445, 0.395844 ) ]
+"values": [ Vector3( -0.622, 0.184, 0.317 ), Vector3( -0.622, 0.184, 0.317 ), Vector3( -0.23, 0.184, 0.317 ), Vector3( -0.23, 0.184, 0.317 ) ]
 }
 tracks/4/type = "method"
 tracks/4/path = NodePath(".")
