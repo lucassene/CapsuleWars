@@ -314,12 +314,27 @@ custom_fonts/font = ExtResource( 3 )
 text = "Textures"
 align = 1
 
-[node name="Label4" type="Label" parent="MainContainer/VContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VContainer/VBoxContainer"]
 margin_top = 31.0
 margin_right = 1060.0
 margin_bottom = 58.0
+custom_constants/separation = 40
+alignment = 1
+
+[node name="Label4" type="Label" parent="MainContainer/VContainer/VBoxContainer/HBoxContainer"]
+margin_left = 298.0
+margin_right = 590.0
+margin_bottom = 27.0
 custom_fonts/font = ExtResource( 3 )
 text = "Kenney Prototype Textures"
+align = 1
+
+[node name="Label9" type="Label" parent="MainContainer/VContainer/VBoxContainer/HBoxContainer"]
+margin_left = 630.0
+margin_right = 762.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 3 )
+text = "HDRI Heaven"
 align = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer/VContainer"]

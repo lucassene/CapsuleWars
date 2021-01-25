@@ -60,8 +60,8 @@ func get_player_info(id):
 	return connected_players[id]
 
 remote func receive_player_info(id,info):
+	connected_players[id] = info
 	if !is_player_already_connected(id):
-		connected_players[id] = info
 		emit_signal("on_new_peer",id)
 
 remote func connect_to_server(peers_info):

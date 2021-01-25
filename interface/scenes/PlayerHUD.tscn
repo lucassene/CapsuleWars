@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://interface/resources/HUDFont.tres" type="DynamicFont" id=1]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.721569, 0.0588235, 0.0588235, 1 )
@@ -19,9 +21,10 @@ border_width_bottom = 1
 border_color = Color( 0.752941, 0.658824, 0.658824, 1 )
 
 [node name="Container" type="VBoxContainer"]
-margin_right = 150.0
-margin_bottom = 35.0
+margin_right = 175.0
+margin_bottom = 75.0
 rect_min_size = Vector2( 150, 35 )
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -30,19 +33,22 @@ __meta__ = {
 }
 
 [node name="NameLabel" type="Label" parent="."]
-margin_top = 1.0
-margin_right = 150.0
-margin_bottom = 15.0
+margin_top = 11.0
+margin_right = 175.0
+margin_bottom = 45.0
+grow_horizontal = 2
+custom_fonts/font = ExtResource( 1 )
 text = "<ID Name>"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
-margin_top = 19.0
-margin_right = 150.0
-margin_bottom = 34.0
+margin_top = 49.0
+margin_right = 175.0
+margin_bottom = 64.0
 rect_min_size = Vector2( 150, 15 )
+mouse_filter = 2
 size_flags_horizontal = 3
 custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 2 )

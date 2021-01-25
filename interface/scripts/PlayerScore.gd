@@ -28,7 +28,8 @@ func update_item(item):
 	call_deferred(method)
 
 func update_name():
-	name_label.text = Scores.player_scores[player_id].name
+	var color = Network.connected_players[player_id].color
+	name_label.bbcode_text = "[color=%s]%s[/color]" % [color,Scores.player_scores[player_id].name]
 
 func update_score():
 	score_label.text = str(Scores.player_scores[player_id].score)

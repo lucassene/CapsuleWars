@@ -46,6 +46,10 @@ export var MAX_X_RECOIL = 2.0
 export var MIN_Y_RECOIL = 1.0
 export var MAX_Y_RECOIL = 1.0
 export var ADS_RECOIL_MULTI = 0.5
+export var MIN_X_FLINCH = 0.5
+export var MAX_X_FLINCH = 1.5
+export var MIN_Y_FLINCH = 0.5
+export var MAX_Y_FLINCH = 1.5
 
 export(AudioStream) var fire_sound
 

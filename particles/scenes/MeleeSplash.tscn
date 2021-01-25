@@ -5,12 +5,12 @@
 [sub_resource type="ParticlesMaterial" id=1]
 direction = Vector3( 1, 1, 0 )
 spread = 85.0
-initial_velocity = 2.0
+initial_velocity = 3.0
 initial_velocity_random = 0.15
 
 [node name="MeleeSplash" instance=ExtResource( 1 )]
-amount = 15
-explosiveness = 0.64
-randomness = 0.3
+amount = 20
+explosiveness = 0.8
+randomness = 0.4
 visibility_aabb = AABB( -0.710942, -0.80018, -0.767575, 1.42189, 1.60036, 1.53515 )
 process_material = SubResource( 1 )

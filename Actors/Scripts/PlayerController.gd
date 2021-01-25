@@ -5,15 +5,19 @@ onready var actor = owner
 export var GRAVITY = 20
 export var JUMP_IMPULSE = 11
 export var MOUSE_SENSITITY = 0.05
+export var CONTROLLER_SENSITIVITY = 0.08
+export var CONTROLLER_DEADZONE = 0.15
 
 var state_machine
-var current_sensitivity = 0.05 setget set_mouse_sensitivity
+var current_sensitivity = MOUSE_SENSITITY setget set_current_sensitivity
 var current_speed = 0.0 setget set_current_speed,get_current_speed
 var current_acceleration = 0.0 setget set_current_acceleration,get_current_acceleration
 
 var h_velocity = Vector3.ZERO
 var movement = Vector3.ZERO setget ,get_movement
 var gravity_vector = Vector3.DOWN setget ,get_gravity_vector
+var gamepad_mode = false
+var on_sprint = false setget ,is_sprinting
 
 func set_current_speed(value):
 	current_speed = value
@@ -30,16 +34,31 @@ func get_current_acceleration():
 func get_movement():
 	return movement
 
-func set_mouse_sensitivity(value = MOUSE_SENSITITY):
-	current_sensitivity = value
+func set_current_sensitivity(value):
+	current_sensitivity -= value
 
 func get_gravity_vector():
 	return gravity_vector
 
+func is_sprinting():
+	return on_sprint
+
+func reset_sensitivity():
+	if !gamepad_mode:
+		current_sensitivity = MOUSE_SENSITITY
+	else:
+		current_sensitivity = CONTROLLER_SENSITIVITY	
+
 func _initialize(fsm):
 	state_machine = fsm
 	set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
+	if Input.get_connected_joypads().size() > 0:
+		current_sensitivity = CONTROLLER_SENSITIVITY
+		gamepad_mode = true
+	else:
+		current_sensitivity = MOUSE_SENSITITY
+		gamepad_mode = false
+		
 func handle_input(event):
 	if state_machine.get_current_state() != "Menu":
 		handle_mouse_movement(event)
@@ -56,11 +75,29 @@ func check_input_released(event,input,method = null,param = null):
 		return true
 	return false
 
+func _physics_process(_delta):
+	if gamepad_mode:
+		handle_controller_movement()
+
 func handle_mouse_movement(event):
-	if event is InputEventMouseMotion:
+	if !gamepad_mode and event is InputEventMouseMotion:
 		actor.rotate_y(deg2rad(-event.relative.x * current_sensitivity))
 		actor.head.rotate_x(deg2rad(-event.relative.y * current_sensitivity))
 		actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-68),deg2rad(80))
+
+func handle_controller_movement():
+	var axis_vector = get_axis_vector()
+	actor.rotate_y(-axis_vector.x * current_sensitivity)
+	actor.head.rotate_x(-axis_vector.y * current_sensitivity)
+	actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-68),deg2rad(80))
+
+func get_axis_vector():
+	var up_down = Input.get_action_strength("look_down") - Input.get_action_strength("look_up")
+	var right_left = Input.get_action_strength("look_right") - Input.get_action_strength("look_left")
+	var vector = Vector2(right_left,up_down)
+	if vector.length() < CONTROLLER_DEADZONE:
+		vector = Vector2.ZERO
+	return vector
 
 func calculate_movement(delta):
 	var direction = Vector3.ZERO
@@ -117,11 +154,14 @@ func aim(param):
 	actor.ads(param)
 
 func sprint(param):
-	if param:
+	if param and !actor.get_is_ads():
 		state_machine.set_state("Sprinting")
+		on_sprint = true
 	else:
-		state_machine.set_state("Idle")
+		on_sprint = false
 		reset_speed()
+		if actor.is_on_floor():
+				state_machine.set_state("Idle")
 
 func reload(_param):
 	actor.rpc("reload_weapon")
@@ -150,11 +190,6 @@ func set_mouse_mode(mode):
 
 func reset_speed():
 	current_speed = state_machine.states.Running.SPEED
-
-func is_sprinting():
-	if current_speed == state_machine.states.Sprinting.SPEED:
-		return true
-	return false
 
 func actor_in_air(delta):
 	gravity_vector += Vector3.DOWN * GRAVITY * delta

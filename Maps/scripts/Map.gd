@@ -79,7 +79,6 @@ remotesync func activate_player(id,spawn_index):
 	var actor = get_player_by_id(id)
 	if actor:
 		spawn.set_can_spawn(false)
-		print("spawn do " + str(id) + ": " + str(spawn.get_index()))
 		actor.set_last_spawn(spawn)
 		actor.global_transform.origin = spawn.global_transform.origin
 		actor.rotation = spawn.rotation

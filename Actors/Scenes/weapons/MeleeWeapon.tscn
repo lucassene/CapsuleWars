@@ -6,11 +6,12 @@
 [ext_resource path="res://assets/audio/knife-slash.wav" type="AudioStream" id=4]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.673229, 0.838186, 0.630761 )
+extents = Vector3( 1.53259, 0.901491, 1.43593 )
 
 [node name="MeleeWeapon" type="Spatial"]
 transform = Transform( 4.37114e-08, -3.82137e-15, 1, -8.74228e-08, -1, 0, 1, -8.74228e-08, -4.37114e-08, -1.46051, -1.94883, 2.00188 )
 script = ExtResource( 2 )
+DAMAGE = 60
 MIN_X_RECOIL = -2.0
 MAX_X_RECOIL = -5.0
 MIN_Y_RECOIL = -1.0
@@ -24,7 +25,7 @@ monitorable = false
 collision_layer = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.640509, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 1.95793e-15, 0, -6.60022e-15, 1, 0, 0.707179, 0 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

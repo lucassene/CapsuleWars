@@ -190,15 +190,18 @@ func _on_IDText_text_changed(_new_text):
 
 func _on_ColorOption_item_selected(index):
 	Network.self_data.color = Global.colors[index]
+	Network.send_info_to_server()
 
 func _on_ExitButton_pressed():
 	get_tree().quit()
 
 func _on_PrimaryOption_item_selected(index):
 	Network.self_data.primary = index
+	Network.send_info_to_server()
 
 func _on_SecondaryOption_item_selected(index):
 	Network.self_data.secondary = index
+	Network.send_info_to_server()
 
 func _on_CreditsButton_pressed():
 	credits_ui.start_credits()

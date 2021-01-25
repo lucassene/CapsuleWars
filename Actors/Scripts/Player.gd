@@ -27,15 +27,14 @@ onready var player_hud = $PlayerHUD
 onready var mesh = $Mesh
 onready var weapon_view = $CenterContainer/WeaponView
 onready var container = $Head/Camera/Container
+onready var hit_feedback = $CanvasLayer/HitFeedback
 
 export var HEALTH = 100 setget ,get_max_health
 export var RECOVER_DELAY = 3.0
 export var RECOVER_RATE = 1.0
 export var DEFAULT_FOV = 70
-export var MIN_X_FLINCH = 0.5
-export var MAX_X_FLINCH = 1.5
-export var MIN_Y_FLINCH = 0.5
-export var MAX_Y_FLINCH = 1.5
+export var HIT_COLOR = Color()
+export var MELEE_COLOR = Color()
 
 signal on_weapon_equipped(clip_size)
 signal on_weapon_changed(current_ammo,clip_size)
@@ -53,7 +52,7 @@ var was_ads = false
 var is_moving = false setget set_is_moving,get_is_moving
 var is_firing = false setget set_is_firing,get_is_firing
 var current_anim = "headbob"
-var current_weapon
+var current_weapon setget ,get_current_weapon
 var melee_weapon
 var current_health
 var last_player_spotted
@@ -88,22 +87,27 @@ func get_is_moving():
 		return is_moving
 	return false
 
+func get_current_weapon():
+	return current_weapon
+
 func set_is_ads(value):
 	is_ads = value
 	if is_ads:
-		player_controller.set_mouse_sensitivity(current_weapon.get_ads_sensitivity())
+		player_controller.set_current_sensitivity(current_weapon.get_ads_sensitivity())
 		current_anim = "ads-headbob"
 		if current_weapon and is_network_master() and current_weapon.get_has_scope():
 			sniper_overlay.show()
 			weapon_view.hide()
 			crosshair.hide()
 	else:
-		player_controller.set_mouse_sensitivity()
+		player_controller.reset_sensitivity()
 		current_anim = "headbob"
+		if player_controller.is_sprinting():
+			state_machine.set_state("Sprinting")
 		if current_weapon and is_network_master() and current_weapon.get_has_scope():
 			sniper_overlay.hide()
 			weapon_view.show()
-			crosshair.show()
+			crosshair.hide()
 	if is_moving:
 			play_camera_anim(true)
 	if current_weapon: 
@@ -171,7 +175,6 @@ func initialize():
 	hand.reload_weapons()
 	if is_network_master(): 
 		weapon_view.show()
-		crosshair.show()
 		camera.current = true
 		emit_signal("on_player_spawned")
 	current_weapon.draw_weapon()
@@ -269,6 +272,7 @@ func recover_health(delta):
 			if is_network_master(): 
 				emit_signal("on_health_changed",current_health)
 			if current_health >= HEALTH:
+				current_health = HEALTH
 				is_recovering = false
 
 func jump():
@@ -360,7 +364,9 @@ remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
 	is_recovering = true
 	recover_timer = 0.0
 	if is_network_master():
-		shake_camera(MIN_X_FLINCH,MAX_X_FLINCH,MIN_Y_FLINCH,MAX_Y_FLINCH)
+		var weapon = get_player_by_id(attacker_id).get_current_weapon()
+		show_hit_feedback(HIT_COLOR)
+		shake_camera(weapon.MIN_X_FLINCH,weapon.MAX_X_FLINCH,weapon.MIN_Y_FLINCH,weapon.MAX_Y_FLINCH)
 		emit_signal("on_health_changed",current_health)
 	if current_health <= 0 and !is_dead:
 		is_dead = true
@@ -371,6 +377,17 @@ remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
 		return true
 	return false
 
+func show_hit_feedback(color):
+	hit_feedback.modulate = color
+	hit_feedback.show()
+	yield(get_tree().create_timer(0.05),"timeout")
+	hit_feedback.hide()
+
+func get_player_by_id(id):
+	for actor in get_parent().get_children():
+		if actor.name == str(id):
+			return actor
+
 remotesync func melee_attack():
 	if melee_weapon.is_ready() and !hand.is_busy():
 		melee_holster.remove_child(melee_weapon)
@@ -380,6 +397,7 @@ remotesync func melee_attack():
 func melee_hit(target,point):
 	if is_network_master():
 		target.rpc("add_damage",int(name),point,melee_weapon.get_damage(),false,true)
+		show_hit_feedback(MELEE_COLOR)
 
 func create_blood_splash(point,is_melee):
 	var blood
@@ -392,12 +410,12 @@ func create_blood_splash(point,is_melee):
 	blood.emitting = true
 
 func play_hurt_sound():
-	var random = rand_range(0,3)
+	var random = rand_range(0,1)
 	if !audio_player.playing:
-		if random > 1 and random <= 2:
+		if random < 0.5:
 			audio_player.set_stream(Mixer.hurt_sound_1)
 			audio_player.play()
-		elif random > 2 and random <= 3:
+		else:
 			audio_player.set_stream(Mixer.hurt_sound_2)
 			audio_player.play()
 
@@ -414,16 +432,16 @@ remotesync func set_dead_state(value,attacker_id = null,point = null):
 	else:
 		is_firing = false
 		is_ads = false
-		player_controller.set_mouse_sensitivity()
+		player_controller.reset_sensitivity()
 		rpc("deactivate_player",value,point)
 		state_machine.set_state("Dead")
+		if is_network_master(): sniper_overlay.hide()
 		audio_player.set_stream(Mixer.death_scream)
 		audio_player.play()
 		camera_anim_player.stop()
 		yield(get_tree().create_timer(1.0),"timeout")
 		emit_signal("on_player_death",self)
 		if is_network_master():
-			sniper_overlay.hide()
 			if attacker_id:
 				get_node("/root/Game/Players/" + str(attacker_id)).camera.current = true
 			else:
@@ -436,7 +454,6 @@ remotesync func deactivate_player(value,point = null):
 		create_death_splash(point)
 		set_process(false)
 		set_physics_process(false)
-	if is_network_master(): crosshair.visible = !value
 	set_collision_layer_bit(0,!value)
 	set_collision_mask_bit(0,!value)
 	visible = !value
@@ -472,6 +489,10 @@ remotesync func equip_weapon(weapon):
 		aim_cast.cast_to.z = weapon.get_range() * -1
 		if is_network_master(): 
 			emit_signal("on_weapon_equipped",current_weapon.get_magazine())
+			if current_weapon.get_has_scope():
+				crosshair.hide()
+			else:
+				crosshair.show()
 
 remotesync func equip_slot(index):
 	equip_weapon(hand.equip_weapon(index))

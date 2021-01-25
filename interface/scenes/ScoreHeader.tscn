@@ -14,7 +14,7 @@ __meta__ = {
 }
 
 [node name="Container" type="HBoxContainer" parent="."]
-margin_right = 746.0
+margin_right = 766.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
 mouse_filter = 2
@@ -53,26 +53,26 @@ __meta__ = {
 [node name="PlayerScore" type="Label" parent="Container"]
 margin_left = 253.0
 margin_top = 6.0
-margin_right = 313.0
+margin_right = 333.0
 margin_bottom = 33.0
-rect_min_size = Vector2( 60, 0 )
+rect_min_size = Vector2( 80, 0 )
 size_flags_horizontal = 0
 custom_fonts/font = ExtResource( 1 )
 text = "Score"
 align = 1
 
 [node name="VSeparator2" type="VSeparator" parent="Container"]
-margin_left = 328.0
-margin_right = 332.0
+margin_left = 348.0
+margin_right = 352.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PlayerDamage" type="Label" parent="Container"]
-margin_left = 347.0
+margin_left = 367.0
 margin_top = 6.0
-margin_right = 450.0
+margin_right = 470.0
 margin_bottom = 33.0
 rect_min_size = Vector2( 103, 0 )
 size_flags_horizontal = 0
@@ -81,17 +81,17 @@ text = "Total DMG"
 align = 1
 
 [node name="VSeparator3" type="VSeparator" parent="Container"]
-margin_left = 465.0
-margin_right = 469.0
+margin_left = 485.0
+margin_right = 489.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PlayerKills" type="Label" parent="Container"]
-margin_left = 484.0
+margin_left = 504.0
 margin_top = 6.0
-margin_right = 534.0
+margin_right = 554.0
 margin_bottom = 33.0
 rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 0
@@ -100,17 +100,17 @@ text = "Kills"
 align = 1
 
 [node name="VSeparator4" type="VSeparator" parent="Container"]
-margin_left = 549.0
-margin_right = 553.0
+margin_left = 569.0
+margin_right = 573.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PlayerDeaths" type="Label" parent="Container"]
-margin_left = 568.0
+margin_left = 588.0
 margin_top = 6.0
-margin_right = 643.0
+margin_right = 663.0
 margin_bottom = 33.0
 rect_min_size = Vector2( 75, 0 )
 size_flags_horizontal = 0
@@ -119,17 +119,17 @@ text = "Deaths"
 align = 1
 
 [node name="VSeparator5" type="VSeparator" parent="Container"]
-margin_left = 658.0
-margin_right = 662.0
+margin_left = 678.0
+margin_right = 682.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PlayerKD" type="Label" parent="Container"]
-margin_left = 677.0
+margin_left = 697.0
 margin_top = 6.0
-margin_right = 727.0
+margin_right = 747.0
 margin_bottom = 33.0
 rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 0
@@ -138,8 +138,8 @@ text = "K/D"
 align = 1
 
 [node name="VSeparator6" type="VSeparator" parent="Container"]
-margin_left = 742.0
-margin_right = 746.0
+margin_left = 762.0
+margin_right = 766.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false

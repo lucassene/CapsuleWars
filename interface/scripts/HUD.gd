@@ -131,9 +131,9 @@ func _on_player_killed(attacker_id,is_headshot,victim_id):
 	var attacker_color = Network.connected_players[attacker_id].color
 	var victim_color = Network.connected_players[victim_id].color
 	if is_headshot:
-		text = "[color=%s]%s[/color] acertou [color=%s]%s[/color] na lata!" % [attacker_color,attacker_name,victim_color,victim_name]
+		text = "[color=%s]%s[/color] killed [color=%s]%s[/color] with a headshot!" % [attacker_color,attacker_name,victim_color,victim_name]
 	else:
-		text = "[color=%s]%s[/color] acabou com a raça de [color=%s]%s[/color]." % [attacker_color,attacker_name,victim_color,victim_name]
+		text = "[color=%s]%s[/color] killed [color=%s]%s[/color]." % [attacker_color,attacker_name,victim_color,victim_name]
 	if text != "": chat_log.create_entry(text)
 
 func _on_player_kill_streak(id,kills):
@@ -142,16 +142,16 @@ func _on_player_kill_streak(id,kills):
 	var color = Network.connected_players[id].color
 	match kills:
 		3:
-			text = "[color=%s]%s[/color] já matou três em seguida!" % [color,player_name]
+			text = "[color=%s]%s[/color] has killed three in a row!" % [color,player_name]
 		5:
-			text = "[color=%s]%s[/color] está com uma sequência de cinco mortes!" % [color,player_name]
+			text = "[color=%s]%s[/color] is on a five kill streak!" % [color,player_name]
 		10:
-			text = "Ninguém vai parar [color=%s]%s[/color]? Já matou 10 em sequência!" % [color,player_name]
+			text = "No one will stop [color=%s]%s[/color]? Ten kills already!" % [color,player_name]
 		15:
-			text = "[color=%s]%s[/color] está dançando e rolando em uma sequência de 15 mortes!" % [color,player_name]
+			text = "[color=%s]%s[/color] is on a FIFTEEN kill streak!" % [color,player_name]
 		20:
-			text = "Ok. Alguém precisa fazer algo a respeito de [color=%s]%s[/color]. Foram 20 mortes em seguida!" % [color,player_name]
+			text = "Ok. Someone need to do something about [color=%s]%s[/color]. Twenty undisputed kills!" % [color,player_name]
 	if kills > 20:
-		text = "Tem alguém aí? [color=%s]%s[/color] continua matando todo mundo!" % [color,player_name]
+		text = "Is anybody there? [color=%s]%s[/color] is on a killing spree!" % [color,player_name]
 	if text != "": chat_log.create_entry(text)
 

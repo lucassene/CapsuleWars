@@ -3,7 +3,7 @@
 [ext_resource path="res://Utils/scripts/SpawnPoint.gd" type="Script" id=1]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 20, 3, 20 )
+extents = Vector3( 30, 3, 30 )
 
 [node name="SpawnPoint" type="Spatial"]
 script = ExtResource( 1 )
