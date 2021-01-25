@@ -3,7 +3,8 @@
 
 A small project developed to allow up to 6 players play a short and fun FPS match online. The game has many features present in the majority of games of the genre and shows some of Godot's engine capabilities.
 
-![](https://i.ibb.co/2kkhrkp/Capsule-Wars-Screen.jpg)
+## Footage
+[![](https://img.youtube.com/vi/ne4kvwK5yFY/0.jpg)](https://youtu.be/ne4kvwK5yFY)
 
 ## Installation
 
