@@ -50,6 +50,10 @@ This games presents features, such as:
 
 ## Release History
 
+* 1.0.1-beta
+    * Some bug fixes and tweaks
+    * Added left-handed input support
+
 * 1.0.0-beta
     * First beta version release
 
