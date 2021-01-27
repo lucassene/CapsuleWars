@@ -17,7 +17,7 @@ Windows:
 
 1. Hit the "Host a game" button.
 2. If you want, you can change the default port (23571). Just type it in the *Port* Field in the lobby inside the game, otherwise, leave it blank.
-3. If you have a router/modem that supports UPnP, check the "Use UPnP" on. Otherwise, you will need to port forward the desired port in your device's configuration. If you need any help, try this [website](https://www.noip.com/support/knowledgebase/general-port-forwarding-guide/).*
+3. If you have a router/modem that supports UPnP, check the "Use UPnP" on. Otherwise, you will need to port forward the desired port in your device's configuration. If you need any help, try this [website](https://www.noip.com/support/knowledgebase/general-port-forwarding-guide/).
 4. With the above steps out of the way, just hit the *Host* button.
 5. Give your *external* IP to the people you want to play with and wait them to join (google "whats my ip").
 6. After everyone is ready, hit the *Begin* button.
