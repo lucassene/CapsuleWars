@@ -24,7 +24,6 @@ signal on_client_created()
 signal on_cant_create_server(error)
 signal on_connected_to_server()
 
-
 func _ready():
 	get_tree().connect("network_peer_connected",self,"_on_player_connected")
 	get_tree().connect("network_peer_disconnected", self, "_on_player_disconnected")
@@ -33,11 +32,7 @@ func _ready():
 	get_tree().connect("connected_to_server",self,"_on_connected_to_server")
 
 func _exit_tree():
-	if has_mapped_port:
-		var upnp = UPNP.new()
-		upnp.discover()
-		upnp.delete_port_mapping(used_port,"UDP")
-		upnp.delete_port_mapping(used_port,"TCP")
+	clear_mapped_ports()
 
 func create_server(nickname,server_port,use_upnp):
 	used_port = server_port
@@ -49,6 +44,7 @@ func create_server(nickname,server_port,use_upnp):
 	var peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_server(int(server_port),MAX_PLAYER)
 	if error != OK:
+		clear_mapped_ports()
 		emit_signal("on_cant_create_server",error)
 	else:
 		get_tree().set_network_peer(peer)
@@ -67,6 +63,7 @@ func try_upnp(port):
 	if error != UPNP.UPNP_RESULT_SUCCESS:
 		return error
 	has_mapped_port = true
+	return UPNP.UPNP_RESULT_SUCCESS
 
 func create_client(nickname, server_ip,server_port):
 	var peer = NetworkedMultiplayerENet.new()
@@ -112,6 +109,14 @@ func is_player_already_connected(id):
 		if player_id == id:
 			return true
 	return false
+
+func clear_mapped_ports():
+	if has_mapped_port:
+		var upnp = UPNP.new()
+		upnp.discover()
+		upnp.delete_port_mapping(used_port,"UDP")
+		upnp.delete_port_mapping(used_port,"TCP")
+		has_mapped_port = false
 
 func _on_connected_to_server():
 	emit_signal("on_connected_to_server")

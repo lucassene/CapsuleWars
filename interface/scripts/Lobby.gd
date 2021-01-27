@@ -335,6 +335,12 @@ func _on_CancelButton_pressed():
 	if has_game:
 		append_log("Game cancelled.")
 		has_game = false
+		if get_tree().is_network_server():
+			cancel_button.pressed = false
+			append_log("Closing the server...")
+			yield(get_tree().create_timer(0.1),"timeout")
+			Network.clear_mapped_ports()
+			append_log("Server terminated.")
 	hide_containers(true)
 	get_tree().network_peer = null
 
@@ -344,4 +350,3 @@ func _on_exit_to_lobby():
 	reset()
 	show()
 	buttons_disabled(false)
-	begin_button.disabled = true

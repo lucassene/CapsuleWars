@@ -19,4 +19,10 @@ func _on_ExitButton_pressed():
 	get_tree().quit()
 
 func _on_LobbyButton_pressed():
+	if get_tree().is_network_server() and Network.has_mapped_port:
+		lobby_button.text = "Leaving"
+		lobby_button.pressed = false
+		yield(get_tree().create_timer(0.1),"timeout")
+		Network.clear_mapped_ports()
 	emit_signal("on_exit_to_lobby")
+	lobby_button.text = "Back to Lobby"

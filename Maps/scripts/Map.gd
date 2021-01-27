@@ -170,7 +170,6 @@ remotesync func _on_server_disconnected():
 			child.queue_free()
 	is_in_lobby = true
 	play_music(Mixer.lobby_music)
-	#lobby_hud.reset()
 
 func _on_player_killed(id,is_headshot,_victim_id):
 	if is_network_master():
