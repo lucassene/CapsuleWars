@@ -14,11 +14,13 @@ cast_shadow = 0
 emitting = false
 amount = 1
 one_shot = true
-visibility_aabb = AABB( -1.86578, -1.81555, -1.64277, 3.73156, 3.63111, 3.28554 )
+explosiveness = 1.0
+visibility_aabb = AABB( -11.3, -4.99999, -11.3, 22.6, 10, 22.6 )
 process_material = SubResource( 1 )
 draw_pass_1 = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
+process_mode = 0
 one_shot = true
 autostart = true

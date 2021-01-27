@@ -13,6 +13,8 @@ var self_data = {
 }
 
 var connected_players = {}
+var used_port = DEFAULT_PORT
+var has_mapped_port = false
 
 signal on_new_peer(id)
 signal on_peer_disconnected(info)
@@ -22,6 +24,7 @@ signal on_client_created()
 signal on_cant_create_server(error)
 signal on_connected_to_server()
 
+
 func _ready():
 	get_tree().connect("network_peer_connected",self,"_on_player_connected")
 	get_tree().connect("network_peer_disconnected", self, "_on_player_disconnected")
@@ -29,7 +32,20 @@ func _ready():
 	get_tree().connect("server_disconnected",self,"_on_server_disconnected")
 	get_tree().connect("connected_to_server",self,"_on_connected_to_server")
 
-func create_server(nickname,server_port):
+func _exit_tree():
+	if has_mapped_port:
+		var upnp = UPNP.new()
+		upnp.discover()
+		upnp.delete_port_mapping(used_port,"UDP")
+		upnp.delete_port_mapping(used_port,"TCP")
+
+func create_server(nickname,server_port,use_upnp):
+	used_port = server_port
+	if use_upnp: 
+		var upnp_error = try_upnp(server_port)
+		if upnp_error != UPNP.UPNP_RESULT_SUCCESS:
+			emit_signal("on_cant_create_server",upnp_error)
+			return
 	var peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_server(int(server_port),MAX_PLAYER)
 	if error != OK:
@@ -38,6 +54,19 @@ func create_server(nickname,server_port):
 		get_tree().set_network_peer(peer)
 		save_host_info(nickname)
 		emit_signal("on_server_created")
+
+func try_upnp(port):
+	var upnp = UPNP.new()
+	var error = upnp.discover()
+	if error != UPNP.UPNP_RESULT_SUCCESS:
+		return error
+	error = upnp.add_port_mapping(port,0,"","UDP")
+	if error != UPNP.UPNP_RESULT_SUCCESS:
+		return error
+	error = upnp.add_port_mapping(port,0,"","TCP")
+	if error != UPNP.UPNP_RESULT_SUCCESS:
+		return error
+	has_mapped_port = true
 
 func create_client(nickname, server_ip,server_port):
 	var peer = NetworkedMultiplayerENet.new()
@@ -60,8 +89,8 @@ func get_player_info(id):
 	return connected_players[id]
 
 remote func receive_player_info(id,info):
-	connected_players[id] = info
 	if !is_player_already_connected(id):
+		connected_players[id] = info
 		emit_signal("on_new_peer",id)
 
 remote func connect_to_server(peers_info):
@@ -93,8 +122,8 @@ func _on_player_connected(id):
 
 func _on_player_disconnected(id):
 	var player = connected_players[id]
-	if player: emit_signal("on_peer_disconnected",connected_players[id])
 	connected_players.erase(id)
+	if player: emit_signal("on_peer_disconnected",player)
 
 func _on_connection_failed():
 	clear_connected_players()

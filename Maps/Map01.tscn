@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://assets/materials/black-grid.tres" type="Material" id=1]
 [ext_resource path="res://Maps/map01-environment.tres" type="Environment" id=2]
@@ -26,13 +26,7 @@
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 96.5, 1, 104 )
 
-[sub_resource type="BakedLightmapData" id=2]
-bounds = AABB( -67, -20.5, -67, 134, 41, 134 )
-cell_space_transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 33.5, 10.25, 33.5 )
-cell_subdiv = 8
-octree = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 )
-
-[sub_resource type="CubeMesh" id=3]
+[sub_resource type="CubeMesh" id=2]
 size = Vector3( 0.5, 0.25, 4 )
 
 [node name="Game" type="Node"]
@@ -699,18 +693,6 @@ light_color = Color( 0.94902, 0.854902, 0.780392, 1 )
 light_energy = 2.93
 shadow_enabled = true
 
-[node name="BakedLightmap" type="BakedLightmap" parent="Lights"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.5, 0 )
-visible = false
-bake_cell_size = 4.0
-bake_quality = 2
-bake_mode = 1
-bake_energy = 2.0
-bake_hdr = true
-bake_extents = Vector3( 67, 20.5, 67 )
-capture_cell_size = 2.0
-light_data = SubResource( 2 )
-
 [node name="RoofLight6" parent="Lights" instance=ExtResource( 5 )]
 transform = Transform( 1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, 51.45, 22.55, -58.9 )
 
@@ -729,7 +711,7 @@ transform = Transform( -4.37114e-08, 1, 8.35187e-23, -1, -4.37114e-08, -4.37114e
 
 [node name="RoofLight-Off" parent="Lights" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51.2302, 12.8137, 8.4 )
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="RoofLight8" parent="Lights" instance=ExtResource( 5 )]
@@ -757,7 +739,8 @@ volume_db = -30.0
 [node name="KillSoundPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
 [connection signal="_on_player_can_spawn" from="CanvasLayer/MainHUD" to="." method="_on_player_can_spawn"]
-[connection signal="on_game_begin" from="CanvasLayer/Lobby" to="." method="_on_game_begin"]
+[connection signal="on_exit_to_lobby" from="CanvasLayer/MainHUD" to="CanvasLayer/Lobby" method="_on_exit_to_lobby"]
 [connection signal="on_game_begin" from="CanvasLayer/Lobby" to="CanvasLayer/MainHUD" method="_on_game_begin"]
+[connection signal="on_game_begin" from="CanvasLayer/Lobby" to="." method="_on_game_begin"]
 [connection signal="body_entered" from="DeathArea" to="." method="_on_DeathArea_body_entered"]
 [connection signal="tween_completed" from="FadeOutTween" to="." method="_on_FadeOutTween_tween_completed"]

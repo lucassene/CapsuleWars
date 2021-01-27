@@ -1254,4 +1254,4 @@ look_down={
 
 [rendering]
 
-environment/default_environment="res://Maps/editor-env.tres"
+environment/default_environment="res://Maps/map01-environment.tres"

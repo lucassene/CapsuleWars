@@ -16,7 +16,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.05, 0.15, 0.2, 0.3, 0.35 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0.739043, -1.67266, 1.48322 ), Vector3( 0.739, -1.673, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0.421, 0 ), Vector3( -1.23746e-14, -0.116552, -7.59547e-08 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0.553, -2.253, 1.971 ), Vector3( 0.739, -1.673, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0.421, 0 ), Vector3( -1.23746e-14, -0.116552, -7.59547e-08 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath(".:rotation_degrees")
@@ -28,7 +28,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.25, 0.3, 0.35 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 90, 270 ), Vector3( 0, 90, 380 ), Vector3( 0, 90, 360 ), Vector3( 0, 90, 360 ) ]
+"values": [ Vector3( 0, 120, 270 ), Vector3( 0, 90, 380 ), Vector3( 0, 90, 360 ), Vector3( 0, 90, 360 ) ]
 }
 tracks/2/type = "method"
 tracks/2/path = NodePath(".")

@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/textures/hit-marker.png" type="Texture" id=1]
+[ext_resource path="res://Utils/scripts/HitMarker.gd" type="Script" id=2]
+
+[node name="HitMarker" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Texture" type="TextureRect" parent="."]
+visible = false
+margin_left = 703.0
+margin_top = 100.0
+margin_right = 1217.0
+margin_bottom = 173.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 251.5, 467 )
+mouse_filter = 2
+texture = ExtResource( 1 )
+stretch_mode = 4
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]

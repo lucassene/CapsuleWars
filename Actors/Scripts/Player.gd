@@ -28,6 +28,7 @@ onready var mesh = $Mesh
 onready var weapon_view = $CenterContainer/WeaponView
 onready var container = $Head/Camera/Container
 onready var hit_feedback = $CanvasLayer/HitFeedback
+onready var hit_marker = $CanvasLayer/HitMarker
 
 export var HEALTH = 100 setget ,get_max_health
 export var RECOVER_DELAY = 3.0
@@ -64,6 +65,7 @@ var is_recovering = false
 var weapons = [-1,-1]
 var sniper_overlay
 var is_dead = false
+var last_attacker_id = -1
 
 var remote_states = []
 
@@ -223,6 +225,9 @@ func _physics_process(delta):
 	else:
 		move_puppet(delta)
 
+func get_camera():
+	return camera
+
 func move(delta):
 	var movement = player_controller.calculate_movement(delta)
 	velocity = move_and_slide(movement,Vector3.UP)
@@ -357,6 +362,7 @@ func hit_target(target,point,distance,is_headshot):
 		return
 
 remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
+	last_attacker_id = attacker_id
 	create_blood_splash(point,is_melee)
 	current_health -= damage
 	play_hurt_sound()
@@ -364,6 +370,7 @@ remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
 	is_recovering = true
 	recover_timer = 0.0
 	if is_network_master():
+		show_hit_marker(attacker_id)
 		var weapon = get_player_by_id(attacker_id).get_current_weapon()
 		show_hit_feedback(HIT_COLOR)
 		shake_camera(weapon.MIN_X_FLINCH,weapon.MAX_X_FLINCH,weapon.MIN_Y_FLINCH,weapon.MAX_Y_FLINCH)
@@ -376,6 +383,11 @@ remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
 		rpc_id(int(name),"set_dead_state",true,attacker_id,point)
 		return true
 	return false
+
+func show_hit_marker(id):
+	var attacker = get_node("../" + str(id))
+	if attacker:
+		hit_marker.show_hit_marker(self,attacker)
 
 func show_hit_feedback(color):
 	hit_feedback.modulate = color
@@ -418,12 +430,6 @@ func play_hurt_sound():
 		else:
 			audio_player.set_stream(Mixer.hurt_sound_2)
 			audio_player.play()
-
-func create_death_splash(point):
-	var death = death_emitter.instance()
-	add_child(death)
-	death.global_transform.origin = point
-	death.emitting = true
 
 remotesync func set_dead_state(value,attacker_id = null,point = null):
 	if !value:
@@ -469,6 +475,12 @@ func place_decal(target):
 		bullet.rotation_degrees.x = -90
 	else:
 		bullet.look_at(aim_cast.get_collision_point() + aim_cast.get_collision_normal(),Vector3.UP)
+
+func create_death_splash(point):
+	var death = death_emitter.instance()
+	get_parent().add_child(death)
+	death.global_transform.origin = point
+	death.emitting = true
 
 remotesync func update_score(item,value,is_headshot = false):
 	Scores.update_score(int(name),item,value,is_headshot)

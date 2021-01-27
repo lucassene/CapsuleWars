@@ -84,11 +84,11 @@ margin_right = 1840.0
 margin_bottom = 27.0
 custom_fonts/font = ExtResource( 10 )
 text = "FPS: 00"
+align = 2
 
 [node name="WarningLabel" type="Label" parent="Container/TextContainer"]
 visible = false
 margin_top = 31.0
-margin_right = 112.0
 margin_bottom = 65.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
