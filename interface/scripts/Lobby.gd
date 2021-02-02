@@ -87,7 +87,6 @@ func add_weapon_options():
 	Network.self_data.secondary = secondary_option.selected
 
 func reset():
-	#log_text.text = ""
 	show()
 	deactivate_hud(false)
 	hide_containers(true)

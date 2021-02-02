@@ -63,11 +63,14 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 1.6 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 1.6, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [  ],
 "method": "set_full_magazine"
+}, {
+"args": [  ],
+"method": "on_reload_ended"
 } ]
 }
 tracks/5/type = "audio"

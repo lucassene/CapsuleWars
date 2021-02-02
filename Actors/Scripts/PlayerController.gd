@@ -1,4 +1,4 @@
-extends Node
+extends ActorController
 
 onready var actor = owner
 
@@ -8,7 +8,6 @@ export var MOUSE_SENSITITY = 0.05
 export var CONTROLLER_SENSITIVITY = 0.08
 export var CONTROLLER_DEADZONE = 0.15
 
-var state_machine
 var current_sensitivity = MOUSE_SENSITITY setget set_current_sensitivity
 var current_speed = 0.0 setget set_current_speed,get_current_speed
 var current_acceleration = 0.0 setget set_current_acceleration,get_current_acceleration
@@ -50,7 +49,7 @@ func reset_sensitivity():
 		current_sensitivity = CONTROLLER_SENSITIVITY	
 
 func _initialize(fsm):
-	state_machine = fsm
+	.initialize(fsm)
 	set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if Input.get_connected_joypads().size() > 0:
 		current_sensitivity = CONTROLLER_SENSITIVITY
@@ -141,17 +140,13 @@ func fire(param):
 		elif is_sprinting():
 			state_machine.enter_air_state()
 			current_speed = state_machine.states.Running.SPEED
-		actor.rpc("fire")
-	else:
-		actor.rpc("stop_firing")
 
 func melee(_param):
 	actor.rpc("melee_attack")
 
-func aim(param):
-	if param and state_machine.get_current_state() == "Sprinting":
+func ads():
+	if state_machine.get_current_state() == "Sprinting":
 		state_machine.set_state("Running")
-	actor.ads(param)
 
 func sprint(param):
 	if param and !actor.get_is_ads():
@@ -164,7 +159,7 @@ func sprint(param):
 				state_machine.set_state("Idle")
 
 func reload(_param):
-	actor.rpc("reload_weapon")
+	return
 
 func equip_slot_1(_param):
 	actor.rpc("equip_slot",0)

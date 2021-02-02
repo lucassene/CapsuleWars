@@ -13,7 +13,6 @@ func initialize(actor,items):
 	current_weapon = weapons[0]
 	current_index = 0
 	parent_weapon(current_weapon)
-	current_weapon.draw_weapon()
 
 func instance_weapons(items):
 	print(items)
@@ -63,7 +62,7 @@ func equip_weapon(index):
 		return current_weapon
 
 func swap_weapon():
-	if can_swap and current_weapon.get_can_swap():
+	if can_swap and current_weapon.can_swap():
 		can_swap = false
 		var current = weapons.find(current_weapon)
 		if current == 0:
@@ -83,7 +82,7 @@ func reload_weapons():
 		weapon.set_full_magazine()
 
 func is_busy():
-	return current_weapon.get_is_busy()
+	return current_weapon.is_busy()
 
 func _on_weapon_stowed(stowed_weapon):
 	player.stow_weapon(stowed_weapon)

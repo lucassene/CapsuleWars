@@ -49,7 +49,6 @@ signal on_menu_pressed(value)
 signal on_score_changed(item)
 
 var is_ads = false setget set_is_ads,get_is_ads
-var was_ads = false
 var is_moving = false setget set_is_moving,get_is_moving
 var is_firing = false setget set_is_firing,get_is_firing
 var current_anim = "headbob"
@@ -64,7 +63,7 @@ var recover_timer = 0.0
 var is_recovering = false
 var weapons = [-1,-1]
 var sniper_overlay
-var is_dead = false
+var dead = false
 var last_attacker_id = -1
 
 var remote_states = []
@@ -96,6 +95,7 @@ func set_is_ads(value):
 	is_ads = value
 	if is_ads:
 		player_controller.set_current_sensitivity(current_weapon.get_ads_sensitivity())
+		player_controller.ads()
 		current_anim = "ads-headbob"
 		if current_weapon and is_network_master() and current_weapon.get_has_scope():
 			sniper_overlay.show()
@@ -112,20 +112,15 @@ func set_is_ads(value):
 			crosshair.hide()
 	if is_moving:
 			play_camera_anim(true)
-	if current_weapon: 
-		current_weapon.ads(value)
+	if current_weapon:
 		aim_cast.cast_to.z = current_weapon.get_range() * -1
 
 func get_is_ads():
 	return is_ads
 
-remotesync func set_is_firing(value):
-	if value:
-		is_firing = true
-		current_weapon.fire()
-		if is_network_master(): emit_signal("on_shot_fired")
-	else:
-		is_firing = false
+func set_is_firing(value):
+	is_firing = value
+	if value and is_network_master(): emit_signal("on_shot_fired")
 
 func get_is_firing():
 	return is_firing
@@ -178,6 +173,7 @@ func initialize():
 	if is_network_master(): 
 		weapon_view.show()
 		camera.current = true
+		hit_marker.show()
 		emit_signal("on_player_spawned")
 	current_weapon.draw_weapon()
 	set_process(true)
@@ -197,7 +193,7 @@ func _ready():
 	initialize_hand()
 	equip_weapon(hand.get_current_weapon())
 	player_controller._initialize(state_machine)
-	state_machine.initialize("Dead")
+	state_machine.initialize("Dead",player_controller)
 
 func _unhandled_input(event):
 	if is_network_master() and state_machine.get_current_state() != "Dead":
@@ -210,13 +206,10 @@ func _process(delta):
 	recover_health(delta)
 	if is_network_master():
 		hand.global_transform.origin = hand_loc.global_transform.origin
-		if is_ads and camera.fov > current_weapon.get_ads_fov():
-			camera.fov = lerp(camera.fov,current_weapon.get_ads_fov(), current_weapon.get_ads_speed() * delta)
-		elif !is_ads and camera.fov < DEFAULT_FOV:
-			camera.fov = lerp(camera.fov,DEFAULT_FOV,current_weapon.get_ads_speed() * delta)
 
 func _physics_process(delta):
 	if is_network_master():
+		set_camera_fov(delta)
 		weapon_sway(delta)
 		check_for_player()
 		check_floor()
@@ -224,6 +217,12 @@ func _physics_process(delta):
 		rpc_unreliable("update_position",OS.get_system_time_msecs(),global_transform.origin,rotation.y,head.rotation.x)
 	else:
 		move_puppet(delta)
+
+func set_camera_fov(delta):
+	if is_ads and camera.fov > current_weapon.get_ads_fov():
+		camera.fov = lerp(camera.fov,current_weapon.get_ads_fov(), current_weapon.get_ads_speed() * delta)
+	elif !is_ads and camera.fov < DEFAULT_FOV:
+		camera.fov = lerp(camera.fov,DEFAULT_FOV,current_weapon.get_ads_speed() * delta)
 
 func get_camera():
 	return camera
@@ -263,10 +262,7 @@ func create_state(state_time,position,body_rot,head_rot):
 func weapon_sway(delta):
 	hand.rotation.y = lerp_angle(hand.rotation.y,rotation.y,current_weapon.get_sway() * delta)
 	hand.rotation.z = lerp_angle(hand.rotation.z,head.rotation.z,current_weapon.get_sway() * delta)
-	if player_controller.is_sprinting() and !is_ads and !is_firing:
-		hand.rotation.x = lerp_angle(hand.rotation.x,head.rotation.x + current_weapon.get_sprint_angle(),current_weapon.get_sway() * delta)
-	else:
-		hand.rotation.x = lerp_angle(hand.rotation.x,head.rotation.x,current_weapon.get_sway() * delta)
+	hand.rotation.x = lerp_angle(hand.rotation.x,head.rotation.x,current_weapon.get_sway() * delta)
 
 func recover_health(delta):
 	if is_recovering:
@@ -283,18 +279,11 @@ func recover_health(delta):
 func jump():
 	current_weapon.jump()
 
+func sprint(value):
+	current_weapon.sprint(value)
+
 func check_floor():
 	floor_contact = ground_check.is_colliding()
-
-func ads(value):
-	if current_weapon.get_can_ads():
-		set_is_ads(value)
-	if !value: was_ads = false
-
-func back_to_ads():
-	if was_ads:
-		set_is_ads(true)
-		was_ads = false
 
 func check_for_player():
 	if aim_cast.is_colliding():
@@ -315,18 +304,18 @@ func show_player_hud(value):
 func set_hud_name(player_name):
 	player_hud.set_name(player_name)
 
-remotesync func fire():
-	if current_weapon.get_can_fire():
+func fire(firing):
+	if firing:
+		player_controller.fire(true)
+		set_is_firing(true)
 		get_shot_victim()
-		if is_network_master() and current_weapon.get_has_scope() and is_ads:
-			was_ads = true
-			set_is_ads(false)
+	else:
+		set_is_firing(false)
 
 func get_shot_victim():
 		var target = null
 		var distance = 0.0
 		var point = Vector3.ZERO
-		set_is_firing(true)
 		if is_network_master():
 			if aim_cast.is_colliding():
 				target = aim_cast.get_collider()
@@ -342,8 +331,7 @@ remotesync func stop_firing():
 func check_if_is_headshot(shape_id):
 	if shape_id == 1:
 		return true
-	else:
-		return false
+	return false
 
 func hit_target(target,point,distance,is_headshot):
 	var damage = current_weapon.get_damage(distance,is_headshot)
@@ -375,8 +363,8 @@ remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
 		show_hit_feedback(HIT_COLOR)
 		shake_camera(weapon.MIN_X_FLINCH,weapon.MAX_X_FLINCH,weapon.MIN_Y_FLINCH,weapon.MAX_Y_FLINCH)
 		emit_signal("on_health_changed",current_health)
-	if current_health <= 0 and !is_dead:
-		is_dead = true
+	if current_health <= 0 and !dead:
+		dead = true
 		is_recovering = false
 		emit_signal("on_player_killed",attacker_id,is_headshot,int(name))
 		if is_network_master(): rpc("update_score","deaths",1)
@@ -433,7 +421,7 @@ func play_hurt_sound():
 
 remotesync func set_dead_state(value,attacker_id = null,point = null):
 	if !value:
-		is_dead = false
+		dead = false
 		rpc("deactivate_player",value,point)
 	else:
 		is_firing = false
@@ -441,7 +429,9 @@ remotesync func set_dead_state(value,attacker_id = null,point = null):
 		player_controller.reset_sensitivity()
 		rpc("deactivate_player",value,point)
 		state_machine.set_state("Dead")
-		if is_network_master(): sniper_overlay.hide()
+		if is_network_master(): 
+			sniper_overlay.hide()
+			hit_marker.hide()
 		audio_player.set_stream(Mixer.death_scream)
 		audio_player.play()
 		camera_anim_player.stop()
@@ -491,9 +481,6 @@ func play_camera_anim(value):
 		camera_anim_player.play(current_anim)
 	else:
 		camera_anim_player.stop()
-
-remotesync func reload_weapon():
-	current_weapon.reload()
 
 remotesync func equip_weapon(weapon):
 	if weapon:

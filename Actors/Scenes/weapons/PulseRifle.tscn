@@ -1,11 +1,11 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://assets/animations/assault-idle.tres" type="Animation" id=1]
 [ext_resource path="res://assets/animations/assault-jump.tres" type="Animation" id=2]
 [ext_resource path="res://assets/animations/pulse-draw.tres" type="Animation" id=3]
 [ext_resource path="res://assets/animations/assault-stow.tres" type="Animation" id=4]
 [ext_resource path="res://Actors/Scenes/weapons/Weapon.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/audio/assault-reload-slide.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/assault-swap.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/audio/smg-shot.wav" type="AudioStream" id=7]
 [ext_resource path="res://assets/materials/Pistol.tres" type="Material" id=8]
 [ext_resource path="res://assets/materials/Pistol-light.tres" type="Material" id=9]
@@ -13,6 +13,8 @@
 [ext_resource path="res://assets/animations/pulse-out_of_ammo.tres" type="Animation" id=11]
 [ext_resource path="res://assets/animations/pulse-reload.tres" type="Animation" id=12]
 [ext_resource path="res://assets/animations/pulse-firing.tres" type="Animation" id=13]
+[ext_resource path="res://assets/animations/rifle-sprinting.tres" type="Animation" id=14]
+[ext_resource path="res://assets/animations/rifle-sprint.tres" type="Animation" id=15]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1.5, 0.65, 0.5 )
@@ -68,7 +70,7 @@ SWAY = 30
 ADS_SWAY = 75
 SPRINT_ANGLE = 50
 MIN_X_RECOIL = 0.75
-MAX_X_RECOIL = 1.75
+MAX_X_RECOIL = 1.25
 MIN_Y_RECOIL = 0.5
 MAX_Y_RECOIL = 3.0
 ADS_RECOIL_MULTI = 0.8
@@ -156,10 +158,12 @@ anims/idle = ExtResource( 1 )
 anims/jump = ExtResource( 2 )
 anims/out_of_ammo = ExtResource( 11 )
 anims/reload = ExtResource( 12 )
+anims/sprint = ExtResource( 15 )
+anims/sprinting = ExtResource( 14 )
 anims/stow = ExtResource( 4 )
 
 [node name="AudioPlayer" parent="." index="2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.145001, 0.286149, -0.00106991 )
+transform = Transform( 1, 1.19904e-14, 2.66454e-15, 0, 1, 2.98023e-08, -4.44089e-16, -2.98023e-08, 1, -0.269545, 0.286149, -0.00107002 )
 stream = ExtResource( 6 )
 
 [node name="BulletEmitter" type="Spatial" parent="." index="3"]

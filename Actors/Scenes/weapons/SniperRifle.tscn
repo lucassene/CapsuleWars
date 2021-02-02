@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://assets/animations/assault-idle.tres" type="Animation" id=1]
 [ext_resource path="res://assets/animations/assault-jump.tres" type="Animation" id=2]
@@ -12,6 +12,8 @@
 [ext_resource path="res://assets/materials/Black.tres" type="Material" id=10]
 [ext_resource path="res://assets/animations/sniper-out-of-ammo.tres" type="Animation" id=11]
 [ext_resource path="res://assets/animations/sniper-reload.tres" type="Animation" id=12]
+[ext_resource path="res://assets/animations/rifle-sprint.tres" type="Animation" id=13]
+[ext_resource path="res://assets/animations/rifle-sprinting.tres" type="Animation" id=14]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1.5, 0.65, 0.5 )
@@ -129,7 +131,7 @@ tracks/6/keys = {
 }
 
 [node name="SniperRifle" instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.021, -0.044, 0.437 )
+transform = Transform( 9.71934e-09, 0.815047, 0.579395, -1, 1.19249e-08, 0, -6.90922e-09, -0.579395, 0.815047, 0.326, -0.669, 3.537 )
 HAS_SCOPE = true
 RATE_OF_FIRE = 24
 MAGAZINE = 3
@@ -250,10 +252,12 @@ anims/idle = ExtResource( 1 )
 anims/jump = ExtResource( 2 )
 anims/out_of_ammo = ExtResource( 11 )
 anims/reload = ExtResource( 12 )
+anims/sprint = ExtResource( 13 )
+anims/sprinting = ExtResource( 14 )
 anims/stow = ExtResource( 4 )
 
 [node name="AudioPlayer" parent="." index="2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.145001, 0.378938, -0.00106991 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.229019, 0.378938, -0.00106991 )
 stream = ExtResource( 6 )
 
 [node name="BulletEmitter" type="Spatial" parent="." index="3"]

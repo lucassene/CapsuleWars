@@ -1,6 +1,7 @@
 extends Spatial
 
 onready var bullet = preload("res://particles/scenes/BulletEmitter.tscn")
+onready var no_ammo_sound = preload("res://assets/audio/out-of-ammo.wav")
 
 onready var anim_player = $AnimationPlayer
 onready var shoot_player = $Model/Muzzle/ShootPlayer
@@ -9,8 +10,10 @@ onready var front_muzzle_sprite = $Model/Muzzle/MuzzleFront
 onready var side_muzzle_sprite = $Model/Muzzle/MuzzleSide
 onready var bullet_emitter = $BulletEmitter
 onready var mesh : MeshInstance = $Model
-onready var rate_of_fire_timer = $ROFTimer
-onready var pulse_timer: Timer = $PulseTimer
+onready var rate_of_fire_timer = $StateMachine/Firing/ROFTimer
+onready var pulse_timer: Timer = $StateMachine/Firing/PulseTimer
+onready var state_machine: StateMachine = $StateMachine
+onready var weapon_controller = $WeaponController
 
 enum type {
 	PRIMARY,
@@ -55,17 +58,8 @@ export(AudioStream) var fire_sound
 
 var player
 var is_ads = false
-var is_stowed = true
-var is_draw = false
-var is_reloading = false
-var is_pulse_firing = false
-var can_swap = true setget ,get_can_swap
-var can_reload = false
+var was_ads = false setget ,get_was_ads
 var current_ammo setget ,get_current_ammo
-var can_fire = false setget ,get_can_fire
-var can_ads = false setget ,get_can_ads
-var is_busy = false setget ,get_is_busy
-var pulse_count = 0
 
 signal on_out_of_ads()
 signal on_reloaded()
@@ -99,23 +93,6 @@ func get_sway():
 func get_sprint_angle():
 	return SPRINT_ANGLE
 
-func get_can_fire():
-	if !is_stowed and is_draw and current_ammo > 0:
-		if PULSE and !is_pulse_firing and can_fire:
-			return true
-		if !PULSE and can_fire:
-			return true
-	return false
-
-func get_is_busy():
-	return is_busy
-
-func get_can_swap():
-	return can_swap
-
-func get_can_ads():
-	return can_ads
-
 func get_range():
 	if is_ads:
 		return MAX_RANGE * ADS_RANGE_MULTI
@@ -128,6 +105,9 @@ func get_ads_sensitivity():
 func get_has_scope():
 	return HAS_SCOPE
 
+func get_was_ads():
+	return was_ads
+
 func get_damage(distance,is_headshot):
 	var dmg = DAMAGE
 	if is_headshot:
@@ -138,7 +118,15 @@ func get_damage(distance,is_headshot):
 		return dmg * FALLOFF_DAMAGE_MULTI
 	return dmg
 
+func is_busy():
+	var busy = true
+	if state_machine.get_current_state() == "Idle" or state_machine.get_current_state() == "Firing":
+		busy = false
+	return busy
+
 func _ready():
+	state_machine.initialize("Stowed",weapon_controller)
+	shoot_player.set_stream(fire_sound)
 	set_physics_process(false)
 	transform.origin = DEFAULT_POSITION
 	current_ammo = MAGAZINE
@@ -146,10 +134,13 @@ func _ready():
 	connect_signals()
 
 func _physics_process(delta):
-	if is_ads:
-		transform.origin = transform.origin.linear_interpolate(ADS_POSITION,ADS_SPEED * delta)
-	else:
-		transform.origin = transform.origin.linear_interpolate(DEFAULT_POSITION,ADS_SPEED * delta)
+	state_machine.update(delta)
+
+func _unhandled_input(event):
+	if is_owner_master(): state_machine.handle_input(event)
+
+func is_owner_master():
+	return player.is_network_master()
 
 func calculate_rof():
 	var rof = float(60.0) / RATE_OF_FIRE
@@ -158,40 +149,66 @@ func calculate_rof():
 		var pulse = float(60.0) / PULSE_RATE
 		pulse_timer.wait_time = pulse
 
-func pulse_fire():
-	if pulse_count < PULSE_SHOTS:
-			player.get_shot_victim()
-	else:
-		pulse_count = 0
-		is_pulse_firing = false
-		player.set_is_firing(false)
-		rate_of_fire_timer.start()
-		is_busy = false
+func set_player_firing(value):
+	player.set_is_firing(value)
 
-func auto_fire():
-	if AUTO and player.get_is_firing():
-		player.fire()
-	else:
-		is_busy = false
+func can_fire():
+	return state_machine.is_weapon_ready()
+
+func can_swap():
+	return state_machine.can_swap()
+
+func is_player_firing():
+	return player.get_is_firing()
+
+func next_fire():
+	current_ammo -= 1
+	player.get_shot_victim()
 
 func set_owner(actor):
 	player = actor
 
 func ads(value):
 	is_ads = value
+	player.set_is_ads(value)
+	if !value: was_ads = false
 
-func fire():
-	current_ammo -= 1
-	if current_ammo > 0:
-		anim_player.play("firing")
-	else:
-		anim_player.play("out_of_ammo")
+func out_of_ads():
+	if is_ads: was_ads = true
+	weapon_controller.set_ads(false)
+	player.set_is_ads(false)
+
+func back_to_ads():
+	if was_ads:
+		weapon_controller.set_ads(true)
+		player.set_is_ads(true)
+		was_ads = false
+
+func fire(is_firing):
+	if is_firing:
+		weapon_recoil()
+		if is_ads:
+			was_ads = true
+	player.fire(is_firing)
+
+func weapon_recoil():
+	var recoil_multi = 1
+	if is_ads: recoil_multi = ADS_RECOIL_MULTI
+	player.shake_camera(MAX_X_RECOIL * recoil_multi,MIN_X_RECOIL * recoil_multi,MAX_Y_RECOIL * recoil_multi,MIN_Y_RECOIL * recoil_multi)
 
 func reload():
-	if current_ammo < MAGAZINE and can_reload and !is_stowed:
-		is_ads = false
-		emit_signal("on_out_of_ads")
-		anim_player.play("reload")
+	out_of_ads()
+	emit_signal("on_out_of_ads")
+
+func can_reload():
+	if current_ammo < MAGAZINE:
+		return true
+	return false
+
+func on_reload_ended():
+	state_machine.set_can_fire(true)
+	state_machine.set_state("Idle")
+	back_to_ads()
 
 func set_full_magazine():
 	current_ammo = MAGAZINE
@@ -200,6 +217,9 @@ func set_full_magazine():
 func jump():
 	if anim_player.get_current_animation() == "idle":
 		anim_player.play("jump")
+
+func sprint(value):
+	state_machine.set_sprint(value)
 
 func to_stowed_position():
 	transform.origin = STOWED_POSITION
@@ -210,143 +230,45 @@ func connect_signals():
 	player.connect("on_player_death",self,"_on_player_dead")
 
 func stow_weapon():
-	emit_signal("on_out_of_ads")
-	anim_player.play("stow")
+	if state_machine.stow_weapon():
+		emit_signal("on_out_of_ads")
 
 func draw_weapon():
 	emit_signal("on_out_of_ads")
-	anim_player.play("draw")
+	state_machine.set_state("Draw")
 
 func play_shot_sound():
-	if shoot_player.stream == fire_sound:
-		shoot_player.seek(0.0)
-	else:
-		shoot_player.set_stream(fire_sound)
-	var recoil_multi = 1
-	if is_ads: recoil_multi = ADS_RECOIL_MULTI
-	player.shake_camera(MAX_X_RECOIL * recoil_multi,MIN_X_RECOIL * recoil_multi,MAX_Y_RECOIL * recoil_multi,MIN_Y_RECOIL * recoil_multi)
 	shoot_player.play()
 
 func stop_shot_sound():
 	shoot_player.stop()
+
+func play_no_ammo_sound():
+	audio_player.set_stream(no_ammo_sound)
+	audio_player.play()
 
 func emit_bullet():
 	var shell = bullet.instance()
 	bullet_emitter.add_child(shell)
 	shell.emitting = true
 
+func has_ammo():
+	return true if current_ammo > 0 else false
+
 func on_stowed():
-	set_physics_process(false)
-	is_stowed = true
-	is_draw = false
 	emit_signal("on_stowed",self)
 
 func on_draw_complete():
 	transform.origin = DEFAULT_POSITION
-	is_draw = true
-	is_stowed = false
-	can_fire = true
+	state_machine.set_state("Idle")
 	emit_signal("on_draw_completed")
-	set_physics_process(true)
-
-func _on_AnimationPlayer_animation_started(anim_name):
-	match anim_name:
-		"reload":
-			front_muzzle_sprite.hide()
-			side_muzzle_sprite.hide()
-			is_reloading = true
-			can_ads = false
-			can_swap = false
-			can_fire = false
-			is_busy = true
-			return
-		"idle":
-			can_ads = true
-			can_swap = true
-			return
-		"draw":
-			is_ads = false
-			can_ads = false
-			can_swap = false
-			can_fire = false
-			can_reload = false
-			is_busy = true
-			return
-		"stow":
-			is_ads = false
-			is_stowed = true
-			is_draw = false
-			can_ads = false
-			can_swap = false
-			can_fire = false
-			can_reload = false
-			is_busy = true
-			return
-		"firing","out_of_ammo":
-			can_swap = false
-			can_fire = false
-			can_reload = false
-			is_busy = true
-			if HAS_SCOPE: can_ads = false
-			if PULSE: 
-				is_pulse_firing = true
-				pulse_timer.start()
-			else:
-				rate_of_fire_timer.start()
-			return
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	anim_player.play("idle")
-	match anim_name:
-		"firing":
-			can_swap = true
-			can_ads = true
-			can_reload = true
-			front_muzzle_sprite.hide()
-			side_muzzle_sprite.hide()
-			if !AUTO and !PULSE: is_busy = false
-			if HAS_SCOPE: player.back_to_ads()
-			return
-		"out_of_ammo":
-			can_ads = true
-			can_swap = true
-			can_reload = true
-			is_busy = false
-			return
-		"reload":
-			is_reloading = false
-			can_ads = true
-			can_swap = true
-			can_fire = true
-			is_busy = false
-			return
-		"draw":
-			is_stowed = false
-			is_draw = true
-			can_ads = true
-			can_fire = true
-			can_swap = true
-			can_reload = true
-			is_busy = false
-			return
-		"stow":
-			is_stowed = true
-			is_draw = false
-			can_ads = false
-			can_fire = false
-			can_swap = false
-			can_reload = true
-			return
+	if anim_name == weapon_controller.FIRING:
+		front_muzzle_sprite.hide()
+		side_muzzle_sprite.hide()
 
 func _on_player_dead(_actor):
 	is_ads = false
-
-func _on_ROFTimer_timeout():
-	if !is_reloading and current_ammo > 0:
-		can_fire = true
-		auto_fire()
-
-func _on_PulseTimer_timeout():
-	if is_pulse_firing:
-		pulse_count += 1
-		pulse_fire()
+	state_machine.set_state("Stowed")
+	weapon_controller.set_ads(false)

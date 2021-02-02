@@ -50,11 +50,14 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 1 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 1, 1.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [  ],
 "method": "set_full_magazine"
+}, {
+"args": [  ],
+"method": "on_reload_ended"
 } ]
 }
 tracks/4/type = "value"

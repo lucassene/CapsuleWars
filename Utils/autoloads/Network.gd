@@ -90,6 +90,9 @@ remote func receive_player_info(id,info):
 		connected_players[id] = info
 		emit_signal("on_new_peer",id)
 
+remote func update_player_info(id,info):
+	connected_players[id] = info
+
 remote func connect_to_server(peers_info):
 	print(peers_info)
 	for peer in peers_info:
@@ -99,7 +102,7 @@ remote func connect_to_server(peers_info):
 
 remote func send_info_to_server():
 	if not get_tree().is_network_server():
-		rpc_id(1,"receive_player_info",get_tree().get_network_unique_id(),self_data)
+		rpc_id(1,"update_player_info",get_tree().get_network_unique_id(),self_data)
 
 func clear_connected_players():
 	connected_players.clear()

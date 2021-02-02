@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://assets/animations/assault-idle.tres" type="Animation" id=1]
 [ext_resource path="res://assets/animations/assault-jump.tres" type="Animation" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://assets/animations/assault-out_of_ammo.tres" type="Animation" id=12]
 [ext_resource path="res://assets/animations/assault-draw.tres" type="Animation" id=13]
 [ext_resource path="res://assets/animations/assault-firing.tres" type="Animation" id=14]
+[ext_resource path="res://assets/animations/rifle-sprinting.tres" type="Animation" id=15]
+[ext_resource path="res://assets/animations/rifle-sprint.tres" type="Animation" id=16]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1.5, 0.8, 0.6 )
@@ -43,10 +45,11 @@ size = Vector3( 0.2, 0.5, 0.2 )
 size = Vector3( 0.1, 0.1, 0.25 )
 
 [node name="AssaultRifle" instance=ExtResource( 4 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.073, -0.177, 0.437 )
+transform = Transform( 9.71934e-09, 0.815047, 0.579395, -1, 1.19249e-08, 0, -6.90922e-09, -0.579395, 0.815047, 0.326, -0.669, 3.537 )
 AUTO = true
-RATE_OF_FIRE = 940
-MAGAZINE = 30
+RATE_OF_FIRE = 600
+MAGAZINE = 24
+DAMAGE = 8
 HEADSHOT_DAMAGE_MULTI = 1.35
 MAX_RANGE = 80
 ADS_RANGE_MULTI = 1.3
@@ -132,7 +135,7 @@ mesh = SubResource( 8 )
 material/0 = ExtResource( 10 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="8"]
-transform = Transform( 0.999999, 2.6077e-08, 2.84217e-14, -5.21541e-08, 1, -5.32907e-15, 5.68434e-13, 4.44089e-15, 1, 0.350899, 0.294692, 0.395844 )
+transform = Transform( 0.999999, 2.6077e-08, 2.84217e-14, -5.21541e-08, 1, -5.32907e-15, 5.68434e-13, 4.44089e-15, 1, 0.351, 0.295, 0.396 )
 layers = 2
 mesh = SubResource( 9 )
 material/0 = ExtResource( 8 )
@@ -144,9 +147,12 @@ anims/idle = ExtResource( 1 )
 anims/jump = ExtResource( 2 )
 anims/out_of_ammo = ExtResource( 12 )
 anims/reload = ExtResource( 11 )
+anims/sprint = ExtResource( 16 )
+anims/sprinting = ExtResource( 15 )
 anims/stow = ExtResource( 3 )
 
 [node name="AudioPlayer" parent="." index="2"]
+transform = Transform( 1, 0, 7.10543e-15, 0, 1, 0, -7.10543e-15, 0, 1, -0.18692, 0.29555, 0 )
 stream = ExtResource( 5 )
 
 [node name="BulletEmitter" type="Spatial" parent="." index="3"]

@@ -1,10 +1,12 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://assets/animations/assault-idle.tres" type="Animation" id=1]
 [ext_resource path="res://assets/animations/assault-jump.tres" type="Animation" id=2]
+[ext_resource path="res://assets/animations/rifle-sprinting.tres" type="Animation" id=3]
 [ext_resource path="res://assets/animations/assault-stow.tres" type="Animation" id=4]
 [ext_resource path="res://Actors/Scenes/weapons/Weapon.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/audio/assault-swap.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/animations/rifle-sprint.tres" type="Animation" id=7]
 [ext_resource path="res://assets/materials/Pistol.tres" type="Material" id=8]
 [ext_resource path="res://assets/materials/Pistol-light.tres" type="Material" id=9]
 [ext_resource path="res://assets/materials/Black.tres" type="Material" id=10]
@@ -169,7 +171,7 @@ mesh = SubResource( 6 )
 material/0 = ExtResource( 10 )
 
 [node name="Slide" type="MeshInstance" parent="Model" index="6"]
-transform = Transform( 0.999999, 1.49012e-08, -2.5805e-09, -1.3411e-07, 1, 2.58068e-08, 1.83995e-08, 5.48906e-08, 1, -0.622327, 0.18445, 0.395844 )
+transform = Transform( 0.999999, 1.49012e-08, -2.5805e-09, -1.3411e-07, 1, 2.58068e-08, 1.83995e-08, 5.48906e-08, 1, -0.23, 0.184, 0.317 )
 layers = 2
 mesh = SubResource( 7 )
 material/0 = ExtResource( 9 )
@@ -181,10 +183,12 @@ anims/idle = ExtResource( 1 )
 anims/jump = ExtResource( 2 )
 anims/out_of_ammo = ExtResource( 11 )
 anims/reload = ExtResource( 13 )
+anims/sprint = ExtResource( 7 )
+anims/sprinting = ExtResource( 3 )
 anims/stow = ExtResource( 4 )
 
 [node name="AudioPlayer" parent="." index="2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.145001, 0.286149, -0.00106991 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29588, 0.286149, -0.00106991 )
 stream = ExtResource( 6 )
 
 [node name="BulletEmitter" type="Spatial" parent="." index="3"]
