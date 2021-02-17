@@ -52,6 +52,15 @@ This games presents features, such as:
 
 
 ## Release History
+* 1.0.3-beta
+    * Added UPnP support
+    * Added damage indicator
+    * Improved lobby
+    * Increased Pulse Rifle magazine
+    * Decreased Sniper Rifle magazine
+    * Fixed weapons positions when holstered
+    * Improved death splash
+
 * 1.0.2-beta
     * Improved player name and life bar interface
     * Tweaks in weapons
