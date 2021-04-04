@@ -52,6 +52,15 @@ This games presents features, such as:
 
 
 ## Release History
+* 1.0.3-beta
+    * Added UPnP support
+    * Added damage indicator
+    * Improved lobby
+    * Increased Pulse Rifle magazine
+    * Decreased Sniper Rifle magazine
+    * Fixed weapons positions when holstered
+    * Improved death splash
+
 * 1.0.2-beta
     * Improved player name and life bar interface
     * Tweaks in weapons
@@ -69,6 +78,9 @@ This games presents features, such as:
 
 * 1.0.0-beta
     * First beta version release
+
+## License
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
 
 ## Meta
 
