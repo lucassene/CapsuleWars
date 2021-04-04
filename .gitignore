@@ -1,10 +1,5 @@
-# Assets
-assets\
-assets/textures
-assets/audio
-assets/fonts
-
 # Godot-specific ignores
+*.import
 .import/
 export.cfg
 export_presets.cfg
