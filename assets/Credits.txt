@@ -1,0 +1,52 @@
+This project includes work from many generous people, you can check them out:
+
+# Kenney's Prototype Textures
+https://www.kenney.nl/assets/prototype-textures
+
+# HDRI Heaven
+https://hdrihaven.com/hdri/?h=driving_school
+
+# Zekton Font
+https://www.1001fonts.com/zekton-free-font.html
+
+# Out of Ammo SFX
+https://freesound.org/people/PacmanGamer/sounds/165660/
+
+# Knife Slash SFX
+https://freesound.org/people/lmbubec/sounds/118792/
+
+# SMG Shot SFX
+https://freesound.org/people/tehlordoswag420/sounds/249779/
+
+# Sniper Rifle Shot SFX
+https://freesound.org/people/EFlexMusic/sounds/393651/
+
+# Footsteps SFX
+https://freesound.org/people/Nox_Sound/sounds/530588/
+
+# Weapon Swap SFX
+https://freesound.org/people/twisterman/sounds/159450/
+
+# Gun Reload SFX
+https://freesound.org/people/KNO%20SFX/sounds/120151/
+
+# Hit SFX
+https://freesound.org/people/dersuperanton/sounds/437650/
+
+# Death SFX
+https://freesound.org/people/Gemesil/sounds/523216/
+
+# Hit SFX
+https://freesound.org/people/tonsil5/sounds/416839/
+
+# 1911 Reload SFX
+https://freesound.org/people/nioczkus/sounds/396331/
+
+# Pistol Shot SFX
+https://freesound.org/people/EFlexMusic/sounds/370220/
+
+# Realistic Shot SFX
+https://freesound.org/people/RMF298/sounds/369395/
+
+# UI SFX
+https://www.tonedock.com/
