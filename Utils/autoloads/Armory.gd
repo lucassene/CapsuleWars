@@ -1,7 +1,6 @@
 extends Node
 
 onready var knife = preload("res://Actors/Scenes/weapons/MeleeWeapon.tscn")
-onready var remote_knife = preload("res://Actors/Scenes/weapons/Remote_MeleeWeapon.tscn")
 
 enum type {
 	PRIMARY,
@@ -15,12 +14,6 @@ var weapons = {
 	"Scout Rifle": preload("res://Actors/Scenes/weapons/ScoutRifle.tscn"),
 	"Pulse Rifle": preload("res://Actors/Scenes/weapons/PulseRifle.tscn"),
 	"Sniper Rifle": preload("res://Actors/Scenes/weapons/SniperRifle.tscn"),
-	"Remote Pistol": preload("res://Actors/Scenes/weapons/Remote_Pistol.tscn"),
-	"Remote SMG": preload("res://Actors/Scenes/weapons/Remote_SMG.tscn"),
-	"Remote Assault Rifle": preload("res://Actors/Scenes/weapons/Remote_AssaultRifle.tscn"),
-	"Remote Scout Rifle": preload("res://Actors/Scenes/weapons/Remote_ScoutRifle.tscn"),
-	"Remote Pulse Rifle": preload("res://Actors/Scenes/weapons/Remote_PulseRifle.tscn"),
-	"Remote Sniper Rifle": preload("res://Actors/Scenes/weapons/Remote_SniperRifle.tscn")
 }
 
 var primaries = {

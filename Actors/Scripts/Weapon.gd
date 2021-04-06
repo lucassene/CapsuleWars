@@ -15,12 +15,13 @@ onready var pulse_timer: Timer = $StateMachine/Firing/PulseTimer
 onready var state_machine: StateMachine = $StateMachine
 onready var weapon_controller = $WeaponController
 
-enum type {
+enum types {
 	PRIMARY,
 	SECONDARY
 }
 
-export(type) var TYPE = type.PRIMARY setget ,get_type
+export var DEBUG_FIRE = false
+export(types) var TYPE = types.PRIMARY setget ,get_type
 export var HAS_SCOPE = false setget ,get_has_scope
 export var AUTO = false
 export var PULSE = false
@@ -29,13 +30,13 @@ export var PULSE_SHOTS = 3
 export var RATE_OF_FIRE = 300
 export var MAGAZINE = 10 setget ,get_magazine
 export var DAMAGE = 5
-export var HEADSHOT_DAMAGE_MULTI = 1.5
+export var SHOT_DAMAGE_MULTI = 1.5
 export var MAX_RANGE = 100
 export var ADS_RANGE_MULTI = 1.2
 export var FALLOFF_RANGE = 50
 export var FALLOFF_DAMAGE_MULTI = 0.75
 
-export var ADS_SENSITIVITY = 0.01 setget ,get_ads_sensitivity
+export var ADS_SENSITIVITY = 1.0 setget ,get_ads_sensitivity
 export var ADS_POSITION = Vector3.ZERO setget ,get_ads_position
 export var DEFAULT_POSITION = Vector3.ZERO
 export var STOWED_POSITION = Vector3.ZERO
@@ -108,10 +109,10 @@ func get_has_scope():
 func get_was_ads():
 	return was_ads
 
-func get_damage(distance,is_headshot):
+func get_damage(distance,shot_type):
 	var dmg = DAMAGE
-	if is_headshot:
-		dmg *= HEADSHOT_DAMAGE_MULTI
+	if shot_type != Scores.REGULAR_SHOT:
+		dmg *= SHOT_DAMAGE_MULTI
 	if is_ads and distance > (FALLOFF_RANGE * ADS_RANGE_MULTI):
 		return dmg * FALLOFF_DAMAGE_MULTI
 	elif distance > FALLOFF_RANGE:
@@ -214,11 +215,9 @@ func set_full_magazine():
 	current_ammo = MAGAZINE
 	emit_signal("on_reloaded")
 
-func jump():
-	if anim_player.get_current_animation() == "idle":
-		anim_player.play("jump")
-
 func sprint(value):
+	front_muzzle_sprite.hide()
+	side_muzzle_sprite.hide()
 	state_machine.set_sprint(value)
 
 func to_stowed_position():
@@ -255,6 +254,14 @@ func emit_bullet():
 func has_ammo():
 	return true if current_ammo > 0 else false
 
+func set_remote_layer():
+	mesh.set_layer_mask_bit(1,false)
+	mesh.set_layer_mask_bit(2,true)
+	for model in mesh.get_children():
+		if model.has_method("set_layer_mask_bit"):
+			model.set_layer_mask_bit(1,false)
+			model.set_layer_mask_bit(2,true)
+	
 func on_stowed():
 	emit_signal("on_stowed",self)
 
@@ -263,12 +270,15 @@ func on_draw_complete():
 	state_machine.set_state("Idle")
 	emit_signal("on_draw_completed")
 
-func _on_AnimationPlayer_animation_finished(anim_name):
-	if anim_name == weapon_controller.FIRING:
-		front_muzzle_sprite.hide()
-		side_muzzle_sprite.hide()
+func _on_AnimationPlayer_animation_finished(_anim_name):
+	front_muzzle_sprite.hide()
+	side_muzzle_sprite.hide()
 
 func _on_player_dead(_actor):
 	is_ads = false
 	state_machine.set_state("Stowed")
 	weapon_controller.set_ads(false)
+
+func _on_AnimationPlayer_animation_started(_anim_name):
+	front_muzzle_sprite.hide()
+	side_muzzle_sprite.hide()

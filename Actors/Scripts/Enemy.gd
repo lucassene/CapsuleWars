@@ -26,12 +26,11 @@ func _process(delta):
 		ttk += delta
 	if current_health <= 0:
 		shot = false
-		print("Enemy morto em: " + str(ttk) + " segundos.")
+		print("Enemy killed in: " + str(ttk) + " seconds.")
 		ttk = 0.0
 		set_collision_layer_bit(0,false)
 		current_health = health
 		timer.start()
-		yield(get_tree().create_timer(1),"timeout")
 		visible = false
 
 func create_blood_splash(point):

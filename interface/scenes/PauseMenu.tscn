@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://interface/scripts/PauseMenu.gd" type="Script" id=1]
 [ext_resource path="res://interface/resources/HUDBigFont.tres" type="DynamicFont" id=2]
 [ext_resource path="res://interface/resources/HUDSmallFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://interface/scenes/CommandsPanel.tscn" type="PackedScene" id=4]
+[ext_resource path="res://interface/scenes/DialogMenu.tscn" type="PackedScene" id=5]
 
 [node name="PauseMenu" type="Control"]
 anchor_right = 1.0
@@ -89,13 +90,38 @@ rect_min_size = Vector2( 0, 50 )
 custom_fonts/font = ExtResource( 3 )
 text = "Back to Lobby"
 
-[node name="ExitButton" type="Button" parent="Container/Margin/Menu"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/Margin/Menu"]
 margin_top = 905.0
 margin_right = 350.0
 margin_bottom = 955.0
+size_flags_horizontal = 3
+custom_constants/separation = 15
+alignment = 1
+
+[node name="SettingsButton" type="Button" parent="Container/Margin/Menu/HBoxContainer"]
+margin_right = 167.0
+margin_bottom = 50.0
 rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="Container/Margin/Menu/HBoxContainer"]
+margin_left = 182.0
+margin_right = 350.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 3 )
 text = "Exit Game"
+
+[node name="DialogMenu" parent="." instance=ExtResource( 5 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 [connection signal="pressed" from="Container/Margin/Menu/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="pressed" from="Container/Margin/Menu/LobbyButton" to="." method="_on_LobbyButton_pressed"]
-[connection signal="pressed" from="Container/Margin/Menu/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="pressed" from="Container/Margin/Menu/HBoxContainer/SettingsButton" to="." method="_on_SettingsButton_pressed"]
+[connection signal="pressed" from="Container/Margin/Menu/HBoxContainer/ExitButton" to="." method="_on_ExitButton_pressed"]

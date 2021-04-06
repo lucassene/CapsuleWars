@@ -39,11 +39,15 @@ func fire():
 		pulse_timer.start()
 
 func next_fire():
-	if not actor.AUTO and not actor.PULSE:
-		state_machine.set_state("Idle")
-		return
-	if actor.AUTO and actor.is_player_firing():
+	if actor.DEBUG_FIRE:
 		fire()
+		return
+	else:
+		if not actor.AUTO and not actor.PULSE:
+			state_machine.set_state("Idle")
+			return
+		if actor.AUTO and actor.is_player_firing():
+			fire()
 
 func pulse_fire():
 	pulse_count += 1
@@ -62,7 +66,7 @@ func play_animation():
 		controller.play_animation(controller.OUT_OF_AMMO,false,anim_speed)
 
 func on_fire_released():
-	if actor.PULSE or actor.get_has_scope():
+	if actor.PULSE or actor.get_has_scope() or actor.DEBUG_FIRE:
 		return
 	state_machine.set_state("Idle")
 

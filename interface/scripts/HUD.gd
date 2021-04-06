@@ -92,10 +92,10 @@ func _on_pause_menu_pressed(value):
 		pause_menu.hide()
 
 func _on_spawn_time_reached(actor):
-	print("chegou")
 	is_dead = false
 	info_container.visible = true
 	scoreboard_menu.hide()
+	pause_menu.hide()
 	emit_signal("_on_player_can_spawn",actor)
 
 func _on_Timer_timeout():
@@ -124,14 +124,16 @@ func _on_exit_to_lobby():
 	scoreboard_menu.clear_player_score()
 	emit_signal("on_exit_to_lobby")
 
-func _on_player_killed(attacker_id,is_headshot,victim_id):
+func _on_player_killed(attacker_id,shot_type,victim_id):
 	var attacker_name = Network.connected_players[attacker_id].name
 	var victim_name = Network.connected_players[victim_id].name
 	var text = ""
 	var attacker_color = Network.connected_players[attacker_id].color
 	var victim_color = Network.connected_players[victim_id].color
-	if is_headshot:
+	if shot_type == Scores.HEADSHOT:
 		text = "[color=%s]%s[/color] killed [color=%s]%s[/color] with a headshot!" % [attacker_color,attacker_name,victim_color,victim_name]
+	elif shot_type == Scores.TAILSHOT:
+		text = "[color=%s]%s[/color] killed [color=%s]%s[/color] with a shot in the butt!" % [attacker_color,attacker_name,victim_color,victim_name]
 	else:
 		text = "[color=%s]%s[/color] killed [color=%s]%s[/color]." % [attacker_color,attacker_name,victim_color,victim_name]
 	if text != "": chat_log.create_entry(text)

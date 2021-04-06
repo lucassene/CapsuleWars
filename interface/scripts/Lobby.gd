@@ -9,8 +9,8 @@ onready var invalid_name_label = $MainContainer/VBoxContainer/MenuContainer/Type
 onready var host_button = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/HostButton
 onready var join_button = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/JoinButton
 onready var begin_button = $MainContainer/VBoxContainer/MenuContainer/FinalContainer/BeginButton
-onready var exit_button = $MainContainer/VBoxContainer/LogContainer/LogContainer/CreditsContainer/ExitButton
-onready var log_text = $MainContainer/VBoxContainer/LogContainer/LogContainer/LogLabel
+onready var exit_button = $MainContainer/VBoxContainer/Menu2Container/LogContainer/CreditsContainer/ExitButton
+onready var log_text = $MainContainer/VBoxContainer/Menu2Container/LogContainer/LogLabel
 onready var color_option = $MainContainer/VBoxContainer/MenuContainer/LooksContainer/ColorPicker/ColorOption
 onready var port_text = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/HostPort/HostPortText
 onready var invalid_port_label = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/InvalidPort
@@ -31,6 +31,9 @@ onready var upnp_button = $MainContainer/VBoxContainer/MenuContainer/TypeContain
 onready var ready_button = $MainContainer/VBoxContainer/MenuContainer/FinalContainer/ReadyButton
 onready var cancel_button = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/CancelButton
 onready var new_container = $MainContainer/VBoxContainer/MenuContainer/NewContainer
+onready var camera_slider = $MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider
+onready var camera_label = $MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraLabel
+
 
 signal on_game_begin()
 
@@ -43,6 +46,7 @@ var has_game = false
 func _ready():
 	add_color_options()
 	add_weapon_options()
+	set_settings()
 	Network.connect("on_new_peer",self,"_on_player_connected")
 	Network.connect("on_peer_disconnected",self,"_on_player_disconnected")
 	Network.connect("on_server_disconnected",self,"_on_server_disconnected")
@@ -86,6 +90,12 @@ func add_weapon_options():
 	secondary_option.selected = 0
 	Network.self_data.secondary = secondary_option.selected
 
+func set_settings():
+	camera_slider.min_value = GameSettings.get_min_sensitivity()
+	camera_slider.max_value = GameSettings.get_max_sensitivity()
+	camera_label.text = str(stepify(GameSettings.get_current_sensitivity(),0.01))
+	camera_slider.value = GameSettings.get_current_sensitivity()
+
 func reset():
 	show()
 	deactivate_hud(false)
@@ -124,6 +134,8 @@ func deactivate_hud(value):
 	join_button.disabled = value
 	begin_button.disabled = value
 	exit_button.disabled = value
+	join_button.text = "Join"
+	host_button.text = "Host"
 
 func append_log(text):
 	log_text.append_bbcode(text + LINE_BREAK)
@@ -262,6 +274,8 @@ func _on_player_disconnected(player):
 func _on_connection_failed():
 	append_log("Cannot connect to the server.")
 	buttons_disabled(false)
+	join_button.text = "Join"
+	host_button.text = "Host"
 	begin_button.disabled = true
 
 func _on_server_disconnected():
@@ -340,6 +354,8 @@ func _on_CancelButton_pressed():
 			yield(get_tree().create_timer(0.1),"timeout")
 			Network.clear_mapped_ports()
 			append_log("Server terminated.")
+	join_button.text = "Join"
+	host_button.text = "Host"
 	hide_containers(true)
 	get_tree().network_peer = null
 
@@ -349,3 +365,7 @@ func _on_exit_to_lobby():
 	reset()
 	show()
 	buttons_disabled(false)
+
+func _on_CameraSlider_value_changed(value):
+	camera_label.text = str(stepify(value,0.01))
+	GameSettings.set_current_sensitivity(value)

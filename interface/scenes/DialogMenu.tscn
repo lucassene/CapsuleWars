@@ -1,0 +1,116 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://interface/resources/HUDSmallFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://interface/resources/HUDBigFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://interface/scripts/DialogMenu.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.141176, 0.133333, 0.133333, 1 )
+
+[node name="DialogMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0666667, 0.0627451, 0.0627451, 0.705882 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
+margin_left = 710.0
+margin_top = 415.0
+margin_right = 1210.0
+margin_bottom = 665.0
+rect_min_size = Vector2( 400, 200 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="PanelContainer" parent="CenterContainer/MarginContainer"]
+margin_right = 500.0
+margin_bottom = 250.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Panel"]
+margin_right = 500.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 500, 0 )
+custom_constants/margin_right = 50
+custom_constants/margin_top = 50
+custom_constants/margin_left = 50
+custom_constants/margin_bottom = 50
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DialogContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/Panel/MarginContainer"]
+margin_left = 50.0
+margin_top = 50.0
+margin_right = 450.0
+margin_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 25
+
+[node name="TitleContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/Panel/MarginContainer/DialogContainer"]
+margin_right = 400.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+custom_constants/separation = 5
+
+[node name="TitileLabel" type="Label" parent="CenterContainer/MarginContainer/Panel/MarginContainer/DialogContainer/TitleContainer"]
+margin_right = 400.0
+margin_bottom = 41.0
+custom_fonts/font = ExtResource( 2 )
+text = "Title"
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/MarginContainer/Panel/MarginContainer/DialogContainer/TitleContainer"]
+margin_top = 46.0
+margin_right = 400.0
+margin_bottom = 50.0
+
+[node name="ContentContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Panel/MarginContainer/DialogContainer"]
+margin_top = 75.0
+margin_right = 400.0
+margin_bottom = 75.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/Panel/MarginContainer/DialogContainer"]
+margin_top = 100.0
+margin_right = 400.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+custom_constants/separation = 15
+
+[node name="CancelButton" type="Button" parent="CenterContainer/MarginContainer/Panel/MarginContainer/DialogContainer/ButtonsContainer"]
+margin_right = 192.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 1 )
+text = "No"
+
+[node name="ConfirmButton" type="Button" parent="CenterContainer/MarginContainer/Panel/MarginContainer/DialogContainer/ButtonsContainer"]
+margin_left = 207.0
+margin_right = 400.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 1 )
+text = "Yes"
+[connection signal="pressed" from="CenterContainer/MarginContainer/Panel/MarginContainer/DialogContainer/ButtonsContainer/CancelButton" to="." method="_on_CancelButton_pressed"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/Panel/MarginContainer/DialogContainer/ButtonsContainer/ConfirmButton" to="." method="_on_ConfirmButton_pressed"]

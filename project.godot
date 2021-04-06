@@ -14,6 +14,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Utils/scripts/Controller.gd"
 }, {
+"base": "Control",
+"class": "DialogBody",
+"language": "GDScript",
+"path": "res://Utils/scripts/DialogBody.gd"
+}, {
+"base": "Resource",
+"class": "GameConfig",
+"language": "GDScript",
+"path": "res://resources/scripts/GameConfig.gd"
+}, {
 "base": "KinematicBody",
 "class": "Player",
 "language": "GDScript",
@@ -31,6 +41,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "ActorController": "",
+"DialogBody": "",
+"GameConfig": "",
 "Player": "",
 "State": "",
 "StateMachine": ""
@@ -51,6 +63,7 @@ Armory="*res://Utils/autoloads/Armory.gd"
 Global="*res://Utils/autoloads/Global.gd"
 Mixer="*res://Utils/autoloads/Mixer.gd"
 Scores="*res://Utils/autoloads/Scores.gd"
+GameSettings="*res://Utils/autoloads/GameSettings.gd"
 
 [debug]
 
@@ -61,7 +74,6 @@ gdscript/warnings/return_value_discarded=false
 
 window/size/width=1920
 window/size/height=1080
-window/size/fullscreen=true
 window/size/test_width=1280
 window/size/test_height=720
 window/stretch/mode="2d"
@@ -1202,7 +1214,7 @@ slot_2={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":61,"unicode":0,"echo":false,"script":null)
  ]
 }
-dmg_test={
+sacrifice={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777220,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":10,"pressure":0.0,"pressed":false,"script":null)

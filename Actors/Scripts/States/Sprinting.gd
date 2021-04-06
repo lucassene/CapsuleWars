@@ -17,6 +17,7 @@ func handle_input(event):
 	if controller.check_input_pressed(event,"escape","show_menu",true): return
 	if controller.check_input_pressed(event,"jump","jump"): return
 	if controller.check_input_pressed(event,"melee","melee"): return
+	if controller.check_input_pressed(event,"sacrifice","sacrifice"): return
 	if controller.check_input_released(event,"sprint","sprint",false): return
 
 func update(delta):

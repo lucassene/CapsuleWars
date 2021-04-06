@@ -66,10 +66,11 @@ func _on_ROFTimer_timeout():
 		can_fire = true
 		if current_state == "Firing":
 			states[current_state].next_fire()
+		elif actor.DEBUG_FIRE and actor.PULSE:
+			set_state("Firing")
 
 func _on_PulseTimer_timeout():
 	if current_state == "Firing":
-		print("pulse fire")
 		states[current_state].pulse_fire()
 
 func _on_AnimationPlayer_animation_finished(anim_name):

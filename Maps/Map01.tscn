@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://assets/materials/black-grid.tres" type="Material" id=1]
 [ext_resource path="res://Maps/map01-environment.tres" type="Environment" id=2]
@@ -22,7 +22,6 @@
 [ext_resource path="res://Maps/scenes/corridor.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Maps/scenes/tube.tscn" type="PackedScene" id=21]
 [ext_resource path="res://Maps/scenes/container.tscn" type="PackedScene" id=22]
-[ext_resource path="res://Actors/Scenes/Enemy.tscn" type="PackedScene" id=23]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 96.5, 1, 104 )
@@ -739,9 +738,6 @@ volume_db = -30.0
 
 [node name="KillSoundPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
-
-[node name="Enemy" parent="." instance=ExtResource( 23 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -21.25 )
 [connection signal="_on_player_can_spawn" from="CanvasLayer/MainHUD" to="." method="_on_player_can_spawn"]
 [connection signal="on_exit_to_lobby" from="CanvasLayer/MainHUD" to="CanvasLayer/Lobby" method="_on_exit_to_lobby"]
 [connection signal="on_game_begin" from="CanvasLayer/Lobby" to="CanvasLayer/MainHUD" method="_on_game_begin"]

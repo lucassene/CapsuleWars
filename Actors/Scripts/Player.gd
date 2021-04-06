@@ -30,12 +30,18 @@ onready var container = $Head/Camera/Container
 onready var hit_feedback = $CanvasLayer/HitFeedback
 onready var hit_marker = $CanvasLayer/HitMarker
 
+const HEAD_COLLISION_ID = 1
+const BUTT_COLLISION_ID = 3
+const VERTICAL_SWAY = 0.05
+const ADS_SWAY_MULTIPLIER = 0.15
+
 export var HEALTH = 100 setget ,get_max_health
 export var RECOVER_DELAY = 3.0
 export var RECOVER_RATE = 1.0
 export var DEFAULT_FOV = 70
 export var HIT_COLOR = Color()
 export var MELEE_COLOR = Color()
+export var DEFAULT_HAND_Y = -0.301
 
 signal on_weapon_equipped(clip_size)
 signal on_weapon_changed(current_ammo,clip_size)
@@ -65,7 +71,6 @@ var weapons = [-1,-1]
 var sniper_overlay
 var dead = false
 var last_attacker_id = -1
-
 var remote_states = []
 
 func get_player_controller():
@@ -91,18 +96,20 @@ func get_is_moving():
 func get_current_weapon():
 	return current_weapon
 
+func is_dead():
+	return dead
+
 func set_is_ads(value):
 	is_ads = value
 	if is_ads:
-		player_controller.set_current_sensitivity(current_weapon.get_ads_sensitivity())
-		player_controller.ads()
+		player_controller.ads(true,current_weapon.get_ads_sensitivity())
 		current_anim = "ads-headbob"
 		if current_weapon and is_network_master() and current_weapon.get_has_scope():
 			sniper_overlay.show()
 			weapon_view.hide()
 			crosshair.hide()
 	else:
-		player_controller.reset_sensitivity()
+		player_controller.ads(false)
 		current_anim = "headbob"
 		if player_controller.is_sprinting():
 			state_machine.set_state("Sprinting")
@@ -145,23 +152,12 @@ func set_weapons(primary,secondary):
 		print("Null secondary weapon")
 		weapons[1] = Armory.secondaries[0]
 
-func set_remote_weapons():
-	var remote_weapons = []
-	for weapon in weapons:
-		var new_weapon = "Remote " + weapon
-		remote_weapons.append(new_weapon)
-	weapons = remote_weapons
-
 remotesync func change_loadout(primary,secondary):
 	set_weapons(primary,secondary)
-	if !is_network_master():
-		set_remote_weapons()
 	hand.change_loadout(weapons)
 	equip_weapon(hand.get_current_weapon())
 
 func initialize_hand():
-	if !is_network_master():
-		set_remote_weapons()
 	hand.initialize(self,weapons)
 
 func initialize():
@@ -176,6 +172,7 @@ func initialize():
 		hit_marker.show()
 		emit_signal("on_player_spawned")
 	current_weapon.draw_weapon()
+	GameSettings.update_mode()
 	set_process(true)
 	set_physics_process(true)
 
@@ -196,11 +193,9 @@ func _ready():
 	state_machine.initialize("Dead",player_controller)
 
 func _unhandled_input(event):
-	if is_network_master() and state_machine.get_current_state() != "Dead":
+	if is_network_master():
 		state_machine.handle_input(event)
 		player_controller.handle_input(event)
-		if event.is_action_pressed("dmg_test"):
-			rpc_id(int(name),"set_dead_state",true)
 
 func _process(delta):
 	recover_health(delta)
@@ -264,6 +259,17 @@ func weapon_sway(delta):
 	hand.rotation.z = lerp_angle(hand.rotation.z,head.rotation.z,current_weapon.get_sway() * delta)
 	hand.rotation.x = lerp_angle(hand.rotation.x,head.rotation.x,current_weapon.get_sway() * delta)
 
+func jump_sway(delta):
+	var sway = VERTICAL_SWAY
+	if is_ads: sway = VERTICAL_SWAY * ADS_SWAY_MULTIPLIER
+	var sway_target = current_weapon.translation.y - sway
+	current_weapon.translation.y = lerp(current_weapon.translation.y,sway_target,current_weapon.get_sway() * delta)
+
+func falling_sway(delta):
+	var sway = VERTICAL_SWAY
+	if is_ads: sway = VERTICAL_SWAY * ADS_SWAY_MULTIPLIER
+	current_weapon.translation.y = lerp(current_weapon.translation.y,current_weapon.translation.y + sway,current_weapon.get_sway() * delta)
+
 func recover_health(delta):
 	if is_recovering:
 		recover_timer += delta
@@ -276,11 +282,11 @@ func recover_health(delta):
 				current_health = HEALTH
 				is_recovering = false
 
-func jump():
-	current_weapon.jump()
-
 func sprint(value):
-	current_weapon.sprint(value)
+	if value:
+		current_weapon.sprint(value)
+	elif not value and not player_controller.is_sprinting():
+		current_weapon.sprint(value)
 
 func check_floor():
 	floor_contact = ground_check.is_colliding()
@@ -310,6 +316,7 @@ func fire(firing):
 		set_is_firing(true)
 		get_shot_victim()
 	else:
+		player_controller.fire(false)
 		set_is_firing(false)
 
 func get_shot_victim():
@@ -322,34 +329,37 @@ func get_shot_victim():
 				point = aim_cast.get_collision_point()
 				distance = transform.origin.distance_to(point)
 			if target and target != self:
-				var is_headshot = check_if_is_headshot(aim_cast.get_collider_shape())
-				hit_target(target,point,distance,is_headshot)
+				var shot_type = check_shot_type(aim_cast.get_collider_shape())
+				hit_target(target,point,distance,shot_type)
 
 remotesync func stop_firing():
 	set_is_firing(false)
 
-func check_if_is_headshot(shape_id):
-	if shape_id == 1:
-		return true
-	return false
+func check_shot_type(shape_id):
+	var type = Scores.REGULAR_SHOT
+	if shape_id == HEAD_COLLISION_ID:
+		type = Scores.HEADSHOT
+	elif shape_id == BUTT_COLLISION_ID:
+		type = Scores.TAILSHOT
+	return type
 
-func hit_target(target,point,distance,is_headshot):
-	var damage = current_weapon.get_damage(distance,is_headshot)
+func hit_target(target,point,distance,shot_type):
+	var damage = current_weapon.get_damage(distance,shot_type)
 	if target.is_in_group("World"):
 		place_decal(target)
 		return
 	if target.is_in_group("Player") and is_network_master():
-		rpc("update_score","damage",damage,is_headshot)
-		target.rpc("add_damage",int(name),point,damage,is_headshot,false)
+		rpc("update_score","damage",damage,shot_type)
+		target.rpc("add_damage",int(name),point,damage,shot_type,false)
 		return
 	if target.is_in_group("Enemy"):
 		var is_enemy_dead = target.add_damage(point,damage)
-		rpc("update_score","damage",damage,is_headshot)
+		rpc("update_score","damage",damage,shot_type)
 		if is_enemy_dead:
-			rpc("update_score","kills",1,is_headshot)
+			rpc("update_score","kills",1,shot_type)
 		return
 
-remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
+remotesync func add_damage(attacker_id,point,damage,shot_type,is_melee):
 	last_attacker_id = attacker_id
 	create_blood_splash(point,is_melee)
 	current_health -= damage
@@ -366,7 +376,7 @@ remotesync func add_damage(attacker_id,point,damage,is_headshot,is_melee):
 	if current_health <= 0 and !dead:
 		dead = true
 		is_recovering = false
-		emit_signal("on_player_killed",attacker_id,is_headshot,int(name))
+		emit_signal("on_player_killed",attacker_id,shot_type,int(name))
 		if is_network_master(): rpc("update_score","deaths",1)
 		rpc_id(int(name),"set_dead_state",true,attacker_id,point)
 		return true
@@ -419,25 +429,28 @@ func play_hurt_sound():
 			audio_player.set_stream(Mixer.hurt_sound_2)
 			audio_player.play()
 
+func sacrifice():
+	rpc_id(int(name),"set_dead_state",true)
+
 remotesync func set_dead_state(value,attacker_id = null,point = null):
 	if !value:
 		dead = false
 		rpc("deactivate_player",value,point)
 	else:
+		dead = true
 		is_firing = false
 		is_ads = false
-		player_controller.reset_sensitivity()
+		player_controller.reset_sprint()
 		rpc("deactivate_player",value,point)
 		state_machine.set_state("Dead")
-		if is_network_master(): 
-			sniper_overlay.hide()
-			hit_marker.hide()
 		audio_player.set_stream(Mixer.death_scream)
 		audio_player.play()
 		camera_anim_player.stop()
 		yield(get_tree().create_timer(1.0),"timeout")
 		emit_signal("on_player_death",self)
-		if is_network_master():
+		if is_network_master(): 
+			sniper_overlay.hide()
+			hit_marker.hide()
 			if attacker_id:
 				get_node("/root/Game/Players/" + str(attacker_id)).camera.current = true
 			else:
@@ -472,8 +485,8 @@ func create_death_splash(point):
 	death.global_transform.origin = point
 	death.emitting = true
 
-remotesync func update_score(item,value,is_headshot = false):
-	Scores.update_score(int(name),item,value,is_headshot)
+remotesync func update_score(item,value,type_shot = Scores.REGULAR_SHOT):
+	Scores.update_score(int(name),item,value,type_shot)
 	emit_signal("on_score_changed",int(name),item)
 
 func play_camera_anim(value):
@@ -520,9 +533,17 @@ func stow_weapon(weapon):
 		secondary_holster.add_child(weapon)
 	weapon.transform.origin = Vector3.ZERO
 
+func add_weapon(weapon):
+	if weapon.TYPE == weapon.types.PRIMARY:
+		primary_holster.add_child(weapon)
+	else:
+		secondary_holster.add_child(weapon)
+	if not is_network_master(): weapon.set_remote_layer()
+
 func add_melee_weapon(weapon):
 	melee_weapon = weapon
 	melee_holster.add_child(weapon)
+	if not is_network_master(): melee_weapon.set_remote_layer()
 	weapon.translation = Vector3.ZERO
 
 remotesync func stow_melee_weapon():

@@ -4,19 +4,16 @@ onready var actor = owner
 
 export var GRAVITY = 20
 export var JUMP_IMPULSE = 11
-export var MOUSE_SENSITITY = 0.05
-export var CONTROLLER_SENSITIVITY = 0.08
+
 export var CONTROLLER_DEADZONE = 0.15
 
-var current_sensitivity = MOUSE_SENSITITY setget set_current_sensitivity
 var current_speed = 0.0 setget set_current_speed,get_current_speed
 var current_acceleration = 0.0 setget set_current_acceleration,get_current_acceleration
-
 var h_velocity = Vector3.ZERO
 var movement = Vector3.ZERO setget ,get_movement
 var gravity_vector = Vector3.DOWN setget ,get_gravity_vector
-var gamepad_mode = false
 var on_sprint = false setget ,is_sprinting
+var was_sprinting = false
 
 func set_current_speed(value):
 	current_speed = value
@@ -33,31 +30,23 @@ func get_current_acceleration():
 func get_movement():
 	return movement
 
-func set_current_sensitivity(value):
-	current_sensitivity -= value
-
 func get_gravity_vector():
 	return gravity_vector
+
+func reset_sprint():
+	on_sprint = false
+	was_sprinting = false
 
 func is_sprinting():
 	return on_sprint
 
 func reset_sensitivity():
-	if !gamepad_mode:
-		current_sensitivity = MOUSE_SENSITITY
-	else:
-		current_sensitivity = CONTROLLER_SENSITIVITY	
+	GameSettings.reset_sensitivity()
 
 func _initialize(fsm):
 	.initialize(fsm)
 	set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if Input.get_connected_joypads().size() > 0:
-		current_sensitivity = CONTROLLER_SENSITIVITY
-		gamepad_mode = true
-	else:
-		current_sensitivity = MOUSE_SENSITITY
-		gamepad_mode = false
-		
+
 func handle_input(event):
 	if state_machine.get_current_state() != "Menu":
 		handle_mouse_movement(event)
@@ -75,19 +64,19 @@ func check_input_released(event,input,method = null,param = null):
 	return false
 
 func _physics_process(_delta):
-	if gamepad_mode:
+	if GameSettings.is_gamepad_mode():
 		handle_controller_movement()
 
 func handle_mouse_movement(event):
-	if !gamepad_mode and event is InputEventMouseMotion:
-		actor.rotate_y(deg2rad(-event.relative.x * current_sensitivity))
-		actor.head.rotate_x(deg2rad(-event.relative.y * current_sensitivity))
+	if not GameSettings.is_gamepad_mode() and event is InputEventMouseMotion:
+		actor.rotate_y(deg2rad(-event.relative.x * GameSettings.get_sensitivity_with_ads()))
+		actor.head.rotate_x(deg2rad(-event.relative.y * GameSettings.get_sensitivity_with_ads()))
 		actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-68),deg2rad(80))
 
 func handle_controller_movement():
 	var axis_vector = get_axis_vector()
-	actor.rotate_y(-axis_vector.x * current_sensitivity)
-	actor.head.rotate_x(-axis_vector.y * current_sensitivity)
+	actor.rotate_y(-axis_vector.x * GameSettings.get_sensitivity_with_ads())
+	actor.head.rotate_x(-axis_vector.y * GameSettings.get_sensitivity_with_ads())
 	actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-68),deg2rad(80))
 
 func get_axis_vector():
@@ -129,34 +118,51 @@ func actor_on_floor():
 
 func jump(_param):
 	if actor.is_on_floor() or actor.get_floor_contact():
-		actor.jump()
 		state_machine.set_state("Jumping")
 		gravity_vector = Vector3.UP * JUMP_IMPULSE
 
 func fire(param):
 	if param:
 		if is_sprinting() and actor.get_is_moving():
+			was_sprinting = true
 			state_machine.set_state("Running")
 		elif is_sprinting():
+			actor.sprint(false)
 			state_machine.enter_air_state()
 			current_speed = state_machine.states.Running.SPEED
+	elif was_sprinting and actor.is_on_floor() and not actor.get_is_ads():
+		was_sprinting = false
+		state_machine.set_state("Sprinting")
 
 func melee(_param):
 	actor.rpc("melee_attack")
 
-func ads():
-	if state_machine.get_current_state() == "Sprinting":
-		state_machine.set_state("Running")
+func ads(is_ads,weapon_sensitivity = null):
+	if is_ads:
+		GameSettings.set_ads_modifier(weapon_sensitivity)
+		if state_machine.get_current_state() == "Sprinting":
+			state_machine.set_state("Running")
+		if on_sprint:
+			was_sprinting = true
+		on_sprint = false
+		actor.sprint(false)
+	else:
+		if was_sprinting:
+			was_sprinting = false
+			sprint(true)
+		GameSettings.set_ads_modifier(1.0)
 
 func sprint(param):
 	if param and !actor.get_is_ads():
 		state_machine.set_state("Sprinting")
 		on_sprint = true
 	else:
+		was_sprinting = false
 		on_sprint = false
 		reset_speed()
+		actor.sprint(false)
 		if actor.is_on_floor():
-				state_machine.set_state("Idle")
+			state_machine.set_state("Idle")
 
 func reload(_param):
 	return
@@ -171,13 +177,22 @@ func swap_equip(_param):
 	actor.rpc("swap_equip")
 
 func show_menu(param):
+	print("is dead: ",actor.is_dead())
 	if param:
 		state_machine.set_state("Menu")
 	else:
-		state_machine.set_state("Idle")
+		if actor.is_dead():
+			state_machine.set_state("Dead")
+		else:
+			state_machine.set_state("Idle")
 	actor.show_menu(param)
 
+func sacrifice(_param):
+	actor.sacrifice()
+
 func exit_menu():
+	if actor.is_dead():
+		state_machine.set_state("Dead")
 	state_machine.set_state("Idle")
 
 func set_mouse_mode(mode):

@@ -34,12 +34,11 @@ size = Vector3( 1, 1, 1 )
 [node name="Pistol" instance=ExtResource( 7 )]
 transform = Transform( -5.96244e-09, -0.5, 0.866025, -1, 1.19249e-08, 0, -1.03272e-08, -0.866025, -0.5, 0.553, -2.253, 1.971 )
 TYPE = 1
-MAGAZINE = 8
-DAMAGE = 15
-HEADSHOT_DAMAGE_MULTI = 1.25
+MAGAZINE = 12
+DAMAGE = 12
 MAX_RANGE = 60
 FALLOFF_RANGE = 30
-ADS_SENSITIVITY = 0.02
+ADS_SENSITIVITY = 0.9
 ADS_POSITION = Vector3( -0.385, 0.065, 0 )
 STOWED_POSITION = Vector3( 0.739, -1.673, 1.483 )
 ADS_SPEED = 25

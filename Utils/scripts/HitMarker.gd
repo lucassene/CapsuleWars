@@ -3,7 +3,7 @@ extends Control
 onready var texture = $Texture
 onready var tween = $Tween
 
-export var SHOW_TIME = 4.0
+export var SHOW_TIME = 1.5
 
 var attacker
 var victim

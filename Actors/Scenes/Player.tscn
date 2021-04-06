@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Actors/Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Actors/Scripts/PlayerController.gd" type="Script" id=2]
@@ -33,15 +33,18 @@ material = SubResource( 2 )
 mid_height = 3.0
 radial_segments = 16
 
-[sub_resource type="CapsuleShape" id=5]
-height = 2.53012
+[sub_resource type="CapsuleShape" id=4]
+height = 3.0
 
-[sub_resource type="SphereShape" id=6]
+[sub_resource type="SphereShape" id=5]
 
-[sub_resource type="BoxShape" id=4]
+[sub_resource type="BoxShape" id=6]
 extents = Vector3( 0.8, 1.5, 0.3 )
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 0.5795, 0.356077, 0.152413 )
+
+[sub_resource type="Animation" id=8]
 length = 0.3
 loop = true
 tracks/0/type = "value"
@@ -57,7 +60,7 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, -0.32 ), Vector3( 0, 0.01, -0.32 ), Vector3( 0, 0, -0.32 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
 length = 0.3
 loop = true
 tracks/0/type = "value"
@@ -88,22 +91,26 @@ mesh = SubResource( 3 )
 material/0 = ExtResource( 15 )
 
 [node name="Body" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.26775, 0.488986 )
-shape = SubResource( 5 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 2.50379, 0.488986 )
+shape = SubResource( 4 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="HeadCollision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.08547, 0.488986 )
-shape = SubResource( 6 )
+shape = SubResource( 5 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="CameraCollision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 2.5, -0.8 )
-shape = SubResource( 4 )
+shape = SubResource( 6 )
+
+[node name="ButtCollision" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.36479e-07, 1.06875, 1.33954 )
+shape = SubResource( 7 )
 
 [node name="Head" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.77523e-08, 4.45599, -0.412832 )
@@ -158,8 +165,8 @@ expand = true
 stretch_mode = 4
 
 [node name="CameraAnimPlayer" type="AnimationPlayer" parent="Head/Camera"]
-anims/ads-headbob = SubResource( 7 )
-anims/headbob = SubResource( 8 )
+anims/ads-headbob = SubResource( 8 )
+anims/headbob = SubResource( 9 )
 
 [node name="Hand" type="Spatial" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.301, -1.737 )

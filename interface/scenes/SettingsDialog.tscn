@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://interface/scripts/SettingsDialog.gd" type="Script" id=1]
+[ext_resource path="res://interface/resources/HUDSmallFont.tres" type="DynamicFont" id=2]
+
+[node name="SettingsDialog" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 25
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+TITLE = "Settings"
+CONFIRM_TEXT = "Save"
+CANCEL_TEXT = "Cancel"
+
+[node name="CameraContainer" type="VBoxContainer" parent="."]
+margin_right = 1920.0
+margin_bottom = 69.0
+custom_constants/separation = 15
+
+[node name="Label" type="Label" parent="CameraContainer"]
+margin_right = 1920.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 2 )
+text = "Camera Sensitivity"
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CameraContainer"]
+margin_top = 42.0
+margin_right = 1920.0
+margin_bottom = 69.0
+custom_constants/separation = 20
+
+[node name="CameraSlider" type="HSlider" parent="CameraContainer/HBoxContainer"]
+margin_right = 1855.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 0.01
+max_value = 0.2
+step = 0.01
+value = 0.05
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CameraLabel" type="Label" parent="CameraContainer/HBoxContainer"]
+margin_left = 1875.0
+margin_right = 1920.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 2 )
+text = "0.05"
+align = 2
+__meta__ = {
+"_editor_description_": ""
+}
+[connection signal="value_changed" from="CameraContainer/HBoxContainer/CameraSlider" to="." method="_on_CameraSlider_value_changed"]

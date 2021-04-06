@@ -4,6 +4,9 @@ export var H_ACCELERATION = 7
 
 func enter(_delta = 0.0):
 	controller.set_current_acceleration(H_ACCELERATION)
+	if controller.is_sprinting():
+		state_machine.set_state("Sprinting")
+		return
 	controller.reset_speed()
 	actor.set_is_moving(false)
 	actor.play_camera_anim(false)
@@ -16,6 +19,7 @@ func handle_input(event):
 	if controller.check_input_pressed(event,"slot_1","equip_slot_1"): return
 	if controller.check_input_pressed(event,"slot_2","equip_slot_2"): return
 	if controller.check_input_pressed(event,"swap","swap_equip"): return
+	if controller.check_input_pressed(event,"sacrifice","sacrifice"): return
 	if controller.check_input_released(event,"sprint","sprint",false): return
 
 func update(_delta):

@@ -21,16 +21,12 @@ func instance_weapons(items):
 		weapon.connect("on_stowed",self,"_on_weapon_stowed")
 		weapon.connect("on_draw_completed",self,"_on_weapon_draw_completed")
 		weapon.set_owner(player)
-		player.stow_weapon(weapon)
+		player.add_weapon(weapon)
 		weapons.append(weapon)
 	instance_melee_weapon()
 
 func instance_melee_weapon():
-	var melee_weapon
-	if is_network_master():
-		melee_weapon = Armory.knife.instance()
-	else:
-		melee_weapon = Armory.remote_knife.instance()
+	var melee_weapon = Armory.knife.instance()
 	melee_weapon.set_owner(player)
 	player.add_melee_weapon(melee_weapon)
 

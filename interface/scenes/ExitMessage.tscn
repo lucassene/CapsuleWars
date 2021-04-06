@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://interface/resources/HUDSmallFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://interface/scripts/ExitMessage.gd" type="Script" id=2]
+
+[node name="ExitMessage" type="Label"]
+margin_right = 350.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 350, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = ExtResource( 1 )
+text = "Are you sure you want to exit the game?"
+autowrap = true
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+TITLE = "Exit Game"
+CONFIRM_TEXT = "Yes"
+CANCEL_TEXT = "No"

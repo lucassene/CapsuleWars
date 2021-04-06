@@ -111,10 +111,10 @@ margin_bottom = 1040.0
 visible = false
 margin_top = -266.0
 
-[node name="PauseMenu" parent="." instance=ExtResource( 5 )]
+[node name="Scoreboard" parent="." instance=ExtResource( 6 )]
 visible = false
 
-[node name="Scoreboard" parent="." instance=ExtResource( 6 )]
+[node name="PauseMenu" parent="." instance=ExtResource( 5 )]
 visible = false
 [connection signal="timeout" from="Container/Timer" to="." method="_on_Timer_timeout"]
 [connection signal="tween_completed" from="Container/Timer/Tween" to="." method="_on_Tween_tween_completed"]

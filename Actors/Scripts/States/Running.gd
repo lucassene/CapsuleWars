@@ -20,6 +20,7 @@ func handle_input(event):
 	if controller.check_input_pressed(event,"slot_1","equip_slot_1"): return
 	if controller.check_input_pressed(event,"slot_2","equip_slot_2"): return
 	if controller.check_input_pressed(event,"swap","swap_equip"): return
+	if controller.check_input_pressed(event,"sacrifice","sacrifice"): return
 	if controller.check_input_released(event,"sprint","sprint",false): return
 
 func update(delta):

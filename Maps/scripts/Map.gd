@@ -171,11 +171,11 @@ remotesync func _on_server_disconnected():
 	is_in_lobby = true
 	play_music(Mixer.lobby_music)
 
-func _on_player_killed(id,is_headshot,_victim_id):
+func _on_player_killed(id,shot_type,_victim_id):
 	if is_network_master():
 		var player_scene = get_node("/root/Game/Players/" + str(id))
 		kill_sound_player.play()
-		player_scene.rpc("update_score","kills",1,is_headshot)
+		player_scene.rpc("update_score","kills",1,shot_type)
 
 func _on_player_can_spawn(actor):
 	var spawn_index = spawn_player(actor)

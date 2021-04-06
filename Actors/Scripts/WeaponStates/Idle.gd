@@ -13,7 +13,7 @@ func enter(_delta = 0.0):
 	else:
 		sprinting = true
 		controller.play_animation(controller.SPRINT)
-		controller.play_animation(controller.SPRINTING,true)
+		#controller.play_animation(controller.SPRINTING,true)
 
 func handle_input(event):
 	if controller.check_input_pressed(event,"fire","fire",true): return
@@ -31,7 +31,7 @@ func set_sprint(value):
 	if sprinting != value:
 		if value:
 			controller.play_animation(controller.SPRINT)
-			controller.play_animation(controller.SPRINTING,true)
+			#controller.play_animation(controller.SPRINTING,true)
 		else:
 			controller.play_animation(controller.SPRINT,false,1.0,true)
 			controller.play_animation(controller.IDLE,true)

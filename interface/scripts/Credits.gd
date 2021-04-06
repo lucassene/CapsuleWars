@@ -24,7 +24,7 @@ func _on_BackButton_pressed():
 func _on_Tween_tween_completed(object, _key):
 	if object == color_rect:
 		if color_rect.modulate.a >= 0.5:
-			tween.interpolate_property(main_container,"rect_position",main_container.rect_position,Vector2(0.0,-1080),25.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+			tween.interpolate_property(main_container,"rect_position",main_container.rect_position,Vector2(0.0,-1500),25.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 			tween.start()
 		else:
 			hide()

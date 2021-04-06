@@ -21,15 +21,16 @@ color = Color( 0, 0, 0, 1 )
 [node name="MainContainer" type="CenterContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_bottom = 446.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VContainer" type="VBoxContainer" parent="MainContainer"]
 margin_left = 430.0
-margin_top = 44.0
+margin_top = 112.0
 margin_right = 1490.0
-margin_bottom = 1036.0
+margin_bottom = 1413.0
 custom_constants/separation = 80
 
 [node name="CreatorContainer" type="VBoxContainer" parent="MainContainer/VContainer"]
@@ -57,11 +58,11 @@ align = 1
 [node name="CenterContainer" type="CenterContainer" parent="MainContainer/VContainer"]
 margin_top = 158.0
 margin_right = 1060.0
-margin_bottom = 471.0
+margin_bottom = 535.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/VContainer/CenterContainer"]
 margin_right = 1060.0
-margin_bottom = 313.0
+margin_bottom = 377.0
 custom_constants/separation = 30
 
 [node name="FXContainer" type="VBoxContainer" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
@@ -86,13 +87,13 @@ custom_fonts/font = ExtResource( 3 )
 text = "from freesound.org"
 align = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
 margin_top = 94.0
 margin_right = 1060.0
 margin_bottom = 128.0
 custom_constants/separation = 40
 
-[node name="Label" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer4"]
 margin_right = 146.0
 margin_bottom = 34.0
 custom_fonts/font = ExtResource( 2 )
@@ -100,7 +101,7 @@ text = "EFlexMusic"
 align = 1
 valign = 1
 
-[node name="Label2" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 186.0
 margin_right = 293.0
 margin_bottom = 34.0
@@ -109,7 +110,7 @@ text = "RMF298"
 align = 1
 valign = 1
 
-[node name="Label3" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="Label3" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 333.0
 margin_right = 476.0
 margin_bottom = 34.0
@@ -118,7 +119,7 @@ text = "AlineAudio"
 align = 1
 valign = 1
 
-[node name="Label4" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="Label4" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 516.0
 margin_right = 620.0
 margin_bottom = 34.0
@@ -127,7 +128,7 @@ text = "Gemesil"
 align = 1
 valign = 1
 
-[node name="Label5" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="Label5" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 660.0
 margin_right = 862.0
 margin_bottom = 34.0
@@ -136,7 +137,7 @@ text = "Dersuperanton"
 align = 1
 valign = 1
 
-[node name="Label6" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="Label6" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 902.0
 margin_right = 1060.0
 margin_bottom = 34.0
@@ -197,29 +198,54 @@ text = "KNO SFX"
 align = 1
 valign = 1
 
-[node name="Label" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
-modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
 margin_top = 222.0
 margin_right = 1060.0
-margin_bottom = 249.0
+margin_bottom = 256.0
+custom_constants/separation = 40
+alignment = 1
+
+[node name="Label7" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 362.0
+margin_right = 565.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Pacman Gamer"
+align = 1
+valign = 1
+
+[node name="Label8" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 605.0
+margin_right = 698.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Tonsil5"
+align = 1
+valign = 1
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
+modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
+margin_top = 286.0
+margin_right = 1060.0
+margin_bottom = 313.0
 custom_fonts/font = ExtResource( 3 )
 text = "and"
 align = 1
 valign = 1
 
 [node name="Label12" type="Label" parent="MainContainer/VContainer/CenterContainer/VBoxContainer"]
-margin_top = 279.0
+margin_top = 343.0
 margin_right = 1060.0
-margin_bottom = 313.0
+margin_bottom = 377.0
 custom_fonts/font = ExtResource( 2 )
 text = "ToneDock"
 align = 1
 valign = 1
 
 [node name="MusicContainer" type="VBoxContainer" parent="MainContainer/VContainer"]
-margin_top = 551.0
+margin_top = 615.0
 margin_right = 1060.0
-margin_bottom = 716.0
+margin_bottom = 780.0
 size_flags_horizontal = 3
 custom_constants/separation = 30
 
@@ -301,12 +327,72 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/VContainer"]
-margin_top = 796.0
+[node name="FontContainer" type="VBoxContainer" parent="MainContainer/VContainer"]
+margin_top = 860.0
 margin_right = 1060.0
-margin_bottom = 854.0
+margin_bottom = 1025.0
+size_flags_horizontal = 3
+custom_constants/separation = 30
 
-[node name="Label3" type="Label" parent="MainContainer/VContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/VContainer/FontContainer"]
+margin_right = 1060.0
+margin_bottom = 64.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/FontContainer/VBoxContainer"]
+modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
+margin_right = 1060.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 3 )
+text = "Fonts"
+align = 1
+
+[node name="Label2" type="Label" parent="MainContainer/VContainer/FontContainer/VBoxContainer"]
+margin_top = 37.0
+margin_right = 1060.0
+margin_bottom = 64.0
+custom_fonts/font = ExtResource( 3 )
+text = "from 1001fonts.com"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VContainer/FontContainer"]
+margin_top = 94.0
+margin_right = 1060.0
+margin_bottom = 165.0
+custom_constants/separation = 40
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/VContainer/FontContainer/HBoxContainer"]
+margin_left = 422.0
+margin_right = 638.0
+margin_bottom = 71.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VContainer/FontContainer/HBoxContainer/VBoxContainer"]
+margin_right = 216.0
+margin_bottom = 34.0
+custom_fonts/font = ExtResource( 2 )
+text = "Zekton"
+align = 1
+
+[node name="Label2" type="Label" parent="MainContainer/VContainer/FontContainer/HBoxContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 216.0
+margin_bottom = 71.0
+custom_fonts/font = ExtResource( 3 )
+text = "by Raymond Larabie"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureContainer" type="VBoxContainer" parent="MainContainer/VContainer"]
+margin_top = 1105.0
+margin_right = 1060.0
+margin_bottom = 1163.0
+
+[node name="Label3" type="Label" parent="MainContainer/VContainer/TextureContainer"]
 modulate = Color( 0.545098, 0.521569, 0.521569, 1 )
 margin_right = 1060.0
 margin_bottom = 27.0
@@ -314,14 +400,14 @@ custom_fonts/font = ExtResource( 3 )
 text = "Textures"
 align = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VContainer/TextureContainer"]
 margin_top = 31.0
 margin_right = 1060.0
 margin_bottom = 58.0
 custom_constants/separation = 40
 alignment = 1
 
-[node name="Label4" type="Label" parent="MainContainer/VContainer/VBoxContainer/HBoxContainer"]
+[node name="Label4" type="Label" parent="MainContainer/VContainer/TextureContainer/HBoxContainer"]
 margin_left = 298.0
 margin_right = 590.0
 margin_bottom = 27.0
@@ -329,7 +415,7 @@ custom_fonts/font = ExtResource( 3 )
 text = "Kenney Prototype Textures"
 align = 1
 
-[node name="Label9" type="Label" parent="MainContainer/VContainer/VBoxContainer/HBoxContainer"]
+[node name="Label9" type="Label" parent="MainContainer/VContainer/TextureContainer/HBoxContainer"]
 margin_left = 630.0
 margin_right = 762.0
 margin_bottom = 27.0
@@ -338,9 +424,9 @@ text = "HDRI Heaven"
 align = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer/VContainer"]
-margin_top = 934.0
+margin_top = 1243.0
 margin_right = 1060.0
-margin_bottom = 992.0
+margin_bottom = 1301.0
 
 [node name="Label3" type="Label" parent="MainContainer/VContainer/VBoxContainer2"]
 modulate = Color( 0.545098, 0.521569, 0.521569, 1 )

@@ -93,36 +93,32 @@ margin_top = 56.0
 margin_right = 350.0
 margin_bottom = 60.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MenuContainer/NewContainer"]
+[node name="HostAGameButton" type="Button" parent="MainContainer/VBoxContainer/MenuContainer/NewContainer"]
 margin_top = 75.0
 margin_right = 350.0
-margin_bottom = 75.0
-
-[node name="HostAGameButton" type="Button" parent="MainContainer/VBoxContainer/MenuContainer/NewContainer"]
-margin_top = 90.0
-margin_right = 350.0
-margin_bottom = 150.0
+margin_bottom = 135.0
 rect_min_size = Vector2( 0, 60 )
 custom_fonts/font = ExtResource( 2 )
 text = "Host a game"
 
 [node name="JoinAGameButton" type="Button" parent="MainContainer/VBoxContainer/MenuContainer/NewContainer"]
-margin_top = 165.0
+margin_top = 150.0
 margin_right = 350.0
-margin_bottom = 225.0
+margin_bottom = 210.0
 rect_min_size = Vector2( 0, 60 )
 custom_fonts/font = ExtResource( 2 )
 text = "Join a game"
 
 [node name="TypeSeparator" type="VSeparator" parent="MainContainer/VBoxContainer/MenuContainer"]
 visible = false
-margin_left = 325.0
-margin_right = 329.0
+margin_left = 375.0
+margin_right = 379.0
 margin_bottom = 450.0
 
 [node name="TypeContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MenuContainer"]
 visible = false
-margin_right = 350.0
+margin_left = 404.0
+margin_right = 754.0
 margin_bottom = 496.0
 rect_min_size = Vector2( 350, 0 )
 custom_constants/separation = 15
@@ -424,32 +420,94 @@ rect_min_size = Vector2( 0, 100 )
 custom_fonts/font = ExtResource( 3 )
 text = "Begin"
 
-[node name="LogContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
+[node name="Menu2Container" type="HBoxContainer" parent="MainContainer/VBoxContainer"]
 margin_top = 610.0
 margin_right = 1820.0
 margin_bottom = 1005.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/separation = 25
 
-[node name="LogContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/LogContainer"]
+[node name="SettingContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/Menu2Container"]
+margin_right = 350.0
+margin_bottom = 395.0
+rect_min_size = Vector2( 350, 0 )
+custom_constants/separation = 15
+
+[node name="Label2" type="Label" parent="MainContainer/VBoxContainer/Menu2Container/SettingContainer"]
+margin_right = 350.0
+margin_bottom = 41.0
+custom_fonts/font = ExtResource( 3 )
+text = "Settings"
+
+[node name="HSeparator2" type="HSeparator" parent="MainContainer/VBoxContainer/Menu2Container/SettingContainer"]
+margin_top = 56.0
+margin_right = 350.0
+margin_bottom = 60.0
+
+[node name="CameraContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/Menu2Container/SettingContainer"]
+margin_top = 75.0
+margin_right = 350.0
+margin_bottom = 144.0
+custom_constants/separation = 15
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer"]
+margin_right = 350.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 2 )
+text = "Camera Sensitivity"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer"]
+margin_top = 42.0
+margin_right = 350.0
+margin_bottom = 69.0
+custom_constants/separation = 15
+
+[node name="CameraSlider" type="HSlider" parent="MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer/HBoxContainer"]
+margin_right = 290.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 0.01
+max_value = 0.2
+step = 0.01
+value = 0.05
+
+[node name="CameraLabel" type="Label" parent="MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer/HBoxContainer"]
+margin_left = 305.0
+margin_right = 350.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 2 )
+text = "0.05"
+align = 2
+
+[node name="VSeparator" type="VSeparator" parent="MainContainer/VBoxContainer/Menu2Container"]
+margin_left = 375.0
+margin_right = 379.0
+margin_bottom = 395.0
+
+[node name="LogContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/Menu2Container"]
+margin_left = 404.0
 margin_right = 1820.0
 margin_bottom = 395.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 15
 
-[node name="Label" type="Label" parent="MainContainer/VBoxContainer/LogContainer/LogContainer"]
-margin_right = 1820.0
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer/Menu2Container/LogContainer"]
+margin_right = 1416.0
 margin_bottom = 41.0
 custom_fonts/font = ExtResource( 3 )
 text = "Capsule Wars"
 
-[node name="HSeparator" type="HSeparator" parent="MainContainer/VBoxContainer/LogContainer/LogContainer"]
+[node name="HSeparator" type="HSeparator" parent="MainContainer/VBoxContainer/Menu2Container/LogContainer"]
 margin_top = 56.0
-margin_right = 1820.0
+margin_right = 1416.0
 margin_bottom = 60.0
 
-[node name="LogLabel" type="RichTextLabel" parent="MainContainer/VBoxContainer/LogContainer/LogContainer"]
+[node name="LogLabel" type="RichTextLabel" parent="MainContainer/VBoxContainer/Menu2Container/LogContainer"]
 margin_top = 75.0
-margin_right = 1820.0
+margin_right = 1416.0
 margin_bottom = 320.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -457,25 +515,25 @@ custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
 scroll_following = true
 
-[node name="CreditsContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer/LogContainer/LogContainer"]
+[node name="CreditsContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer/Menu2Container/LogContainer"]
 margin_top = 335.0
-margin_right = 1820.0
+margin_right = 1416.0
 margin_bottom = 395.0
 custom_constants/separation = 15
 alignment = 2
 
-[node name="CreditsButton" type="Button" parent="MainContainer/VBoxContainer/LogContainer/LogContainer/CreditsContainer"]
-margin_left = 1555.0
-margin_right = 1680.0
+[node name="CreditsButton" type="Button" parent="MainContainer/VBoxContainer/Menu2Container/LogContainer/CreditsContainer"]
+margin_left = 1151.0
+margin_right = 1276.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 125, 50 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Credits"
 
-[node name="ExitButton" type="Button" parent="MainContainer/VBoxContainer/LogContainer/LogContainer/CreditsContainer"]
-margin_left = 1695.0
-margin_right = 1820.0
+[node name="ExitButton" type="Button" parent="MainContainer/VBoxContainer/Menu2Container/LogContainer/CreditsContainer"]
+margin_left = 1291.0
+margin_right = 1416.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 125, 60 )
 custom_fonts/font = ExtResource( 2 )
@@ -494,5 +552,6 @@ visible = false
 [connection signal="item_selected" from="MainContainer/VBoxContainer/MenuContainer/LoadoutContainer/SecondaryOption" to="." method="_on_SecondaryOption_item_selected"]
 [connection signal="pressed" from="MainContainer/VBoxContainer/MenuContainer/FinalContainer/ReadyButton" to="." method="_on_ReadyButton_pressed"]
 [connection signal="pressed" from="MainContainer/VBoxContainer/MenuContainer/FinalContainer/BeginButton" to="." method="_on_BeginButton_pressed"]
-[connection signal="pressed" from="MainContainer/VBoxContainer/LogContainer/LogContainer/CreditsContainer/CreditsButton" to="." method="_on_CreditsButton_pressed"]
-[connection signal="pressed" from="MainContainer/VBoxContainer/LogContainer/LogContainer/CreditsContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="value_changed" from="MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider" to="." method="_on_CameraSlider_value_changed"]
+[connection signal="pressed" from="MainContainer/VBoxContainer/Menu2Container/LogContainer/CreditsContainer/CreditsButton" to="." method="_on_CreditsButton_pressed"]
+[connection signal="pressed" from="MainContainer/VBoxContainer/Menu2Container/LogContainer/CreditsContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
