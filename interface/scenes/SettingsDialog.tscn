@@ -16,6 +16,8 @@ __meta__ = {
 TITLE = "Settings"
 CONFIRM_TEXT = "Save"
 CANCEL_TEXT = "Cancel"
+NEED_FOCUS = true
+FIRST_NODE = NodePath("CameraContainer/HBoxContainer/CameraSlider")
 
 [node name="CameraContainer" type="VBoxContainer" parent="."]
 margin_right = 1920.0
@@ -40,6 +42,10 @@ custom_constants/separation = 20
 [node name="CameraSlider" type="HSlider" parent="CameraContainer/HBoxContainer"]
 margin_right = 1855.0
 margin_bottom = 27.0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_previous = NodePath(".")
 size_flags_horizontal = 3
 size_flags_vertical = 1
 min_value = 0.01

@@ -5,7 +5,7 @@ onready var actor = owner
 export var GRAVITY = 20
 export var JUMP_IMPULSE = 11
 
-export var CONTROLLER_DEADZONE = 0.15
+export var CONTROLLER_DEADZONE = 0.01
 
 var current_speed = 0.0 setget set_current_speed,get_current_speed
 var current_acceleration = 0.0 setget set_current_acceleration,get_current_acceleration
@@ -48,7 +48,7 @@ func _initialize(fsm):
 	set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func handle_input(event):
-	if state_machine.get_current_state() != "Menu":
+	if state_machine.get_current_state() != "Menu" and not GameSettings.is_gamepad_mode():
 		handle_mouse_movement(event)
 
 func check_input_pressed(event,input,method = null,param = null):
@@ -68,7 +68,7 @@ func _physics_process(_delta):
 		handle_controller_movement()
 
 func handle_mouse_movement(event):
-	if not GameSettings.is_gamepad_mode() and event is InputEventMouseMotion:
+	if event is InputEventMouseMotion:
 		actor.rotate_y(deg2rad(-event.relative.x * GameSettings.get_sensitivity_with_ads()))
 		actor.head.rotate_x(deg2rad(-event.relative.y * GameSettings.get_sensitivity_with_ads()))
 		actor.head.rotation.x = clamp(actor.head.rotation.x,deg2rad(-68),deg2rad(80))

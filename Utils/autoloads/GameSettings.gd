@@ -12,9 +12,11 @@ const CONFIG_PATH = "res://config/GameConfig.tres"
 var current_sensitivity = DEFAULT_MOUSE_SENSITITY
 var ads_modifier = 1.0
 var gamepad_mode = false
+var gamepad_id = -1
 var config
 
 func _ready():
+	Input.connect("joy_connection_changed",self,"_on_gamepad_changed")
 	load_config()
 	update_mode()
 
@@ -49,14 +51,25 @@ func reset_sensitivity():
 
 func update_mode():
 	if Input.get_connected_joypads().size() > 0:
+		gamepad_id = Input.get_connected_joypads()[0]
 		gamepad_mode = true
 		current_sensitivity = config.controller_sensitivity
 	else:
 		gamepad_mode = false
+		gamepad_id = -1
 		current_sensitivity = config.mouse_sensitivity
 
 func is_gamepad_mode():
 	return gamepad_mode
+
+func get_gamepad_respawn_button():
+	match Input.get_joy_name(gamepad_id):
+		"PS4 Controller":
+			return "Square"
+		"XInput Gamepad":
+			return "Cross"
+		_:
+			return "Reload"
 
 func load_config():
 	config = load(CONFIG_PATH)
@@ -67,3 +80,14 @@ func save_config():
 	else:
 		config.mouse_sensitivity = clamp(current_sensitivity,MIN_MOUSE_SENSITIVITY,MAX_MOUSE_SENSITIVITY)
 	ResourceSaver.save(CONFIG_PATH,config)
+
+func _on_gamepad_changed(device_id,connected):
+	if connected:
+		gamepad_mode = true
+		gamepad_id = device_id
+		current_sensitivity = config.controller_sensitivity
+		print(device_id," - ",Input.get_joy_name(device_id))
+	else:
+		gamepad_mode = false
+		gamepad_id = -1
+		current_sensitivity = config.mouse_sensitivity

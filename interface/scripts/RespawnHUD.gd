@@ -1,14 +1,14 @@
 extends Control
 
-export var DEFAULT_MESSAGE = "Respawning in: "
-export var CAN_RESPAWN_MESSAGE = "Press 'R' to respawn."
-
 onready var respawn_label = $CenterContainer/MarginContainer/VContainer/RespawnContainer/RespawnLabel
 onready var countdown_label = $CenterContainer/MarginContainer/VContainer/RespawnContainer/CountdownLabel
 onready var primary_option = $CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container/PrimaryContainer/PrimaryOption
 onready var secondary_option = $CenterContainer/MarginContainer/VContainer/LoadoutContainer/Container/SecondaryContainer/SecondaryOption
 onready var timer: Timer = $Timer
 
+const KEYBOARD_MESSAGE = "R or I"
+export var DEFAULT_MESSAGE = "Respawning in: "
+export var CAN_RESPAWN_MESSAGE = "Press '%s' to respawn."
 export var SPAWN_TIME = 4.0
 
 var actor
@@ -51,8 +51,12 @@ func set_weapon_options():
 func set_respawn_possible(value):
 	can_respawn = value
 	set_process(!value)
-	if value: 
-		respawn_label.text = CAN_RESPAWN_MESSAGE
+	if value:
+		if GameSettings.is_gamepad_mode():
+			var button = GameSettings.get_gamepad_respawn_button()
+			respawn_label.text = CAN_RESPAWN_MESSAGE % button
+		else:
+			respawn_label.text = CAN_RESPAWN_MESSAGE % KEYBOARD_MESSAGE
 	else:
 		respawn_label.text = DEFAULT_MESSAGE
 	countdown_label.visible = !value
@@ -69,6 +73,7 @@ func on_player_death(player):
 	primary_option.selected = current_primary
 	current_secondary = Network.self_data.secondary
 	secondary_option.selected = current_secondary
+	
 	set_respawn_possible(false)
 	start_countdown()
 

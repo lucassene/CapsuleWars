@@ -48,7 +48,7 @@ margin_right = 1820.0
 margin_bottom = 111.0
 
 [node name="Label" type="Label" parent="MainContainer/VBoxContainer/TitleContainer"]
-margin_right = 1706.0
+margin_right = 1705.0
 margin_bottom = 111.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 6 )
@@ -56,12 +56,12 @@ text = "Capsule Wars"
 
 [node name="Label2" type="Label" parent="MainContainer/VBoxContainer/TitleContainer"]
 modulate = Color( 0.545098, 0.545098, 0.545098, 1 )
-margin_left = 1710.0
+margin_left = 1709.0
 margin_right = 1820.0
 margin_bottom = 111.0
 size_flags_vertical = 5
 custom_fonts/font = ExtResource( 2 )
-text = "v 1.0.3 beta"
+text = "v 1.0.4 beta"
 valign = 2
 
 [node name="HSeparator" type="HSeparator" parent="MainContainer/VBoxContainer"]
@@ -98,6 +98,12 @@ margin_top = 75.0
 margin_right = 350.0
 margin_bottom = 135.0
 rect_min_size = Vector2( 0, 60 )
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../JoinAGameButton")
+focus_next = NodePath("../JoinAGameButton")
+focus_previous = NodePath(".")
 custom_fonts/font = ExtResource( 2 )
 text = "Host a game"
 
@@ -106,19 +112,19 @@ margin_top = 150.0
 margin_right = 350.0
 margin_bottom = 210.0
 rect_min_size = Vector2( 0, 60 )
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../HostAGameButton")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../../../Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_next = NodePath("../../../Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_previous = NodePath("../HostAGameButton")
 custom_fonts/font = ExtResource( 2 )
 text = "Join a game"
 
-[node name="TypeSeparator" type="VSeparator" parent="MainContainer/VBoxContainer/MenuContainer"]
-visible = false
-margin_left = 375.0
-margin_right = 379.0
-margin_bottom = 450.0
-
 [node name="TypeContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MenuContainer"]
 visible = false
-margin_left = 404.0
-margin_right = 754.0
+margin_left = 375.0
+margin_right = 725.0
 margin_bottom = 496.0
 rect_min_size = Vector2( 350, 0 )
 custom_constants/separation = 15
@@ -187,6 +193,10 @@ text = "IP:"
 margin_left = 26.0
 margin_right = 350.0
 margin_bottom = 37.0
+focus_neighbour_top = NodePath("../../IDName/IDText")
+focus_neighbour_bottom = NodePath("../../HostPort/HostPortText")
+focus_next = NodePath("../../HostPort/HostPortText")
+focus_previous = NodePath("../../IDName/IDText")
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 placeholder_text = "Host IP Address"
@@ -247,6 +257,8 @@ __meta__ = {
 margin_top = 231.0
 margin_right = 350.0
 margin_bottom = 271.0
+focus_neighbour_top = NodePath("../HostPort/HostPortText")
+focus_previous = NodePath("../HostPort/HostPortText")
 theme = ExtResource( 4 )
 text = "Use UPnP"
 flat = true
@@ -258,6 +270,11 @@ margin_top = 286.0
 margin_right = 350.0
 margin_bottom = 346.0
 rect_min_size = Vector2( 0, 60 )
+focus_neighbour_top = NodePath("../UpnpButton")
+focus_neighbour_right = NodePath("../../LooksContainer/ColorPicker/ColorOption")
+focus_neighbour_bottom = NodePath("../CancelButton")
+focus_next = NodePath("../CancelButton")
+focus_previous = NodePath("../UpnpButton")
 custom_fonts/font = ExtResource( 2 )
 text = "Host"
 __meta__ = {
@@ -269,6 +286,11 @@ margin_top = 361.0
 margin_right = 350.0
 margin_bottom = 421.0
 rect_min_size = Vector2( 0, 60 )
+focus_neighbour_top = NodePath("../HostPort/HostPortText")
+focus_neighbour_right = NodePath("../../LooksContainer/ColorPicker/ColorOption")
+focus_neighbour_bottom = NodePath("../CancelButton")
+focus_next = NodePath("../CancelButton")
+focus_previous = NodePath("../HostPort/HostPortText")
 custom_fonts/font = ExtResource( 2 )
 text = "Join"
 __meta__ = {
@@ -280,6 +302,8 @@ margin_top = 436.0
 margin_right = 350.0
 margin_bottom = 496.0
 rect_min_size = Vector2( 0, 60 )
+focus_neighbour_bottom = NodePath("../../../Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_next = NodePath("../../LooksContainer/ColorPicker/ColorOption")
 custom_fonts/font = ExtResource( 2 )
 text = "Cancel"
 __meta__ = {
@@ -294,7 +318,8 @@ margin_bottom = 450.0
 
 [node name="LooksContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MenuContainer"]
 visible = false
-margin_right = 350.0
+margin_left = 375.0
+margin_right = 725.0
 margin_bottom = 450.0
 rect_min_size = Vector2( 350, 0 )
 custom_constants/separation = 15
@@ -326,6 +351,11 @@ text = "Color:"
 margin_left = 61.0
 margin_right = 350.0
 margin_bottom = 33.0
+focus_neighbour_left = NodePath("../../../TypeContainer/CancelButton")
+focus_neighbour_right = NodePath("../../../LoadoutContainer/PrimaryOption")
+focus_neighbour_bottom = NodePath("../../../../Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_next = NodePath("../../../LoadoutContainer/PrimaryOption")
+focus_previous = NodePath("../../../TypeContainer/CancelButton")
 size_flags_horizontal = 3
 theme = ExtResource( 4 )
 custom_fonts/font = ExtResource( 2 )
@@ -334,14 +364,15 @@ toggle_mode = false
 
 [node name="LoadoutSeparator" type="VSeparator" parent="MainContainer/VBoxContainer/MenuContainer"]
 visible = false
-margin_left = 1033.0
-margin_right = 1037.0
-margin_bottom = 400.0
+margin_left = 1125.0
+margin_right = 1129.0
+margin_bottom = 496.0
 
 [node name="LoadoutContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MenuContainer"]
 visible = false
-margin_right = 350.0
-margin_bottom = 450.0
+margin_left = 750.0
+margin_right = 1100.0
+margin_bottom = 496.0
 rect_min_size = Vector2( 350, 0 )
 custom_constants/separation = 15
 
@@ -367,6 +398,11 @@ text = "Primary Weapon:"
 margin_top = 117.0
 margin_right = 350.0
 margin_bottom = 150.0
+focus_neighbour_left = NodePath("../../LooksContainer/ColorPicker/ColorOption")
+focus_neighbour_right = NodePath("../../FinalContainer/BeginButton")
+focus_neighbour_bottom = NodePath("../SecondaryOption")
+focus_next = NodePath("../SecondaryOption")
+focus_previous = NodePath("../../LooksContainer/ColorPicker/ColorOption")
 size_flags_horizontal = 3
 theme = ExtResource( 4 )
 custom_fonts/font = ExtResource( 2 )
@@ -384,6 +420,12 @@ text = "Secondary Weapon:"
 margin_top = 207.0
 margin_right = 350.0
 margin_bottom = 240.0
+focus_neighbour_left = NodePath("../../LooksContainer/ColorPicker/ColorOption")
+focus_neighbour_top = NodePath("../PrimaryOption")
+focus_neighbour_right = NodePath("../../FinalContainer/BeginButton")
+focus_neighbour_bottom = NodePath("../../../Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_next = NodePath("../../FinalContainer/BeginButton")
+focus_previous = NodePath("../PrimaryOption")
 size_flags_horizontal = 3
 theme = ExtResource( 4 )
 custom_fonts/font = ExtResource( 2 )
@@ -398,25 +440,21 @@ margin_bottom = 400.0
 
 [node name="FinalContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MenuContainer"]
 visible = false
-margin_left = 1300.0
+margin_left = 1125.0
 margin_right = 1820.0
-margin_bottom = 450.0
+margin_bottom = 496.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 20
 
-[node name="ReadyButton" type="Button" parent="MainContainer/VBoxContainer/MenuContainer/FinalContainer"]
-margin_right = 520.0
+[node name="BeginButton" type="Button" parent="MainContainer/VBoxContainer/MenuContainer/FinalContainer"]
+margin_right = 695.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 0, 100 )
-custom_fonts/font = ExtResource( 3 )
-text = "Ready"
-
-[node name="BeginButton" type="Button" parent="MainContainer/VBoxContainer/MenuContainer/FinalContainer"]
-margin_top = 120.0
-margin_right = 520.0
-margin_bottom = 220.0
-rect_min_size = Vector2( 0, 100 )
+focus_neighbour_left = NodePath("../../LoadoutContainer/PrimaryOption")
+focus_neighbour_bottom = NodePath("../../../Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_next = NodePath("../../../Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_previous = NodePath("../../LoadoutContainer/PrimaryOption")
 custom_fonts/font = ExtResource( 3 )
 text = "Begin"
 
@@ -466,6 +504,11 @@ custom_constants/separation = 15
 [node name="CameraSlider" type="HSlider" parent="MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer/HBoxContainer"]
 margin_right = 290.0
 margin_bottom = 27.0
+focus_neighbour_top = NodePath("../../../../../MenuContainer/NewContainer/JoinAGameButton")
+focus_neighbour_right = NodePath("../../../../LogContainer/CreditsContainer/CreditsButton")
+focus_neighbour_bottom = NodePath("../../../../LogContainer/CreditsContainer/CreditsButton")
+focus_next = NodePath("../../../../LogContainer/CreditsContainer/CreditsButton")
+focus_previous = NodePath("../../../../../MenuContainer/NewContainer/JoinAGameButton")
 size_flags_horizontal = 3
 size_flags_vertical = 1
 min_value = 0.01
@@ -527,6 +570,11 @@ margin_left = 1151.0
 margin_right = 1276.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 125, 50 )
+focus_neighbour_left = NodePath("../../../SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_neighbour_top = NodePath("../../../SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_neighbour_right = NodePath("../ExitButton")
+focus_next = NodePath("../ExitButton")
+focus_previous = NodePath("../../../SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Credits"
@@ -536,6 +584,9 @@ margin_left = 1291.0
 margin_right = 1416.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 125, 60 )
+focus_neighbour_left = NodePath("../CreditsButton")
+focus_neighbour_top = NodePath("../../../SettingContainer/CameraContainer/HBoxContainer/CameraSlider")
+focus_previous = NodePath("../CreditsButton")
 custom_fonts/font = ExtResource( 2 )
 text = "Quit"
 
@@ -550,7 +601,6 @@ visible = false
 [connection signal="item_selected" from="MainContainer/VBoxContainer/MenuContainer/LooksContainer/ColorPicker/ColorOption" to="." method="_on_ColorOption_item_selected"]
 [connection signal="item_selected" from="MainContainer/VBoxContainer/MenuContainer/LoadoutContainer/PrimaryOption" to="." method="_on_PrimaryOption_item_selected"]
 [connection signal="item_selected" from="MainContainer/VBoxContainer/MenuContainer/LoadoutContainer/SecondaryOption" to="." method="_on_SecondaryOption_item_selected"]
-[connection signal="pressed" from="MainContainer/VBoxContainer/MenuContainer/FinalContainer/ReadyButton" to="." method="_on_ReadyButton_pressed"]
 [connection signal="pressed" from="MainContainer/VBoxContainer/MenuContainer/FinalContainer/BeginButton" to="." method="_on_BeginButton_pressed"]
 [connection signal="value_changed" from="MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider" to="." method="_on_CameraSlider_value_changed"]
 [connection signal="pressed" from="MainContainer/VBoxContainer/Menu2Container/LogContainer/CreditsContainer/CreditsButton" to="." method="_on_CreditsButton_pressed"]

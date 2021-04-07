@@ -6,6 +6,8 @@ onready var id_text = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/I
 onready var host_ip_address = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/HostIP/HostIPText
 onready var invalid_ip_label = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/InvalidIPLabel
 onready var invalid_name_label = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/InvalidName
+onready var host_game_button = $MainContainer/VBoxContainer/MenuContainer/NewContainer/HostAGameButton
+onready var join_game_button = $MainContainer/VBoxContainer/MenuContainer/NewContainer/JoinAGameButton
 onready var host_button = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/HostButton
 onready var join_button = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/JoinButton
 onready var begin_button = $MainContainer/VBoxContainer/MenuContainer/FinalContainer/BeginButton
@@ -17,8 +19,8 @@ onready var invalid_port_label = $MainContainer/VBoxContainer/MenuContainer/Type
 onready var primary_option = $MainContainer/VBoxContainer/MenuContainer/LoadoutContainer/PrimaryOption
 onready var secondary_option = $MainContainer/VBoxContainer/MenuContainer/LoadoutContainer/SecondaryOption
 onready var credits_ui = $Credits
+onready var credit_button = $MainContainer/VBoxContainer/Menu2Container/LogContainer/CreditsContainer/CreditsButton
 onready var type_container = $MainContainer/VBoxContainer/MenuContainer/TypeContainer
-onready var type_separator = $MainContainer/VBoxContainer/MenuContainer/TypeSeparator
 onready var looks_container = $MainContainer/VBoxContainer/MenuContainer/LooksContainer
 onready var looks_separator = $MainContainer/VBoxContainer/MenuContainer/LooksSeparator
 onready var loadout_container = $MainContainer/VBoxContainer/MenuContainer/LoadoutContainer
@@ -28,12 +30,12 @@ onready var final_separator = $MainContainer/VBoxContainer/MenuContainer/FinalSe
 onready var type_label = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/TypeLabel
 onready var host_ip_container = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/HostIP
 onready var upnp_button = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/UpnpButton
-onready var ready_button = $MainContainer/VBoxContainer/MenuContainer/FinalContainer/ReadyButton
 onready var cancel_button = $MainContainer/VBoxContainer/MenuContainer/TypeContainer/CancelButton
 onready var new_container = $MainContainer/VBoxContainer/MenuContainer/NewContainer
 onready var camera_slider = $MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraSlider
 onready var camera_label = $MainContainer/VBoxContainer/Menu2Container/SettingContainer/CameraContainer/HBoxContainer/CameraLabel
 
+enum {SERVER,CLIENT}
 
 signal on_game_begin()
 
@@ -42,6 +44,7 @@ var is_showing_credits = false
 var ready_players = []
 var is_player_ready = false
 var has_game = false
+var game_type = SERVER
 
 func _ready():
 	add_color_options()
@@ -55,6 +58,7 @@ func _ready():
 	Network.connect("on_connected_to_server",self,"_on_connected_to_server")
 	connect("on_game_begin",Network,"_on_game_begin")
 	get_tree().connect("connection_failed",self,"_on_connection_failed")
+	host_game_button.grab_focus()
 
 func _unhandled_input(event):
 	if visible == true and event.is_action_pressed("escape"):
@@ -103,7 +107,6 @@ func reset():
 
 func hide_containers(value):
 	new_container.visible = value
-	type_separator.visible = !value
 	type_container.visible = !value
 	looks_separator.visible = !value
 	looks_container.visible = !value
@@ -140,14 +143,8 @@ func deactivate_hud(value):
 func append_log(text):
 	log_text.append_bbcode(text + LINE_BREAK)
 
-func show_character_options(is_server):
-	if is_server:
-		begin_button.show()
-		begin_button.text = "Begin"
-		ready_button.hide()
-	else:
-		ready_button.show()
-		begin_button.hide()
+func show_character_options():
+	update_begin_button()
 	looks_separator.show()
 	looks_container.show()
 	loadout_separator.show()
@@ -157,8 +154,13 @@ func show_character_options(is_server):
 
 func show_type_options(is_host):
 	buttons_disabled(false)
+	id_text.grab_focus()
+	cancel_button.focus_neighbour_right = credit_button.get_path()
+	host_button.focus_neighbour_right = credit_button.get_path()
+	join_button.focus_neighbour_right = credit_button.get_path()
+	camera_slider.focus_neighbour_top = cancel_button.get_path()
+	camera_slider.focus_previous = cancel_button.get_path()
 	new_container.hide()
-	#type_separator.show()
 	type_container.show()
 	looks_separator.hide()
 	looks_container.hide()
@@ -175,7 +177,7 @@ func show_type_options(is_host):
 	join_button.visible = !is_host
 	host_button.visible = is_host
 
-remotesync func client_ready(id,is_ready):
+remotesync func _on_client_ready(id,is_ready):
 	var string
 	if id == Network.self_data.id:
 		string = "You are "
@@ -187,7 +189,7 @@ remotesync func client_ready(id,is_ready):
 	else:
 		ready_players.erase(id)
 		string = string + "no longer ready."
-	is_all_players_ready()
+	update_begin_button()
 	append_log(string)
 
 func is_all_players_ready():
@@ -198,6 +200,20 @@ func is_all_players_ready():
 		begin_button.disabled = true
 		begin_button.text = "Waiting players"
 
+func update_begin_button():
+	if game_type == CLIENT:
+		if is_player_ready:
+			begin_button.text = "Cancel"
+		else:
+			begin_button.text = "Ready"
+	else:
+		if ready_players.size() == Network.connected_players.size() - 1:
+			begin_button.disabled = false
+			begin_button.text = "Begin"
+		else:
+			begin_button.disabled = true
+			begin_button.text = "Waiting players"
+		
 remotesync func begin_game():
 	is_begining = true
 	deactivate_hud(true)
@@ -223,6 +239,9 @@ func _on_HostButton_pressed():
 		yield(get_tree().create_timer(0.1),"timeout")
 		Network.create_server(id_text.text,port,upnp_button.pressed)
 		has_game = true
+		host_button.focus_neighbour_right = color_option.get_path()
+		cancel_button.focus_neighbour_right = color_option.get_path()
+		color_option.grab_focus()
 
 func _on_JoinButton_pressed():
 	var can_join = true
@@ -249,9 +268,23 @@ func _on_JoinButton_pressed():
 		join_button.text = "Joining"
 		has_game = true
 		append_log("Connecting to the host...")
+		join_button.focus_neighbour_right = color_option.get_path()
+		cancel_button.focus_neighbour_right = color_option.get_path()
+		color_option.grab_focus()
 
 func _on_BeginButton_pressed():
-	rpc("begin_game")
+	if game_type == SERVER:
+		rpc("begin_game")
+	else:
+		is_player_ready = !is_player_ready
+		color_option.disabled = is_player_ready
+		primary_option.disabled = is_player_ready
+		secondary_option.disabled = is_player_ready
+		if is_player_ready:
+			begin_button.text = "Cancel"
+		else:
+			begin_button.text = "Ready"
+		rpc("_on_client_ready",Network.self_data.id,is_player_ready)
 
 func _on_player_connected(peer_id):
 		print(str(peer_id) + " has connected")
@@ -289,13 +322,15 @@ func _on_server_disconnected():
 func _on_server_created():
 	buttons_disabled(true)
 	host_button.text = "Hosting"
-	show_character_options(true)
+	game_type = SERVER
+	show_character_options()
 	append_log("You are hosting the game.")
 
 func _on_connected_to_server():
 	join_button.text = "Joined"
 	append_log("You are connected to the server.")
-	show_character_options(false)
+	game_type = CLIENT
+	show_character_options()
 
 func _on_cant_create_server(error):
 	match error:
@@ -333,17 +368,6 @@ func _on_HostAGameButton_pressed():
 func _on_JoinAGameButton_pressed():
 	show_type_options(false)
 
-func _on_ReadyButton_pressed():
-	is_player_ready = !is_player_ready
-	color_option.disabled = is_player_ready
-	primary_option.disabled = is_player_ready
-	secondary_option.disabled = is_player_ready
-	if is_player_ready:
-		ready_button.text = "Cancel"
-	else:
-		ready_button.text = "Ready"
-	rpc("client_ready",Network.self_data.id,is_player_ready)
-
 func _on_CancelButton_pressed():
 	if has_game:
 		append_log("Game cancelled.")
@@ -358,8 +382,15 @@ func _on_CancelButton_pressed():
 	host_button.text = "Host"
 	hide_containers(true)
 	get_tree().network_peer = null
+	host_game_button.grab_focus()
+	host_button.focus_neighbour_right = credit_button.get_path()
+	join_button.focus_neighbour_right = credit_button.get_path()
+	cancel_button.focus_neighbour_right = credit_button.get_path()
+	camera_slider.focus_neighbour_top = join_game_button.get_path()
+	camera_slider.focus_previous = join_game_button.get_path()
 
 func _on_exit_to_lobby():
+	host_game_button.grab_focus()
 	log_text.bbcode_text = ""
 	has_game = false
 	reset()

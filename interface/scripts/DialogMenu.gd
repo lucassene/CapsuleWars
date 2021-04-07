@@ -17,10 +17,16 @@ func initialize(dialog):
 	confirm_button.text = scene.get_confirm_text()
 	cancel_button.text = scene.get_cancel_text()
 	current_body = scene
+	scene.connect("exited",get_parent(),"_on_dialog_exited")
+	scene.connect("no_focus_needed",self,"_on_dialog_focus_declined")
+	scene.initialize()
 
-func close():
-	if current_body:
-		current_body.queue_free()
+func _unhandled_input(event):
+	if event.is_action_pressed("escape") or event.is_action_pressed("back"):
+		hide()
+		if current_body:
+			current_body.cancel_pressed()
+			current_body.queue_free()
 
 func _on_CancelButton_pressed():
 	current_body.cancel_pressed()
@@ -31,3 +37,6 @@ func _on_ConfirmButton_pressed():
 	current_body.confirm_pressed()
 	hide()
 	current_body.queue_free()
+
+func _on_dialog_focus_declined():
+	cancel_button.grab_focus()

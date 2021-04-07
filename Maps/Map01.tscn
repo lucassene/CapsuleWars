@@ -164,7 +164,7 @@ depth = 6.0
 material = ExtResource( 1 )
 
 [node name="CSGBox58" type="CSGBox" parent="Level/CSGCombiner2"]
-transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 9.5, 15.5, -7 )
+transform = Transform( 1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 7.5, 15.5, -9.5 )
 use_in_baked_light = true
 width = 1.0
 height = 3.0
@@ -740,7 +740,7 @@ volume_db = -30.0
 stream = ExtResource( 11 )
 [connection signal="_on_player_can_spawn" from="CanvasLayer/MainHUD" to="." method="_on_player_can_spawn"]
 [connection signal="on_exit_to_lobby" from="CanvasLayer/MainHUD" to="CanvasLayer/Lobby" method="_on_exit_to_lobby"]
-[connection signal="on_game_begin" from="CanvasLayer/Lobby" to="CanvasLayer/MainHUD" method="_on_game_begin"]
 [connection signal="on_game_begin" from="CanvasLayer/Lobby" to="." method="_on_game_begin"]
+[connection signal="on_game_begin" from="CanvasLayer/Lobby" to="CanvasLayer/MainHUD" method="_on_game_begin"]
 [connection signal="body_entered" from="DeathArea" to="." method="_on_DeathArea_body_entered"]
 [connection signal="tween_completed" from="FadeOutTween" to="." method="_on_FadeOutTween_tween_completed"]

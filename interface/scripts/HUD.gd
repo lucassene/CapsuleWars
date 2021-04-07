@@ -85,7 +85,7 @@ func _on_server_disconnected():
 
 func _on_pause_menu_pressed(value):
 	if value:
-		pause_menu.show()
+		pause_menu.open_menu()
 		scoreboard_menu.show()
 	else:
 		scoreboard_menu.hide()
