@@ -52,10 +52,10 @@ size = Vector3( 0.1, 0.4, 0.2 )
 [node name="PulseRifle" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.041, -0.06, 0.6 )
 PULSE = true
-PULSE_RATE = 580
-RATE_OF_FIRE = 720
-MAGAZINE = 15
-DAMAGE = 10
+PULSE_RATE = 750
+RATE_OF_FIRE = 900
+MAGAZINE = 18
+DAMAGE = 8
 ADS_RANGE_MULTI = 1.5
 FALLOFF_RANGE = 60
 FALLOFF_DAMAGE_MULTI = 0.5

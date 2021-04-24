@@ -9,8 +9,10 @@ var health = 100
 var current_health = 100
 var ttk = 0.0
 var shot = false
+var counter = 0
 
 func add_damage(point,damage):
+	counter += 1
 	shot = true
 	create_blood_splash(point)
 	current_health -= damage
@@ -26,7 +28,8 @@ func _process(delta):
 		ttk += delta
 	if current_health <= 0:
 		shot = false
-		print("Enemy killed in: " + str(ttk) + " seconds.")
+		print("Enemy killed in " + str(ttk) + " seconds, with " + str(counter) + " shots.")
+		counter = 0
 		ttk = 0.0
 		set_collision_layer_bit(0,false)
 		current_health = health

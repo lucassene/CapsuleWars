@@ -592,6 +592,7 @@ text = "Quit"
 
 [node name="Credits" parent="." instance=ExtResource( 5 )]
 visible = false
+
 [connection signal="pressed" from="MainContainer/VBoxContainer/MenuContainer/NewContainer/HostAGameButton" to="." method="_on_HostAGameButton_pressed"]
 [connection signal="pressed" from="MainContainer/VBoxContainer/MenuContainer/NewContainer/JoinAGameButton" to="." method="_on_JoinAGameButton_pressed"]
 [connection signal="text_changed" from="MainContainer/VBoxContainer/MenuContainer/TypeContainer/IDName/IDText" to="." method="_on_IDText_text_changed"]

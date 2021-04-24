@@ -96,8 +96,9 @@ tracks/3/keys = {
 [node name="ScoutRifle" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.021, -0.044, 0.6 )
 RATE_OF_FIRE = 160
-MAGAZINE = 13
+MAGAZINE = 8
 DAMAGE = 23
+SHOT_DAMAGE_MULTI = 1.7
 MAX_RANGE = 120
 ADS_RANGE_MULTI = 1.5
 FALLOFF_RANGE = 90
