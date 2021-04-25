@@ -234,6 +234,9 @@ max_distance = 100.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.40624, 0.521707 )
 visible = false
 
+[node name="FloatDmgContainer" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.62921e-07, 5.5, 0.5 )
+
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -278,4 +281,5 @@ __meta__ = {
 }
 
 [node name="HitMarker" parent="CanvasLayer" instance=ExtResource( 14 )]
+
 [connection signal="tree_exiting" from="." to="." method="_on_Player_tree_exiting"]

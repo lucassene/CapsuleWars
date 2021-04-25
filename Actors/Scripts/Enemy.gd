@@ -2,8 +2,10 @@ extends KinematicBody
 
 onready var blood_emitter = preload("res://particles/scenes/BloodEmitter.tscn")
 onready var death_emitter = preload("res://particles/scenes/DeathEmitter.tscn")
+onready var floating_damage = preload("res://interface/scenes/FloatingDamage.tscn")
 
 onready var timer = $Timer
+onready var float_dmg_container = $FloatDmgContainer
 
 var health = 100
 var current_health = 100
@@ -14,6 +16,7 @@ var counter = 0
 func add_damage(point,damage):
 	counter += 1
 	shot = true
+	show_floating_damage(damage,Scores.TAILSHOT)
 	create_blood_splash(point)
 	current_health -= damage
 	print("inimigo com: " + str(current_health))
@@ -22,6 +25,11 @@ func add_damage(point,damage):
 		return true
 	else:
 		return false
+
+func show_floating_damage(damage,shot_type):
+	var label = floating_damage.instance()
+	float_dmg_container.add_child(label)
+	label.initialize(damage,shot_type)
 
 func _process(delta):
 	if shot:

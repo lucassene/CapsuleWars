@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://interface/scripts/FloatingDamage.gd" type="Script" id=2]
+
+[node name="FloatingDamage" type="Sprite3D"]
+cast_shadow = 0
+billboard = 1
+script = ExtResource( 2 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 175, 100 )
+transparent_bg = true
+disable_3d = true
+render_target_v_flip = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Viewport"]
+margin_right = 175.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 175, 100 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+text = "99"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

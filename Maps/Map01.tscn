@@ -741,7 +741,7 @@ stream = ExtResource( 11 )
 
 [connection signal="_on_player_can_spawn" from="CanvasLayer/MainHUD" to="." method="_on_player_can_spawn"]
 [connection signal="on_exit_to_lobby" from="CanvasLayer/MainHUD" to="CanvasLayer/Lobby" method="_on_exit_to_lobby"]
-[connection signal="on_game_begin" from="CanvasLayer/Lobby" to="." method="_on_game_begin"]
 [connection signal="on_game_begin" from="CanvasLayer/Lobby" to="CanvasLayer/MainHUD" method="_on_game_begin"]
+[connection signal="on_game_begin" from="CanvasLayer/Lobby" to="." method="_on_game_begin"]
 [connection signal="body_entered" from="DeathArea" to="." method="_on_DeathArea_body_entered"]
 [connection signal="tween_completed" from="FadeOutTween" to="." method="_on_FadeOutTween_tween_completed"]

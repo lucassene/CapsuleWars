@@ -7,6 +7,7 @@ onready var melee_splash = preload("res://particles/scenes/MeleeSplash.tscn")
 onready var death_emitter = preload("res://particles/scenes/DeathEmitter.tscn")
 onready var weapon_camera = preload("res://Utils/scenes/WeaponCamera.tscn")
 onready var sniper_view = preload("res://Utils/scenes/SniperView.tscn")
+onready var floating_damage = preload("res://interface/scenes/FloatingDamage.tscn")
 
 onready var head: Spatial = $Head
 onready var player_controller = $PlayerController
@@ -29,6 +30,7 @@ onready var weapon_view = $CenterContainer/WeaponView
 onready var container = $Head/Camera/Container
 onready var hit_feedback = $CanvasLayer/HitFeedback
 onready var hit_marker = $CanvasLayer/HitMarker
+onready var float_dmg_container = $FloatDmgContainer
 
 const HEAD_COLLISION_ID = 1
 const BUTT_COLLISION_ID = 3
@@ -346,11 +348,12 @@ func check_shot_type(shape_id):
 func hit_target(target,point,distance,shot_type):
 	var damage = current_weapon.get_damage(distance,shot_type)
 	if target.is_in_group("World"):
-		place_decal(target)
+		rpc("place_decal")
 		return
 	if target.is_in_group("Player") and is_network_master():
 		rpc("update_score","damage",damage,shot_type)
 		target.rpc("add_damage",int(name),point,damage,shot_type,false)
+		target.show_floating_damage(damage,shot_type)
 		return
 	if target.is_in_group("Enemy"):
 		var is_enemy_dead = target.add_damage(point,damage)
@@ -358,6 +361,9 @@ func hit_target(target,point,distance,shot_type):
 		if is_enemy_dead:
 			rpc("update_score","kills",1,shot_type)
 		return
+
+func get_target_screen_position(target):
+	return camera.unproject_position(target.global_transform.origin)
 
 remotesync func add_damage(attacker_id,point,damage,shot_type,is_melee):
 	last_attacker_id = attacker_id
@@ -381,6 +387,12 @@ remotesync func add_damage(attacker_id,point,damage,shot_type,is_melee):
 		rpc_id(int(name),"set_dead_state",true,attacker_id,point)
 		return true
 	return false
+
+func show_floating_damage(damage,shot_type):
+	if not is_network_master():
+		var label = floating_damage.instance()
+		float_dmg_container.add_child(label)
+		label.initialize(damage,shot_type)
 
 func show_hit_marker(id):
 	var attacker = get_node("../" + str(id))
@@ -406,7 +418,8 @@ remotesync func melee_attack():
 
 func melee_hit(target,point):
 	if is_network_master():
-		target.rpc("add_damage",int(name),point,melee_weapon.get_damage(),false,true)
+		target.show_floating_damage(melee_weapon.get_damage(),Scores.REGULAR_SHOT)
+		target.rpc("add_damage",int(name),point,melee_weapon.get_damage(),Scores.REGULAR_SHOT,true)
 		show_hit_feedback(MELEE_COLOR)
 
 func create_blood_splash(point,is_melee):
@@ -467,10 +480,10 @@ remotesync func deactivate_player(value,point = null):
 	set_collision_mask_bit(0,!value)
 	visible = !value
 
-func place_decal(target):
+remotesync func place_decal():
 	var bullet = bullet_decal.instance()
 	var normal = aim_cast.get_collision_normal()
-	target.add_child(bullet)
+	get_node("/root/Game").add_child(bullet)
 	bullet.global_transform.origin = aim_cast.get_collision_point()
 	if normal.is_equal_approx(Vector3.UP):
 		bullet.rotation_degrees.x = 90
