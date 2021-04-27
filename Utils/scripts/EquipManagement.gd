@@ -52,6 +52,11 @@ func set_current_weapon(index):
 func get_current_weapon():
 	return current_weapon
 
+func back_to_primary():
+	current_weapon = weapons[0]
+	current_index = 0
+	return current_weapon
+
 func equip_weapon(index):
 	if index != current_index:
 		set_current_weapon(index)
@@ -75,7 +80,7 @@ func parent_weapon(to_parent):
 
 func reload_weapons():
 	for weapon in weapons:
-		weapon.set_full_magazine()
+		weapon.set_full_magazine(true)
 
 func is_busy():
 	return current_weapon.is_busy()

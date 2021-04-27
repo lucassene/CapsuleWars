@@ -211,8 +211,9 @@ func on_reload_ended():
 	state_machine.set_state("Idle")
 	back_to_ads()
 
-func set_full_magazine():
+func set_full_magazine(was_actor_dead = false):
 	current_ammo = MAGAZINE
+	if was_actor_dead: state_machine.set_can_fire(true)
 	emit_signal("on_reloaded")
 
 func sprint(value):
@@ -261,7 +262,10 @@ func set_remote_layer():
 		if model.has_method("set_layer_mask_bit"):
 			model.set_layer_mask_bit(1,false)
 			model.set_layer_mask_bit(2,true)
-	
+
+func set_player_dead():
+	state_machine.set_can_fire(false)
+
 func on_stowed():
 	emit_signal("on_stowed",self)
 

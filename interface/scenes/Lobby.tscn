@@ -440,15 +440,15 @@ margin_bottom = 400.0
 
 [node name="FinalContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MenuContainer"]
 visible = false
-margin_left = 1125.0
+margin_left = 375.0
 margin_right = 1820.0
-margin_bottom = 496.0
+margin_bottom = 450.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="BeginButton" type="Button" parent="MainContainer/VBoxContainer/MenuContainer/FinalContainer"]
-margin_right = 695.0
+margin_right = 1445.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 0, 100 )
 focus_neighbour_left = NodePath("../../LoadoutContainer/PrimaryOption")

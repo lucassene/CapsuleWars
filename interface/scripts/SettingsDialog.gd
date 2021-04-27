@@ -11,10 +11,7 @@ func _ready():
 
 func confirm_pressed():
 	GameSettings.set_current_sensitivity(camera_slider.value)
-	.cancel_pressed()
-
-func cancel_pressed():
-	.cancel_pressed()
+	.confirm_pressed()
 
 func _on_CameraSlider_value_changed(value):
 	camera_label.text = str(stepify(value,0.01))

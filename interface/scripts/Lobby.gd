@@ -101,9 +101,14 @@ func set_settings():
 	camera_slider.value = GameSettings.get_current_sensitivity()
 
 func reset():
+	has_game = false
+	is_begining = false
+	is_player_ready = false
+	ready_players.clear()
 	show()
 	deactivate_hud(false)
 	hide_containers(true)
+	update_begin_button()
 
 func hide_containers(value):
 	new_container.visible = value
@@ -331,6 +336,7 @@ func _on_connected_to_server():
 	append_log("You are connected to the server.")
 	game_type = CLIENT
 	show_character_options()
+	begin_button.disabled = false
 
 func _on_cant_create_server(error):
 	match error:
@@ -388,6 +394,7 @@ func _on_CancelButton_pressed():
 	cancel_button.focus_neighbour_right = credit_button.get_path()
 	camera_slider.focus_neighbour_top = join_game_button.get_path()
 	camera_slider.focus_previous = join_game_button.get_path()
+	reset()
 
 func _on_exit_to_lobby():
 	host_game_button.grab_focus()

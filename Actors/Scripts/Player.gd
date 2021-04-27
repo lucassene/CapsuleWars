@@ -198,6 +198,7 @@ func _unhandled_input(event):
 	if is_network_master():
 		state_machine.handle_input(event)
 		player_controller.handle_input(event)
+		if player_controller.check_input_pressed(event,"sacrifice","sacrifice"): return
 
 func _process(delta):
 	recover_health(delta)
@@ -313,7 +314,7 @@ func set_hud_name(player_name):
 	player_hud.set_name(player_name)
 
 func fire(firing):
-	if firing:
+	if not dead and firing:
 		player_controller.fire(true)
 		set_is_firing(true)
 		get_shot_victim()
@@ -382,6 +383,7 @@ remotesync func add_damage(attacker_id,point,damage,shot_type,is_melee):
 	if current_health <= 0 and !dead:
 		dead = true
 		is_recovering = false
+		current_weapon.set_player_dead()
 		emit_signal("on_player_killed",attacker_id,shot_type,int(name))
 		if is_network_master(): rpc("update_score","deaths",1)
 		rpc_id(int(name),"set_dead_state",true,attacker_id,point)
@@ -476,6 +478,9 @@ remotesync func deactivate_player(value,point = null):
 		create_death_splash(point)
 		set_process(false)
 		set_physics_process(false)
+	current_weapon = hand.back_to_primary()
+	if is_network_master():
+		emit_signal("on_weapon_equipped",current_weapon.get_magazine())
 	set_collision_layer_bit(0,!value)
 	set_collision_mask_bit(0,!value)
 	visible = !value

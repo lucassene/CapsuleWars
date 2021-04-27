@@ -22,10 +22,10 @@ func initialize(dialog):
 	scene.initialize()
 
 func _unhandled_input(event):
-	if event.is_action_pressed("escape") or event.is_action_pressed("back"):
-		hide()
+	if visible and event.is_action_pressed("escape") or event.is_action_pressed("back"):
 		if current_body:
 			current_body.cancel_pressed()
+			hide()
 			current_body.queue_free()
 
 func _on_CancelButton_pressed():
