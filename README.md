@@ -3,8 +3,20 @@
 
 A small project developed to allow up to 6 players play a short and fun FPS match online. The game has many features present in the majority of games of the genre and shows some of Godot's engine capabilities.
 
+> This is a prototype, so bugs ands issues are expected. If you have any problem, please open an issue.
+> If you desire is only to play the game, please consider downloading it on Itch.io. The version there has more features and less bugs.
+> Download it here: [https://busyweasel.itch.io/capsule-wars](https://busyweasel.itch.io/capsule-wars)
+
 ## Footage
 [![](https://img.youtube.com/vi/ne4kvwK5yFY/0.jpg)](https://youtu.be/ne4kvwK5yFY)
+
+## Importing to Godot
+
+1. Click the green button "Code", and then "Download ZIP"
+2. Extract all the files to the desired folder
+3. Open Godot and click "Import"
+4. Choose the "project.godot" file from the chosen folder
+5. Click "Import & Edit"
 
 ## Installation
 
