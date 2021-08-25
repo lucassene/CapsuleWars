@@ -3,8 +3,8 @@
 
 A small project developed to allow up to 6 players play a short and fun FPS match online. The game has many features present in the majority of games of the genre and shows some of Godot's engine capabilities.
 
-> This is a prototype, so bugs ands issues are expected. If you have any problem, please open an issue.
-> If you desire is only to play the game, please consider downloading it on Itch.io. The version there has more features and less bugs.
+> This is a prototype, so bugs and issues are expected. If you have any problem, please open an issue, but know that this project is no longer being actively updated.
+> If your desire is only to play the game, please consider downloading it on Itch.io. The version there has more features and fewer bugs.
 > Download it here: [https://busyweasel.itch.io/capsule-wars](https://busyweasel.itch.io/capsule-wars)
 
 ## Footage
